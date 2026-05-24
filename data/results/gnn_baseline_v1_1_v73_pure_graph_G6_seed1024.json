@@ -1,0 +1,75 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "G6"
+    ],
+    "models": [
+      "GCN",
+      "GAT",
+      "SAGE",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_v73_pure_graph_G6_seed1024",
+    "features_path": null,
+    "seed": 1024
+  },
+  "summary": [
+    {
+      "model": "GCN",
+      "modal": "G6",
+      "label": "fraud_v08_strict",
+      "best_epoch": 40,
+      "val_auc": 0.6017,
+      "test_auc": 0.5749,
+      "ap": 0.0831,
+      "p_at_5pct": 0.0898,
+      "r_at_10fpr": 0.1321,
+      "f1_best": 0.1483
+    },
+    {
+      "model": "GAT",
+      "modal": "G6",
+      "label": "fraud_v08_strict",
+      "best_epoch": 5,
+      "val_auc": 0.5316,
+      "test_auc": 0.5062,
+      "ap": 0.0723,
+      "p_at_5pct": 0.0795,
+      "r_at_10fpr": 0.1104,
+      "f1_best": 0.1293
+    },
+    {
+      "model": "SAGE",
+      "modal": "G6",
+      "label": "fraud_v08_strict",
+      "best_epoch": 10,
+      "val_auc": 0.5233,
+      "test_auc": 0.5414,
+      "ap": 0.0764,
+      "p_at_5pct": 0.0753,
+      "r_at_10fpr": 0.1179,
+      "f1_best": 0.1359
+    },
+    {
+      "model": "RGCN",
+      "modal": "G6",
+      "label": "fraud_v08_strict",
+      "best_epoch": 40,
+      "val_auc": 0.5653,
+      "test_auc": 0.5852,
+      "ap": 0.0955,
+      "p_at_5pct": 0.1176,
+      "r_at_10fpr": 0.1524,
+      "f1_best": 0.1547
+    }
+  ],
+  "delong": [],
+  "n_results": 4,
+  "_task": "gnn_baseline_v1_1_v73_pure_graph_G6_seed1024",
+  "_timestamp": "2026-05-11T13:47:06+00:00"
+}

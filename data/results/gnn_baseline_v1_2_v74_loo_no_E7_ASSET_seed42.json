@@ -1,0 +1,99 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_v74_loo_no_E7_ASSET_seed42",
+    "seed": 42
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 25,
+      "val_auc": 0.7884,
+      "test_auc": 0.7189,
+      "ap": 0.1804,
+      "p_at_5pct": 0.2817,
+      "r_at_10fpr": 0.3551,
+      "f1_best": 0.2656
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7846,
+      "test_auc": 0.71,
+      "ap": 0.1596,
+      "p_at_5pct": 0.2446,
+      "r_at_10fpr": 0.3326,
+      "f1_best": 0.2517
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7855,
+      "test_auc": 0.7057,
+      "ap": 0.1772,
+      "p_at_5pct": 0.2745,
+      "r_at_10fpr": 0.3401,
+      "f1_best": 0.2569
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 10,
+      "val_auc": 0.749,
+      "test_auc": 0.6862,
+      "ap": 0.1457,
+      "p_at_5pct": 0.227,
+      "r_at_10fpr": 0.3191,
+      "f1_best": 0.244
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7188701484001173,
+      "auc_b": 0.7099598282638944,
+      "delta": -0.008910320136222949,
+      "z": 2.3933473193633272,
+      "p": 0.0166954283892784
+    },
+    {
+      "comparison": "GAT vs MLP (M11)",
+      "auc_a": 0.7188701484001173,
+      "auc_b": 0.7056944768832649,
+      "delta": -0.013175671516852394,
+      "z": 3.012688703562143,
+      "p": 0.002589443894909893
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7188701484001173,
+      "auc_b": 0.6862351147402664,
+      "delta": -0.032635033659850876,
+      "z": 5.469827913591447,
+      "p": 4.5047274799259185e-08
+    }
+  ],
+  "n_results": 4,
+  "_task": "gnn_baseline_v1_2_v74_loo_no_E7_ASSET_seed42",
+  "_timestamp": "2026-05-11T06:38:45+00:00"
+}

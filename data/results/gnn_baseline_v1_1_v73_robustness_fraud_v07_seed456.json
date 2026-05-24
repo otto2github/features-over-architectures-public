@@ -1,0 +1,121 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "SAGE",
+      "RGCN"
+    ],
+    "label_col": "fraud_v07",
+    "device": "auto",
+    "task_suffix": "_v73_robustness_fraud_v07_seed456",
+    "features_path": null,
+    "seed": 456
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v07",
+      "best_epoch": 20,
+      "val_auc": 0.7957,
+      "test_auc": 0.712,
+      "ap": 0.1582,
+      "p_at_5pct": 0.2456,
+      "r_at_10fpr": 0.3377,
+      "f1_best": 0.2412
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v07",
+      "best_epoch": 30,
+      "val_auc": 0.7916,
+      "test_auc": 0.7004,
+      "ap": 0.138,
+      "p_at_5pct": 0.2136,
+      "r_at_10fpr": 0.3017,
+      "f1_best": 0.2236
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v07",
+      "best_epoch": 25,
+      "val_auc": 0.7873,
+      "test_auc": 0.7043,
+      "ap": 0.1565,
+      "p_at_5pct": 0.2384,
+      "r_at_10fpr": 0.3246,
+      "f1_best": 0.2383
+    },
+    {
+      "model": "SAGE",
+      "modal": "M11",
+      "label": "fraud_v07",
+      "best_epoch": 15,
+      "val_auc": 0.7981,
+      "test_auc": 0.7068,
+      "ap": 0.147,
+      "p_at_5pct": 0.2363,
+      "r_at_10fpr": 0.3246,
+      "f1_best": 0.2339
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v07",
+      "best_epoch": 10,
+      "val_auc": 0.757,
+      "test_auc": 0.6825,
+      "ap": 0.1349,
+      "p_at_5pct": 0.2064,
+      "r_at_10fpr": 0.323,
+      "f1_best": 0.2316
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7120100880184835,
+      "auc_b": 0.7004169528812044,
+      "delta": -0.01159313513727911,
+      "z": 2.9061541858726447,
+      "p": 0.003659010997172807
+    },
+    {
+      "comparison": "GAT vs MLP (M11)",
+      "auc_a": 0.7120100880184835,
+      "auc_b": 0.7043330926257253,
+      "delta": -0.007676995392758235,
+      "z": 1.760046937896656,
+      "p": 0.07839984845551373
+    },
+    {
+      "comparison": "SAGE vs MLP (M11)",
+      "auc_a": 0.7120100880184835,
+      "auc_b": 0.7068111548638972,
+      "delta": -0.005198933154586305,
+      "z": 1.742528344470716,
+      "p": 0.08141603613445203
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7120100880184835,
+      "auc_b": 0.6824895863081298,
+      "delta": -0.029520501710353697,
+      "z": 5.187714238557772,
+      "p": 2.1289094553900156e-07
+    }
+  ],
+  "n_results": 5,
+  "_task": "gnn_baseline_v1_1_v73_robustness_fraud_v07_seed456",
+  "_timestamp": "2026-05-11T13:59:24+00:00"
+}

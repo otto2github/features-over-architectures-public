@@ -1,0 +1,253 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M5",
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "SAGE",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_loose",
+    "device": "auto",
+    "task_suffix": "_robust_loose",
+    "features_path": null
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M5",
+      "label": "fraud_v08_loose",
+      "best_epoch": 35,
+      "val_auc": 0.7726,
+      "test_auc": 0.713,
+      "ap": 0.1778,
+      "p_at_5pct": 0.2652,
+      "r_at_10fpr": 0.3336,
+      "f1_best": 0.2643
+    },
+    {
+      "model": "GCN",
+      "modal": "M5",
+      "label": "fraud_v08_loose",
+      "best_epoch": 20,
+      "val_auc": 0.7494,
+      "test_auc": 0.6833,
+      "ap": 0.1367,
+      "p_at_5pct": 0.1837,
+      "r_at_10fpr": 0.2488,
+      "f1_best": 0.226
+    },
+    {
+      "model": "GAT",
+      "modal": "M5",
+      "label": "fraud_v08_loose",
+      "best_epoch": 30,
+      "val_auc": 0.7469,
+      "test_auc": 0.6964,
+      "ap": 0.1645,
+      "p_at_5pct": 0.2518,
+      "r_at_10fpr": 0.3032,
+      "f1_best": 0.2449
+    },
+    {
+      "model": "SAGE",
+      "modal": "M5",
+      "label": "fraud_v08_loose",
+      "best_epoch": 20,
+      "val_auc": 0.7603,
+      "test_auc": 0.6961,
+      "ap": 0.1525,
+      "p_at_5pct": 0.2054,
+      "r_at_10fpr": 0.3025,
+      "f1_best": 0.2477
+    },
+    {
+      "model": "RGCN",
+      "modal": "M5",
+      "label": "fraud_v08_loose",
+      "best_epoch": 20,
+      "val_auc": 0.7205,
+      "test_auc": 0.6644,
+      "ap": 0.1337,
+      "p_at_5pct": 0.1796,
+      "r_at_10fpr": 0.2674,
+      "f1_best": 0.2298
+    },
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_loose",
+      "best_epoch": 25,
+      "val_auc": 0.7865,
+      "test_auc": 0.7262,
+      "ap": 0.1985,
+      "p_at_5pct": 0.3034,
+      "r_at_10fpr": 0.3708,
+      "f1_best": 0.2874
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_loose",
+      "best_epoch": 25,
+      "val_auc": 0.7817,
+      "test_auc": 0.7139,
+      "ap": 0.1634,
+      "p_at_5pct": 0.2353,
+      "r_at_10fpr": 0.3081,
+      "f1_best": 0.2572
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v08_loose",
+      "best_epoch": 15,
+      "val_auc": 0.782,
+      "test_auc": 0.5961,
+      "ap": 0.0918,
+      "p_at_5pct": 0.0815,
+      "r_at_10fpr": 0.0972,
+      "f1_best": 0.1785
+    },
+    {
+      "model": "SAGE",
+      "modal": "M11",
+      "label": "fraud_v08_loose",
+      "best_epoch": 15,
+      "val_auc": 0.7884,
+      "test_auc": 0.7259,
+      "ap": 0.1867,
+      "p_at_5pct": 0.291,
+      "r_at_10fpr": 0.3591,
+      "f1_best": 0.2814
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_loose",
+      "best_epoch": 15,
+      "val_auc": 0.7611,
+      "test_auc": 0.7021,
+      "ap": 0.167,
+      "p_at_5pct": 0.2487,
+      "r_at_10fpr": 0.3287,
+      "f1_best": 0.2662
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "MLP: M11 vs M5",
+      "auc_a": 0.7130499493424161,
+      "auc_b": 0.7261882165498248,
+      "delta": 0.013138267207408738,
+      "z": -2.9956845547754622,
+      "p": 0.0027382954173318375
+    },
+    {
+      "comparison": "GCN: M11 vs M5",
+      "auc_a": 0.6833074162295577,
+      "auc_b": 0.7139275363081887,
+      "delta": 0.03062012007863102,
+      "z": -8.197478386310493,
+      "p": 2.220446049250313e-16
+    },
+    {
+      "comparison": "GAT: M11 vs M5",
+      "auc_a": 0.6964460485297465,
+      "auc_b": 0.596088211488486,
+      "delta": -0.10035783704126044,
+      "z": 11.938645677428132,
+      "p": 0.0
+    },
+    {
+      "comparison": "SAGE: M11 vs M5",
+      "auc_a": 0.696071732353327,
+      "auc_b": 0.7259099389899221,
+      "delta": 0.029838206636595088,
+      "z": -6.842475884047217,
+      "p": 7.783551581042047e-12
+    },
+    {
+      "comparison": "RGCN: M11 vs M5",
+      "auc_a": 0.664438268441038,
+      "auc_b": 0.7020843876988636,
+      "delta": 0.03764611925782557,
+      "z": -5.381444545766301,
+      "p": 7.389046707828584e-08
+    },
+    {
+      "comparison": "GCN vs MLP (M5)",
+      "auc_a": 0.7130499493424161,
+      "auc_b": 0.6833074162295577,
+      "delta": -0.02974253311285835,
+      "z": 6.481153893173547,
+      "p": 9.102385511994271e-11
+    },
+    {
+      "comparison": "GAT vs MLP (M5)",
+      "auc_a": 0.7130499493424161,
+      "auc_b": 0.6964460485297465,
+      "delta": -0.016603900812669603,
+      "z": 4.12699792023517,
+      "p": 3.6752971640741094e-05
+    },
+    {
+      "comparison": "SAGE vs MLP (M5)",
+      "auc_a": 0.7130499493424161,
+      "auc_b": 0.696071732353327,
+      "delta": -0.01697821698908908,
+      "z": 4.88326365859586,
+      "p": 1.0434419845939402e-06
+    },
+    {
+      "comparison": "RGCN vs MLP (M5)",
+      "auc_a": 0.7130499493424161,
+      "auc_b": 0.664438268441038,
+      "delta": -0.04861168090137802,
+      "z": 8.661316631283274,
+      "p": 0.0
+    },
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7261882165498248,
+      "auc_b": 0.7139275363081887,
+      "delta": -0.012260680241636068,
+      "z": 3.294448377998721,
+      "p": 0.0009861505616988175
+    },
+    {
+      "comparison": "GAT vs MLP (M11)",
+      "auc_a": 0.7261882165498248,
+      "auc_b": 0.596088211488486,
+      "delta": -0.13010000506133879,
+      "z": 16.16508380872916,
+      "p": 0.0
+    },
+    {
+      "comparison": "SAGE vs MLP (M11)",
+      "auc_a": 0.7261882165498248,
+      "auc_b": 0.7259099389899221,
+      "delta": -0.00027827755990272873,
+      "z": 0.1153848777197462,
+      "p": 0.9081400647330147
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7261882165498248,
+      "auc_b": 0.7020843876988636,
+      "delta": -0.024103828850961184,
+      "z": 5.050259052439116,
+      "p": 4.412113137064466e-07
+    }
+  ],
+  "n_results": 10,
+  "_task": "gnn_baseline_v1_1_robust_loose",
+  "_timestamp": "2026-05-08T15:29:21+00:00"
+}

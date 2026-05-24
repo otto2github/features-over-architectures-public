@@ -1,0 +1,74 @@
+{
+  "params": {
+    "epochs": 50,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "G6"
+    ],
+    "models": [
+      "GCN",
+      "GAT",
+      "SAGE",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_pure_graph",
+    "features_path": null
+  },
+  "summary": [
+    {
+      "model": "GCN",
+      "modal": "G6",
+      "label": "fraud_v08_strict",
+      "best_epoch": 50,
+      "val_auc": 0.5856,
+      "test_auc": 0.5684,
+      "ap": 0.0829,
+      "p_at_5pct": 0.0918,
+      "r_at_10fpr": 0.1224,
+      "f1_best": 0.1446
+    },
+    {
+      "model": "GAT",
+      "modal": "G6",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.5309,
+      "test_auc": 0.5079,
+      "ap": 0.0726,
+      "p_at_5pct": 0.0774,
+      "r_at_10fpr": 0.1141,
+      "f1_best": 0.1292
+    },
+    {
+      "model": "SAGE",
+      "modal": "G6",
+      "label": "fraud_v08_strict",
+      "best_epoch": 5,
+      "val_auc": 0.4907,
+      "test_auc": 0.4535,
+      "ap": 0.0592,
+      "p_at_5pct": 0.0444,
+      "r_at_10fpr": 0.0646,
+      "f1_best": 0.1287
+    },
+    {
+      "model": "RGCN",
+      "modal": "G6",
+      "label": "fraud_v08_strict",
+      "best_epoch": 50,
+      "val_auc": 0.5675,
+      "test_auc": 0.5729,
+      "ap": 0.0933,
+      "p_at_5pct": 0.1197,
+      "r_at_10fpr": 0.1637,
+      "f1_best": 0.1448
+    }
+  ],
+  "delong": [],
+  "n_results": 4,
+  "_task": "gnn_baseline_v1_1_pure_graph",
+  "_timestamp": "2026-05-08T15:30:34+00:00"
+}

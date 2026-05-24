@@ -1,0 +1,61 @@
+{
+  "params": {
+    "epochs": 50,
+    "hidden_dim": 256,
+    "lr": 0.0001,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "GCN",
+      "GAT",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_big_gnn",
+    "features_path": null
+  },
+  "summary": [
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 35,
+      "val_auc": 0.7853,
+      "test_auc": 0.7145,
+      "ap": 0.164,
+      "p_at_5pct": 0.2559,
+      "r_at_10fpr": 0.3296,
+      "f1_best": 0.2544
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 15,
+      "val_auc": 0.7888,
+      "test_auc": 0.7177,
+      "ap": 0.1768,
+      "p_at_5pct": 0.2704,
+      "r_at_10fpr": 0.3574,
+      "f1_best": 0.266
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 15,
+      "val_auc": 0.7646,
+      "test_auc": 0.6967,
+      "ap": 0.1623,
+      "p_at_5pct": 0.2632,
+      "r_at_10fpr": 0.3431,
+      "f1_best": 0.2556
+    }
+  ],
+  "delong": [],
+  "n_results": 3,
+  "_task": "gnn_baseline_v1_1_big_gnn",
+  "_timestamp": "2026-05-08T15:32:28+00:00"
+}

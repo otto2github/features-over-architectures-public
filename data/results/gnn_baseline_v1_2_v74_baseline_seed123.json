@@ -1,0 +1,99 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_v74_baseline_seed123",
+    "seed": 123
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 25,
+      "val_auc": 0.7884,
+      "test_auc": 0.7144,
+      "ap": 0.1798,
+      "p_at_5pct": 0.2755,
+      "r_at_10fpr": 0.3641,
+      "f1_best": 0.271
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7878,
+      "test_auc": 0.7112,
+      "ap": 0.1601,
+      "p_at_5pct": 0.258,
+      "r_at_10fpr": 0.3288,
+      "f1_best": 0.2486
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 35,
+      "val_auc": 0.7319,
+      "test_auc": 0.6866,
+      "ap": 0.1448,
+      "p_at_5pct": 0.2064,
+      "r_at_10fpr": 0.3018,
+      "f1_best": 0.2337
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 10,
+      "val_auc": 0.7434,
+      "test_auc": 0.681,
+      "ap": 0.1562,
+      "p_at_5pct": 0.257,
+      "r_at_10fpr": 0.3393,
+      "f1_best": 0.2557
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7144380490062409,
+      "auc_b": 0.7111511231484088,
+      "delta": -0.0032869258578320792,
+      "z": 0.8325316541535582,
+      "p": 0.4051089186594061
+    },
+    {
+      "comparison": "GAT vs MLP (M11)",
+      "auc_a": 0.7144380490062409,
+      "auc_b": 0.6866178096443442,
+      "delta": -0.027820239361896704,
+      "z": 4.732220992973308,
+      "p": 2.2207643926019927e-06
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7144380490062409,
+      "auc_b": 0.6810312209506205,
+      "delta": -0.03340682805562034,
+      "z": 5.587697604896892,
+      "p": 2.3009986360733592e-08
+    }
+  ],
+  "n_results": 4,
+  "_task": "gnn_baseline_v1_2_v74_baseline_seed123",
+  "_timestamp": "2026-05-11T08:18:14+00:00"
+}

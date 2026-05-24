@@ -1,0 +1,99 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "RGCN"
+    ],
+    "label_col": "fraud_v07",
+    "device": "auto",
+    "task_suffix": "_v74_robustness_fraud_v07_seed789",
+    "seed": 789
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v07",
+      "best_epoch": 25,
+      "val_auc": 0.7939,
+      "test_auc": 0.7122,
+      "ap": 0.1624,
+      "p_at_5pct": 0.2497,
+      "r_at_10fpr": 0.354,
+      "f1_best": 0.2528
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v07",
+      "best_epoch": 20,
+      "val_auc": 0.791,
+      "test_auc": 0.6997,
+      "ap": 0.1384,
+      "p_at_5pct": 0.2188,
+      "r_at_10fpr": 0.3107,
+      "f1_best": 0.2235
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v07",
+      "best_epoch": 30,
+      "val_auc": 0.7863,
+      "test_auc": 0.5252,
+      "ap": 0.0637,
+      "p_at_5pct": 0.0712,
+      "r_at_10fpr": 0.0,
+      "f1_best": 0.134
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v07",
+      "best_epoch": 10,
+      "val_auc": 0.7304,
+      "test_auc": 0.6749,
+      "ap": 0.1261,
+      "p_at_5pct": 0.194,
+      "r_at_10fpr": 0.305,
+      "f1_best": 0.2242
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7122115431326678,
+      "auc_b": 0.6997230144132366,
+      "delta": -0.01248852871943118,
+      "z": 2.9560689809535505,
+      "p": 0.003115873951959003
+    },
+    {
+      "comparison": "GAT vs MLP (M11)",
+      "auc_a": 0.7122115431326678,
+      "auc_b": 0.5252038154414523,
+      "delta": -0.18700772769121543,
+      "z": 20.0794668116401,
+      "p": 0.0
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7122115431326678,
+      "auc_b": 0.6749003181005293,
+      "delta": -0.03731122503213846,
+      "z": 5.700446696439416,
+      "p": 1.1949389255860865e-08
+    }
+  ],
+  "n_results": 4,
+  "_task": "gnn_baseline_v1_2_v74_robustness_fraud_v07_seed789",
+  "_timestamp": "2026-05-11T13:51:21+00:00"
+}

@@ -1,0 +1,172 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M5",
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_seed1024_full",
+    "seed": 1024
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M5",
+      "label": "fraud_v08_strict",
+      "best_epoch": 35,
+      "val_auc": 0.7708,
+      "test_auc": 0.699,
+      "ap": 0.1546,
+      "p_at_5pct": 0.2343,
+      "r_at_10fpr": 0.3033,
+      "f1_best": 0.2359
+    },
+    {
+      "model": "GCN",
+      "modal": "M5",
+      "label": "fraud_v08_strict",
+      "best_epoch": 35,
+      "val_auc": 0.7728,
+      "test_auc": 0.6819,
+      "ap": 0.1267,
+      "p_at_5pct": 0.1641,
+      "r_at_10fpr": 0.2605,
+      "f1_best": 0.2139
+    },
+    {
+      "model": "GAT",
+      "modal": "M5",
+      "label": "fraud_v08_strict",
+      "best_epoch": 40,
+      "val_auc": 0.7575,
+      "test_auc": 0.6911,
+      "ap": 0.15,
+      "p_at_5pct": 0.2219,
+      "r_at_10fpr": 0.2988,
+      "f1_best": 0.235
+    },
+    {
+      "model": "RGCN",
+      "modal": "M5",
+      "label": "fraud_v08_strict",
+      "best_epoch": 15,
+      "val_auc": 0.7322,
+      "test_auc": 0.6685,
+      "ap": 0.1343,
+      "p_at_5pct": 0.195,
+      "r_at_10fpr": 0.2815,
+      "f1_best": 0.2232
+    },
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 25,
+      "val_auc": 0.7867,
+      "test_auc": 0.7175,
+      "ap": 0.1783,
+      "p_at_5pct": 0.2776,
+      "r_at_10fpr": 0.3589,
+      "f1_best": 0.2677
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7859,
+      "test_auc": 0.7017,
+      "ap": 0.1409,
+      "p_at_5pct": 0.1992,
+      "r_at_10fpr": 0.2905,
+      "f1_best": 0.2298
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 15,
+      "val_auc": 0.7828,
+      "test_auc": 0.7157,
+      "ap": 0.1753,
+      "p_at_5pct": 0.2735,
+      "r_at_10fpr": 0.3461,
+      "f1_best": 0.2574
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 10,
+      "val_auc": 0.7453,
+      "test_auc": 0.668,
+      "ap": 0.1438,
+      "p_at_5pct": 0.2477,
+      "r_at_10fpr": 0.292,
+      "f1_best": 0.2236
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M5)",
+      "auc_a": 0.6989576824775141,
+      "auc_b": 0.6819181107764091,
+      "delta": -0.01703957170110504,
+      "z": 3.876483197784582,
+      "p": 0.00010597712461546394
+    },
+    {
+      "comparison": "GAT vs MLP (M5)",
+      "auc_a": 0.6989576824775141,
+      "auc_b": 0.691055980919985,
+      "delta": -0.007901701557529117,
+      "z": 1.86031303753954,
+      "p": 0.06284125005587082
+    },
+    {
+      "comparison": "RGCN vs MLP (M5)",
+      "auc_a": 0.6989576824775141,
+      "auc_b": 0.6684791857556648,
+      "delta": -0.030478496721849324,
+      "z": 5.036151405336245,
+      "p": 4.7498491007047505e-07
+    },
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7174641334775945,
+      "auc_b": 0.7017401430901321,
+      "delta": -0.015723990387462417,
+      "z": 3.8675650990607284,
+      "p": 0.00010992748799054652
+    },
+    {
+      "comparison": "GAT vs MLP (M11)",
+      "auc_a": 0.7174641334775945,
+      "auc_b": 0.7156639452991658,
+      "delta": -0.0018001881784287521,
+      "z": 0.5849985043938212,
+      "p": 0.5585487224080143
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7174641334775945,
+      "auc_b": 0.6680422390039052,
+      "delta": -0.049421894473689276,
+      "z": 7.983423851920072,
+      "p": 1.3322676295501878e-15
+    }
+  ],
+  "n_results": 8,
+  "_task": "gnn_baseline_v1_2_seed1024_full",
+  "_timestamp": "2026-05-09T12:19:07+00:00"
+}

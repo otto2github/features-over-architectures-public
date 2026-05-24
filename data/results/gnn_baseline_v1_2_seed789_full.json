@@ -1,0 +1,172 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M5",
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_seed789_full",
+    "seed": 789
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M5",
+      "label": "fraud_v08_strict",
+      "best_epoch": 35,
+      "val_auc": 0.7759,
+      "test_auc": 0.7027,
+      "ap": 0.1568,
+      "p_at_5pct": 0.2363,
+      "r_at_10fpr": 0.3198,
+      "f1_best": 0.2437
+    },
+    {
+      "model": "GCN",
+      "modal": "M5",
+      "label": "fraud_v08_strict",
+      "best_epoch": 40,
+      "val_auc": 0.7631,
+      "test_auc": 0.6854,
+      "ap": 0.1289,
+      "p_at_5pct": 0.1734,
+      "r_at_10fpr": 0.2605,
+      "f1_best": 0.2179
+    },
+    {
+      "model": "GAT",
+      "modal": "M5",
+      "label": "fraud_v08_strict",
+      "best_epoch": 40,
+      "val_auc": 0.7598,
+      "test_auc": 0.6721,
+      "ap": 0.1217,
+      "p_at_5pct": 0.1465,
+      "r_at_10fpr": 0.2042,
+      "f1_best": 0.2067
+    },
+    {
+      "model": "RGCN",
+      "modal": "M5",
+      "label": "fraud_v08_strict",
+      "best_epoch": 10,
+      "val_auc": 0.7166,
+      "test_auc": 0.6593,
+      "ap": 0.1212,
+      "p_at_5pct": 0.1692,
+      "r_at_10fpr": 0.2508,
+      "f1_best": 0.2115
+    },
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7839,
+      "test_auc": 0.7189,
+      "ap": 0.1809,
+      "p_at_5pct": 0.291,
+      "r_at_10fpr": 0.3581,
+      "f1_best": 0.2678
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 25,
+      "val_auc": 0.7865,
+      "test_auc": 0.7069,
+      "ap": 0.1581,
+      "p_at_5pct": 0.2528,
+      "r_at_10fpr": 0.3303,
+      "f1_best": 0.2502
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 25,
+      "val_auc": 0.7906,
+      "test_auc": 0.7154,
+      "ap": 0.1768,
+      "p_at_5pct": 0.2745,
+      "r_at_10fpr": 0.3438,
+      "f1_best": 0.2566
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 5,
+      "val_auc": 0.7579,
+      "test_auc": 0.6755,
+      "ap": 0.1508,
+      "p_at_5pct": 0.2394,
+      "r_at_10fpr": 0.3206,
+      "f1_best": 0.2418
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M5)",
+      "auc_a": 0.7027430848752586,
+      "auc_b": 0.6854302369065276,
+      "delta": -0.017312847968731004,
+      "z": 3.985800066957869,
+      "p": 6.725312498034874e-05
+    },
+    {
+      "comparison": "GAT vs MLP (M5)",
+      "auc_a": 0.7027430848752586,
+      "auc_b": 0.6721495758998529,
+      "delta": -0.030593508975405692,
+      "z": 6.642263500379231,
+      "p": 3.089017930335558e-11
+    },
+    {
+      "comparison": "RGCN vs MLP (M5)",
+      "auc_a": 0.7027430848752586,
+      "auc_b": 0.659306568644869,
+      "delta": -0.04343651623038958,
+      "z": 6.816170265168001,
+      "p": 9.349854224183218e-12
+    },
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7188715831940959,
+      "auc_b": 0.7069129080886781,
+      "delta": -0.011958675105417815,
+      "z": 3.4789308381884605,
+      "p": 0.0005034184930219343
+    },
+    {
+      "comparison": "GAT vs MLP (M11)",
+      "auc_a": 0.7188715831940959,
+      "auc_b": 0.7154201342933894,
+      "delta": -0.0034514489007065885,
+      "z": 1.1778863082372177,
+      "p": 0.23884193421216815
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7188715831940959,
+      "auc_b": 0.6754974285164846,
+      "delta": -0.0433741546776113,
+      "z": 7.332394482832868,
+      "p": 2.2604140781368187e-13
+    }
+  ],
+  "n_results": 8,
+  "_task": "gnn_baseline_v1_2_seed789_full",
+  "_timestamp": "2026-05-09T12:17:06+00:00"
+}

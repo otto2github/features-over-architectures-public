@@ -1,0 +1,77 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_loose",
+    "device": "auto",
+    "task_suffix": "_robust_loose_v74"
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_loose",
+      "best_epoch": 35,
+      "val_auc": 0.7873,
+      "test_auc": 0.7225,
+      "ap": 0.194,
+      "p_at_5pct": 0.291,
+      "r_at_10fpr": 0.3604,
+      "f1_best": 0.2786
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_loose",
+      "best_epoch": 25,
+      "val_auc": 0.7829,
+      "test_auc": 0.721,
+      "ap": 0.1791,
+      "p_at_5pct": 0.2735,
+      "r_at_10fpr": 0.3542,
+      "f1_best": 0.2751
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_loose",
+      "best_epoch": 15,
+      "val_auc": 0.765,
+      "test_auc": 0.7087,
+      "ap": 0.1725,
+      "p_at_5pct": 0.2642,
+      "r_at_10fpr": 0.3405,
+      "f1_best": 0.2689
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7225400173392169,
+      "auc_b": 0.7209885075326135,
+      "delta": -0.0015515098066034572,
+      "z": 0.4176423936857119,
+      "p": 0.6762085962497741
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7225400173392169,
+      "auc_b": 0.7087219665910899,
+      "delta": -0.013818050748127031,
+      "z": 2.886583333752108,
+      "p": 0.0038944959856808126
+    }
+  ],
+  "n_results": 3,
+  "_task": "gnn_baseline_v1_2_robust_loose_v74",
+  "_timestamp": "2026-05-09T00:51:00+00:00"
+}

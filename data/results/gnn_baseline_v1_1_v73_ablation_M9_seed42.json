@@ -1,0 +1,121 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M9"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "SAGE",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_v73_ablation_M9_seed42",
+    "features_path": null,
+    "seed": 42
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M9",
+      "label": "fraud_v08_strict",
+      "best_epoch": 30,
+      "val_auc": 0.7689,
+      "test_auc": 0.7024,
+      "ap": 0.1545,
+      "p_at_5pct": 0.227,
+      "r_at_10fpr": 0.3086,
+      "f1_best": 0.2391
+    },
+    {
+      "model": "GCN",
+      "modal": "M9",
+      "label": "fraud_v08_strict",
+      "best_epoch": 35,
+      "val_auc": 0.765,
+      "test_auc": 0.6834,
+      "ap": 0.1255,
+      "p_at_5pct": 0.16,
+      "r_at_10fpr": 0.2583,
+      "f1_best": 0.218
+    },
+    {
+      "model": "GAT",
+      "modal": "M9",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7553,
+      "test_auc": 0.6938,
+      "ap": 0.1513,
+      "p_at_5pct": 0.2208,
+      "r_at_10fpr": 0.3071,
+      "f1_best": 0.2344
+    },
+    {
+      "model": "SAGE",
+      "modal": "M9",
+      "label": "fraud_v08_strict",
+      "best_epoch": 25,
+      "val_auc": 0.7636,
+      "test_auc": 0.6861,
+      "ap": 0.1386,
+      "p_at_5pct": 0.2002,
+      "r_at_10fpr": 0.2905,
+      "f1_best": 0.23
+    },
+    {
+      "model": "RGCN",
+      "modal": "M9",
+      "label": "fraud_v08_strict",
+      "best_epoch": 15,
+      "val_auc": 0.7268,
+      "test_auc": 0.6601,
+      "ap": 0.1268,
+      "p_at_5pct": 0.1858,
+      "r_at_10fpr": 0.2635,
+      "f1_best": 0.2101
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M9)",
+      "auc_a": 0.7024489313155389,
+      "auc_b": 0.6833896687514015,
+      "delta": -0.01905926256413737,
+      "z": 4.2740747500340825,
+      "p": 1.9193264189532044e-05
+    },
+    {
+      "comparison": "GAT vs MLP (M9)",
+      "auc_a": 0.7024489313155389,
+      "auc_b": 0.6937913012724668,
+      "delta": -0.008657630043072073,
+      "z": 2.0594340879475874,
+      "p": 0.0394526730739051
+    },
+    {
+      "comparison": "SAGE vs MLP (M9)",
+      "auc_a": 0.7024489313155389,
+      "auc_b": 0.6861259248390869,
+      "delta": -0.016323006476452018,
+      "z": 4.382761660315149,
+      "p": 1.1718429146823084e-05
+    },
+    {
+      "comparison": "RGCN vs MLP (M9)",
+      "auc_a": 0.7024489313155389,
+      "auc_b": 0.660128248124038,
+      "delta": -0.04232068319150084,
+      "z": 7.586175883014671,
+      "p": 3.2862601528904634e-14
+    }
+  ],
+  "n_results": 5,
+  "_task": "gnn_baseline_v1_1_v73_ablation_M9_seed42",
+  "_timestamp": "2026-05-11T13:42:31+00:00"
+}

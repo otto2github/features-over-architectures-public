@@ -1,0 +1,35 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "GAT"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_v74_gat_rep_trial1",
+    "seed": 42
+  },
+  "summary": [
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7839,
+      "test_auc": 0.7095,
+      "ap": 0.179,
+      "p_at_5pct": 0.2786,
+      "r_at_10fpr": 0.3544,
+      "f1_best": 0.2664
+    }
+  ],
+  "delong": [],
+  "n_results": 1,
+  "_task": "gnn_baseline_v1_2_v74_gat_rep_trial1",
+  "_timestamp": "2026-05-11T08:27:12+00:00"
+}

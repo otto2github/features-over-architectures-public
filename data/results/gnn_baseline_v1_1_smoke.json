@@ -1,0 +1,35 @@
+{
+  "params": {
+    "epochs": 10,
+    "hidden_dim": 64,
+    "lr": 0.001,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "MLP"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_smoke",
+    "features_path": null
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 10,
+      "val_auc": 0.7876,
+      "test_auc": 0.7223,
+      "ap": 0.1833,
+      "p_at_5pct": 0.2921,
+      "r_at_10fpr": 0.3551,
+      "f1_best": 0.2658
+    }
+  ],
+  "delong": [],
+  "n_results": 1,
+  "_task": "gnn_baseline_v1_1_smoke",
+  "_timestamp": "2026-05-08T14:52:15+00:00"
+}

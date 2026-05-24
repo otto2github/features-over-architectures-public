@@ -1,0 +1,78 @@
+{
+  "params": {
+    "epochs": 100,
+    "hidden_dim": 64,
+    "lr": 0.001,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_long_training",
+    "features_path": null
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7881,
+      "test_auc": 0.7093,
+      "ap": 0.1758,
+      "p_at_5pct": 0.2745,
+      "r_at_10fpr": 0.3408,
+      "f1_best": 0.2575
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 15,
+      "val_auc": 0.7823,
+      "test_auc": 0.7103,
+      "ap": 0.1624,
+      "p_at_5pct": 0.2497,
+      "r_at_10fpr": 0.3348,
+      "f1_best": 0.2545
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 5,
+      "val_auc": 0.761,
+      "test_auc": 0.7007,
+      "ap": 0.1547,
+      "p_at_5pct": 0.2363,
+      "r_at_10fpr": 0.3288,
+      "f1_best": 0.2515
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7092542423322946,
+      "auc_b": 0.7102812013209753,
+      "delta": 0.0010269589886806596,
+      "z": -0.2689171571193448,
+      "p": 0.7879934336810768
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7092542423322946,
+      "auc_b": 0.70070062445561,
+      "delta": -0.008553617876684627,
+      "z": 1.5290351855550335,
+      "p": 0.12625572149801823
+    }
+  ],
+  "n_results": 3,
+  "_task": "gnn_baseline_v1_1_long_training",
+  "_timestamp": "2026-05-08T15:29:59+00:00"
+}

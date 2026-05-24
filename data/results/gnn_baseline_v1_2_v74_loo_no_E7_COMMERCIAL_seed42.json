@@ -1,0 +1,99 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_v74_loo_no_E7_COMMERCIAL_seed42",
+    "seed": 42
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 25,
+      "val_auc": 0.7884,
+      "test_auc": 0.7189,
+      "ap": 0.1804,
+      "p_at_5pct": 0.2817,
+      "r_at_10fpr": 0.3551,
+      "f1_best": 0.2656
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 25,
+      "val_auc": 0.7837,
+      "test_auc": 0.7109,
+      "ap": 0.1622,
+      "p_at_5pct": 0.2497,
+      "r_at_10fpr": 0.3356,
+      "f1_best": 0.2549
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7859,
+      "test_auc": 0.7093,
+      "ap": 0.179,
+      "p_at_5pct": 0.2786,
+      "r_at_10fpr": 0.3401,
+      "f1_best": 0.2589
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 10,
+      "val_auc": 0.7511,
+      "test_auc": 0.6852,
+      "ap": 0.1492,
+      "p_at_5pct": 0.2343,
+      "r_at_10fpr": 0.3288,
+      "f1_best": 0.2476
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7188701484001173,
+      "auc_b": 0.7109221175529619,
+      "delta": -0.007948030847155452,
+      "z": 2.3847447022055333,
+      "p": 0.017090977320300293
+    },
+    {
+      "comparison": "GAT vs MLP (M11)",
+      "auc_a": 0.7188701484001173,
+      "auc_b": 0.7092873257702639,
+      "delta": -0.009582822629853438,
+      "z": 2.2828333318741216,
+      "p": 0.02244018775022738
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7188701484001173,
+      "auc_b": 0.6851679607260706,
+      "delta": -0.03370218767404676,
+      "z": 5.738118095268873,
+      "p": 9.573435377774331e-09
+    }
+  ],
+  "n_results": 4,
+  "_task": "gnn_baseline_v1_2_v74_loo_no_E7_COMMERCIAL_seed42",
+  "_timestamp": "2026-05-11T06:47:53+00:00"
+}

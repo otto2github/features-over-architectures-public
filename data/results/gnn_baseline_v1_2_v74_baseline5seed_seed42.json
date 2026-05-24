@@ -1,0 +1,99 @@
+{
+  "params": {
+    "epochs": 40,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "modal": [
+      "M11"
+    ],
+    "models": [
+      "MLP",
+      "GCN",
+      "GAT",
+      "RGCN"
+    ],
+    "label_col": "fraud_v08_strict",
+    "device": "auto",
+    "task_suffix": "_v74_baseline5seed_seed42",
+    "seed": 42
+  },
+  "summary": [
+    {
+      "model": "MLP",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 25,
+      "val_auc": 0.7884,
+      "test_auc": 0.7189,
+      "ap": 0.1804,
+      "p_at_5pct": 0.2817,
+      "r_at_10fpr": 0.3551,
+      "f1_best": 0.2656
+    },
+    {
+      "model": "GCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7845,
+      "test_auc": 0.7101,
+      "ap": 0.1597,
+      "p_at_5pct": 0.2446,
+      "r_at_10fpr": 0.3341,
+      "f1_best": 0.2516
+    },
+    {
+      "model": "GAT",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 20,
+      "val_auc": 0.7875,
+      "test_auc": 0.7045,
+      "ap": 0.1739,
+      "p_at_5pct": 0.2828,
+      "r_at_10fpr": 0.3416,
+      "f1_best": 0.2545
+    },
+    {
+      "model": "RGCN",
+      "modal": "M11",
+      "label": "fraud_v08_strict",
+      "best_epoch": 10,
+      "val_auc": 0.7568,
+      "test_auc": 0.6923,
+      "ap": 0.1641,
+      "p_at_5pct": 0.2632,
+      "r_at_10fpr": 0.3536,
+      "f1_best": 0.2618
+    }
+  ],
+  "delong": [
+    {
+      "comparison": "GCN vs MLP (M11)",
+      "auc_a": 0.7188701484001173,
+      "auc_b": 0.7101331680117965,
+      "delta": -0.008736980388320825,
+      "z": 2.3615323319700696,
+      "p": 0.01819958485453932
+    },
+    {
+      "comparison": "GAT vs MLP (M11)",
+      "auc_a": 0.7188701484001173,
+      "auc_b": 0.7045012897342279,
+      "delta": -0.014368858665889439,
+      "z": 3.0353540937764913,
+      "p": 0.002402534375947729
+    },
+    {
+      "comparison": "RGCN vs MLP (M11)",
+      "auc_a": 0.7188701484001173,
+      "auc_b": 0.6922855577713765,
+      "delta": -0.026584590628740856,
+      "z": 5.092198575710351,
+      "p": 3.539351225434473e-07
+    }
+  ],
+  "n_results": 4,
+  "_task": "gnn_baseline_v1_2_v74_baseline5seed_seed42",
+  "_timestamp": "2026-05-11T12:31:35+00:00"
+}
