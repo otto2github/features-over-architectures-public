@@ -20,17 +20,18 @@ On a multi-seed (`seeds = {42, 123, 456, 789, 1024}`) benchmark of 51,675 firm-y
 
 ## What this repository contains
 
-- `data/` — data dictionary, knowledge-graph schemas (v1.1, v1.2), train/validation/test split files for each label protocol, synthetic-sample schema for code validation.
-- `scripts/` — training and evaluation code, score-retention re-execution script (`score_retention_demo.py`), one-command reproduction scripts.
-- `results/` — per-seed test-set summary metrics (AUC, AP, F1@val-best, P@5%, R@10FPR), training run logs, hyperparameter configurations for every (architecture, modality, seed) cell.
-- `paper/` — submission-related paper materials (see [Data Availability](#data-availability-statement) below for what is and is not shared here).
-- `LICENSE` — MIT for code; data documentation is in `data/README.md`.
+- `data/` — data dictionary, knowledge-graph schemas (v1.1, v1.2), train/validation/test split files for each label protocol, synthetic-sample schema for code validation. The `data/results/` subdirectory holds the per-seed test-set summary metrics (AUC, AP, F1@val-best, P@5%, R@10FPR), training run logs, and hyperparameter configurations for every (architecture, modality, seed) cell.
+- `scripts/training/` — training and evaluation code: shared utilities (`gnn_baseline_common.py`), main benchmark runners for the v1.1 and v1.2 knowledge-graph configurations, the feature-preparation pipeline, the figure and LaTeX-table generation scripts, and a one-command driver (`run_benchmark.sh`).
+- `scripts/analysis/` — README documenting the analysis workflow that aggregates the per-run JSONs in `data/results/` into the tables and figures presented in the paper.
+- `LICENSE-CODE` (MIT) and `LICENSE-PAPER` (CC BY 4.0) — license terms for code and documentation respectively.
+
+No full manuscript file is included in this public repository; the repository is limited to code, schemas, synthetic samples, and result summaries.
 
 ## Data Availability Statement
 
 This release provides everything needed to reproduce the experiments **on synthetic-sample inputs** that match the production feature schema. It does **not** redistribute the raw firm-level financial and disclosure data:
 
-- **What is shared**: code, knowledge-graph schemas, train/validation/test split files, per-seed test-set summary metrics, training logs, score-retention re-execution script, one-command reproduction scripts, synthetic-sample schema (five rows per modality covering all feature blocks).
+- **What is shared**: code, knowledge-graph schemas, train/validation/test split files, per-seed test-set summary metrics, training logs, one-command reproduction scripts, synthetic-sample schema (five rows per modality covering all feature blocks).
 - **What is NOT shared**: raw firm-level financial and disclosure features. These are derived from CSMAR data licensed by Shenzhen GTA Education Tech and cannot be redistributed under the data licence; users wishing to reproduce the full feature extraction must obtain an institutional CSMAR licence independently.
 - **CSRC enforcement records** (used for fraud labels) are public administrative-penalty announcements and remain accessible via the official CSRC website.
 
@@ -39,7 +40,7 @@ This release provides everything needed to reproduce the experiments **on synthe
 1. Obtain a CSMAR licence and download the raw financial / disclosure tables listed in `data/README.md`.
 2. Run the feature-construction pipeline under `scripts/` against the raw tables to produce the M5/M10/M11 feature matrices.
 3. Run the one-command reproduction scripts under `scripts/` to retrain each (architecture, modality, seed) cell.
-4. To run the calibration / score-retention follow-up analyses without retraining everything, use `scripts/score_retention_demo.py` with the seed list specified in the manuscript.
+4. To run the calibration / score-retention follow-up analyses without retraining everything, re-invoke the main training scripts with their score-output stage enabled so that per-firm-year test-set predictions are persisted to disk; the analysis driver under `scripts/analysis/` then consumes those persisted score vectors. See the manuscript Appendix A for the exact seed list and re-execution details.
 
 Synthetic-sample inputs (five rows per modality, same dtypes and column names as production) are included so that the code path can be validated end-to-end before any CSMAR-licensed data are loaded.
 
