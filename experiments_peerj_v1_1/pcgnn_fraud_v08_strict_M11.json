@@ -1,0 +1,102 @@
+{
+  "summary": [
+    {
+      "seed": 42,
+      "model": "PCGNN",
+      "modal": "M11",
+      "label_col": "fraud_v08_strict",
+      "hidden_dim": 64,
+      "lr": 0.0005,
+      "gate_scale": 10.0,
+      "best_epoch": 5,
+      "val_auc": 0.7836921629521856,
+      "test_auc": 0.7149195783419139,
+      "ap": 0.1707580906578774,
+      "f1_best": 0.2571115973278606,
+      "p_at_5pct": 0.0,
+      "r_at_10fpr": 0.3460960960960961
+    },
+    {
+      "seed": 123,
+      "model": "PCGNN",
+      "modal": "M11",
+      "label_col": "fraud_v08_strict",
+      "hidden_dim": 64,
+      "lr": 0.0005,
+      "gate_scale": 10.0,
+      "best_epoch": 15,
+      "val_auc": 0.7842324101982012,
+      "test_auc": 0.7093280822369012,
+      "ap": 0.1769917312989922,
+      "f1_best": 0.2614562833380263,
+      "p_at_5pct": 0.0,
+      "r_at_10fpr": 0.35285285285285284
+    },
+    {
+      "seed": 456,
+      "model": "PCGNN",
+      "modal": "M11",
+      "label_col": "fraud_v08_strict",
+      "hidden_dim": 64,
+      "lr": 0.0005,
+      "gate_scale": 10.0,
+      "best_epoch": 10,
+      "val_auc": 0.7844573420363712,
+      "test_auc": 0.7074344660969412,
+      "ap": 0.1695119957431465,
+      "f1_best": 0.25777156823525726,
+      "p_at_5pct": 0.0,
+      "r_at_10fpr": 0.3280780780780781
+    },
+    {
+      "seed": 789,
+      "model": "PCGNN",
+      "modal": "M11",
+      "label_col": "fraud_v08_strict",
+      "hidden_dim": 64,
+      "lr": 0.0005,
+      "gate_scale": 10.0,
+      "best_epoch": 10,
+      "val_auc": 0.788704636178254,
+      "test_auc": 0.7161324575184537,
+      "ap": 0.17482340755957496,
+      "f1_best": 0.26012461054665614,
+      "p_at_5pct": 0.0,
+      "r_at_10fpr": 0.34984984984984985
+    },
+    {
+      "seed": 1024,
+      "model": "PCGNN",
+      "modal": "M11",
+      "label_col": "fraud_v08_strict",
+      "hidden_dim": 64,
+      "lr": 0.0005,
+      "gate_scale": 10.0,
+      "best_epoch": 10,
+      "val_auc": 0.7881746597924288,
+      "test_auc": 0.7151197009107491,
+      "ap": 0.17683462801508093,
+      "f1_best": 0.2637061403045151,
+      "p_at_5pct": 0.0,
+      "r_at_10fpr": 0.35285285285285284
+    }
+  ],
+  "args": {
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      1024
+    ],
+    "modals": [
+      "M11"
+    ],
+    "label_col": "fraud_v08_strict",
+    "epochs": 100,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "gate_scale": 10.0,
+    "device": "auto"
+  }
+}

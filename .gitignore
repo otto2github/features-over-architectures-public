@@ -80,3 +80,41 @@ Thumbs.db
 .env
 .env.local
 secrets.yml
+# ---- CSMAR / licensed raw data — NEVER commit ----
+*.parquet
+data/raw/
+data/processed/features/
+data/processed/labels/
+**/CSMAR*
+**/csmar*
+# (allow the small schema / dictionary files explicitly if they are CSVs you DO want public:)
+!data/synthetic_sample_schema.csv
+!data/feature_dictionary*.csv
+
+# ---- large / regenerable ----
+*.ckpt
+*.pt
+*.pth
+__pycache__/
+.ipynb_checkpoints/
+logs/
+# ---- CSMAR / licensed raw data — NEVER commit ----
+*.parquet
+data/raw/
+data/processed/features/
+data/processed/labels/
+**/CSMAR*
+**/csmar*
+# (allow the small schema / dictionary files explicitly if they are CSVs you DO want public:)
+!data/synthetic_sample_schema.csv
+!data/feature_dictionary*.csv
+
+# ---- large / regenerable ----
+*.ckpt
+*.pt
+*.pth
+__pycache__/
+.ipynb_checkpoints/
+logs/
+!experiments_peerj_v1_1/scores_persist/
+!experiments_peerj_v1_1/scores_persist/*.npz
