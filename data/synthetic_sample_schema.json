@@ -1,0 +1,905 @@
+{
+  "feat_t0_total_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 39.0,
+    "mean": 2.037968,
+    "std": 3.433277
+  },
+  "feat_t0_reduce_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 39.0,
+    "mean": 1.477407,
+    "std": 3.093968
+  },
+  "feat_t0_increase_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 35.0,
+    "mean": 0.415791,
+    "std": 1.312189
+  },
+  "feat_t0_reduce_plan_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 34.0,
+    "mean": 0.490431,
+    "std": 1.578732
+  },
+  "feat_t0_reduce_progress_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 13.0,
+    "mean": 0.206676,
+    "std": 0.735094
+  },
+  "feat_t0_dj_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 21.0,
+    "mean": 0.373217,
+    "std": 1.175393
+  },
+  "feat_t0_large_holder_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 29.0,
+    "mean": 0.506512,
+    "std": 1.586793
+  },
+  "feat_t0_controller_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 36.0,
+    "mean": 0.525264,
+    "std": 1.405427
+  },
+  "feat_t0_agreement_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 5.0,
+    "mean": 0.007779,
+    "std": 0.106206
+  },
+  "feat_t0_pct5_notices": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 4.0,
+    "mean": 0.018133,
+    "std": 0.150087
+  },
+  "feat_t0_dj_ratio": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.086613,
+    "std": 0.24347
+  },
+  "feat_t0_q4_share": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.097191,
+    "std": 0.238268
+  },
+  "feat_t0_monthly_hhi": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.175142,
+    "std": 0.307071
+  },
+  "feat_t0_mean_quarter_offset": {
+    "dtype": "float64",
+    "min": 1.0,
+    "max": 1.0,
+    "mean": 1.0,
+    "std": 0.0
+  },
+  "feat_t0_std_quarter_offset": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "std": 0.0
+  },
+  "feat_t0_n_reduces": {
+    "dtype": "float64",
+    "min": 1.0,
+    "max": 1.0,
+    "mean": 1.0,
+    "std": 0.0
+  },
+  "feat_t0_q4_offset_share": {
+    "dtype": "float64",
+    "min": 1.0,
+    "max": 1.0,
+    "mean": 1.0,
+    "std": 0.0
+  },
+  "fin_dsri_t0": {
+    "dtype": "float64",
+    "min": -2.3020687030463938,
+    "max": 33692.10166370154,
+    "mean": 3.766518,
+    "std": 194.985763
+  },
+  "fin_dsri_t1": {
+    "dtype": "float64",
+    "min": -1.5407567861731035,
+    "max": 44355.17358632726,
+    "mean": 4.672164,
+    "std": 279.43338
+  },
+  "fin_mscore_t0": {
+    "dtype": "float64",
+    "min": -195961143372984.9,
+    "max": 97860789504268.33,
+    "mean": -1980027473.89805,
+    "std": 984658447191.8225
+  },
+  "fin_mscore_t1": {
+    "dtype": "float64",
+    "min": -195961143372984.9,
+    "max": 97860789504268.33,
+    "mean": -1955723928.072514,
+    "std": 988764018387.3356
+  },
+  "fin_ocf_to_ni_t0": {
+    "dtype": "float64",
+    "min": -802.1540169267739,
+    "max": 3482.982493742018,
+    "mean": 1.544752,
+    "std": 18.712508
+  },
+  "fin_ocf_to_ni_t1": {
+    "dtype": "float64",
+    "min": -802.1540169267739,
+    "max": 3482.982493742018,
+    "mean": 1.55094,
+    "std": 18.582695
+  },
+  "fin_oth_recv_to_ta_t0": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 0.9984374401250317,
+    "mean": 0.01607,
+    "std": 0.03816
+  },
+  "fin_oth_recv_to_ta_t1": {
+    "dtype": "float64",
+    "min": 4.639700613576333e-07,
+    "max": 0.9984374401250317,
+    "mean": 0.016387,
+    "std": 0.038115
+  },
+  "fin_zscore_t0": {
+    "dtype": "float64",
+    "min": -537.0771256971545,
+    "max": 65.33148755799948,
+    "mean": 2.036679,
+    "std": 4.739191
+  },
+  "fin_dsri_t0_zind": {
+    "dtype": "float64",
+    "min": -4.29054837204639,
+    "max": 13.874091952050577,
+    "mean": 0.0,
+    "std": 0.986953
+  },
+  "fin_dsri_t1_zind": {
+    "dtype": "float64",
+    "min": -4.295653428636312,
+    "max": 14.597979160656863,
+    "mean": 0.0,
+    "std": 0.986837
+  },
+  "fin_mscore_t0_zind": {
+    "dtype": "float64",
+    "min": -15.11474211014329,
+    "max": 15.745622551988715,
+    "mean": 0.0,
+    "std": 0.986885
+  },
+  "fin_mscore_t1_zind": {
+    "dtype": "float64",
+    "min": -15.427576828013672,
+    "max": 14.737720161276766,
+    "mean": 0.0,
+    "std": 0.986758
+  },
+  "fin_ocf_to_ni_t0_zind": {
+    "dtype": "float64",
+    "min": -11.085149873971668,
+    "max": 13.465827759098723,
+    "mean": -0.0,
+    "std": 0.987042
+  },
+  "fin_ocf_to_ni_t1_zind": {
+    "dtype": "float64",
+    "min": -10.923491162611523,
+    "max": 13.794529754052517,
+    "mean": 0.0,
+    "std": 0.98704
+  },
+  "fin_oth_recv_to_ta_t0_zind": {
+    "dtype": "float64",
+    "min": -2.021085539108906,
+    "max": 13.545002961706142,
+    "mean": -0.0,
+    "std": 0.986936
+  },
+  "fin_oth_recv_to_ta_t1_zind": {
+    "dtype": "float64",
+    "min": -2.2313148454693423,
+    "max": 14.921667381139184,
+    "mean": 0.0,
+    "std": 0.986844
+  },
+  "fin_zscore_t0_zind": {
+    "dtype": "float64",
+    "min": -7.928112410084438,
+    "max": 10.29745304524748,
+    "mean": 0.0,
+    "std": 0.987045
+  },
+  "fini_current_ratio_t0": {
+    "dtype": "float64",
+    "min": 0.003,
+    "max": 144.0001,
+    "mean": 2.72083,
+    "std": 3.576445
+  },
+  "fini_quick_ratio_t0": {
+    "dtype": "float64",
+    "min": 0.003,
+    "max": 135.603,
+    "mean": 2.235055,
+    "std": 3.317483
+  },
+  "fini_cash_ratio_t0": {
+    "dtype": "float64",
+    "min": 0.0005,
+    "max": 131.7093,
+    "mean": 1.92324,
+    "std": 3.004347
+  },
+  "fini_assets_turn_t0": {
+    "dtype": "float64",
+    "min": -0.0549,
+    "max": 12.3729,
+    "mean": 0.613848,
+    "std": 0.532606
+  },
+  "fini_fa_turn_t0": {
+    "dtype": "float64",
+    "min": -6.6478,
+    "max": 55200.7412,
+    "mean": 21.072338,
+    "std": 438.194618
+  },
+  "fini_ca_turn_t0": {
+    "dtype": "float64",
+    "min": -0.0801,
+    "max": 22.1798,
+    "mean": 1.198069,
+    "std": 1.043614
+  },
+  "fini_turn_days_t0": {
+    "dtype": "float64",
+    "min": -94185.8779,
+    "max": 514388.2521,
+    "mean": 430.532034,
+    "std": 5043.51493
+  },
+  "fini_assets_yoy_t0": {
+    "dtype": "float64",
+    "min": -97.2474,
+    "max": 7252.1436,
+    "mean": 17.859708,
+    "std": 77.703844
+  },
+  "fini_equity_yoy_t0": {
+    "dtype": "float64",
+    "min": -26580.4121,
+    "max": 80243.1118,
+    "mean": 19.293459,
+    "std": 532.761011
+  },
+  "fini_bps_yoy_t0": {
+    "dtype": "float64",
+    "min": -18100.0,
+    "max": 59994.8148,
+    "mean": 9.866907,
+    "std": 471.120305
+  },
+  "fini_tr_yoy_t0": {
+    "dtype": "float64",
+    "min": -144.4936,
+    "max": 94409.9573,
+    "mean": 22.125663,
+    "std": 600.422945
+  },
+  "fini_op_yoy_t0": {
+    "dtype": "float64",
+    "min": -300540.2704,
+    "max": 1398352.862,
+    "mean": -39.677279,
+    "std": 7652.669242
+  },
+  "fini_ebt_yoy_t0": {
+    "dtype": "float64",
+    "min": -6372922.3028,
+    "max": 196665.7694,
+    "mean": -187.567139,
+    "std": 29494.540235
+  },
+  "fini_netprofit_yoy_t0": {
+    "dtype": "float64",
+    "min": -83745.6751,
+    "max": 98058.141,
+    "mean": -60.565874,
+    "std": 1108.843294
+  },
+  "fini_dt_eps_yoy_t0": {
+    "dtype": "float64",
+    "min": -93100.0,
+    "max": 119100.0,
+    "mean": -65.538203,
+    "std": 1200.66731
+  },
+  "fini_ocf_yoy_t0": {
+    "dtype": "float64",
+    "min": -949348.0976,
+    "max": 854362.876,
+    "mean": 98.00012,
+    "std": 7183.254106
+  },
+  "fini_roe_yoy_t0": {
+    "dtype": "float64",
+    "min": -799122.4769,
+    "max": 104283.2735,
+    "mean": -194.974138,
+    "std": 5043.230421
+  },
+  "fini_ocf_to_debt_t0": {
+    "dtype": "float64",
+    "min": -25.0434,
+    "max": 11.6258,
+    "mean": 0.17373,
+    "std": 0.461311
+  },
+  "fini_ocf_to_shortdebt_t0": {
+    "dtype": "float64",
+    "min": -32.4528,
+    "max": 22.812,
+    "mean": 0.22598,
+    "std": 0.583857
+  },
+  "fini_q_ocf_to_sales_t0": {
+    "dtype": "float64",
+    "min": -75344792650.0,
+    "max": 3407322266.6667,
+    "mean": -1535580.32995,
+    "std": 348466508.25028
+  },
+  "fini_profit_to_gr_t0": {
+    "dtype": "float64",
+    "min": -944972.5401,
+    "max": 10974.8619,
+    "mean": -44.102426,
+    "std": 4650.51473
+  },
+  "fini_profit_to_op_t0": {
+    "dtype": "float64",
+    "min": -939889.1759,
+    "max": 14838.2771,
+    "mean": -42.070113,
+    "std": 4628.654418
+  },
+  "fini_op_of_gr_t0": {
+    "dtype": "float64",
+    "min": -948649.4063,
+    "max": 14911.8499,
+    "mean": -36.242551,
+    "std": 4558.167622
+  },
+  "fini_gc_of_gr_t0": {
+    "dtype": "float64",
+    "min": -3524.7008,
+    "max": 1184138.1908,
+    "mean": 147.097185,
+    "std": 5670.89699
+  },
+  "fini_ebit_of_gr_t0": {
+    "dtype": "float64",
+    "min": -1000536.555,
+    "max": 15135.0629,
+    "mean": -39.339159,
+    "std": 4901.427975
+  },
+  "fini_roic_t0": {
+    "dtype": "float64",
+    "min": -27459.4538,
+    "max": 30438.6177,
+    "mean": 4.333331,
+    "std": 203.841378
+  },
+  "fini_adminexp_of_gr_t0": {
+    "dtype": "float64",
+    "min": 0.0654,
+    "max": 1217078.9429,
+    "mean": 50.855242,
+    "std": 5717.981893
+  },
+  "fini_finaexp_of_gr_t0": {
+    "dtype": "float64",
+    "min": -97832.0989,
+    "max": 59274.7835,
+    "mean": 3.53223,
+    "std": 603.347167
+  },
+  "fini_expense_of_sales_t0": {
+    "dtype": "float64",
+    "min": -47.9374,
+    "max": 1175141.4549,
+    "mean": 87.885483,
+    "std": 6043.473901
+  },
+  "fini_saleexp_to_gr_t0": {
+    "dtype": "float64",
+    "min": 0.0,
+    "max": 55894.6109,
+    "mean": 9.390541,
+    "std": 274.970662
+  },
+  "fini_roa_t0": {
+    "dtype": "float64",
+    "min": -1610.9624,
+    "max": 1061.5626,
+    "mean": 4.59998,
+    "std": 15.222434
+  },
+  "fini_roe_t0": {
+    "dtype": "float64",
+    "min": -19098.3197,
+    "max": 5400.1671,
+    "mean": 0.993841,
+    "std": 194.785384
+  },
+  "fini_npta_t0": {
+    "dtype": "float64",
+    "min": -1611.2446,
+    "max": 1003.2189,
+    "mean": 3.162753,
+    "std": 14.861531
+  },
+  "fini_eqt_to_debt_t0": {
+    "dtype": "float64",
+    "min": -0.9944,
+    "max": 124.4842,
+    "mean": 2.527969,
+    "std": 3.934087
+  },
+  "fini_assets_to_eqt_t0": {
+    "dtype": "float64",
+    "min": 0.837,
+    "max": 1557.6324,
+    "mean": 2.534682,
+    "std": 9.101621
+  },
+  "fini_debt_to_eqt_t0": {
+    "dtype": "float64",
+    "min": -474.9425,
+    "max": 1556.4294,
+    "mean": 1.462306,
+    "std": 9.214366
+  },
+  "fini_eqt_to_talcapital_t0": {
+    "dtype": "float64",
+    "min": -16597.2136,
+    "max": 318.679,
+    "mean": 71.985872,
+    "std": 91.876264
+  },
+  "fini_eqt_to_interestdebt_t0": {
+    "dtype": "float64",
+    "min": -8547.8554,
+    "max": 7380491.1939,
+    "mean": 490.510674,
+    "std": 38286.224037
+  },
+  "fini_currentdebt_to_debt_t0": {
+    "dtype": "float64",
+    "min": 3.5623,
+    "max": 121.7465,
+    "mean": 80.995375,
+    "std": 17.95997
+  },
+  "fini_tangibleasset_to_debt_t0": {
+    "dtype": "float64",
+    "min": -1.1307,
+    "max": 111.4969,
+    "mean": 2.269443,
+    "std": 3.766042
+  },
+  "fini_ca_to_assets_t0": {
+    "dtype": "float64",
+    "min": 0.7469,
+    "max": 100.0,
+    "mean": 57.790774,
+    "std": 20.49487
+  },
+  "fini_tbassets_to_totalassets_t0": {
+    "dtype": "float64",
+    "min": -17734.5473,
+    "max": 119.4698,
+    "mean": 45.209782,
+    "std": 92.162366
+  },
+  "fini_current_ratio_t1": {
+    "dtype": "float64",
+    "min": 0.003,
+    "max": 144.0001,
+    "mean": 2.711055,
+    "std": 3.540395
+  },
+  "fini_quick_ratio_t1": {
+    "dtype": "float64",
+    "min": 0.003,
+    "max": 135.603,
+    "mean": 2.22072,
+    "std": 3.282479
+  },
+  "fini_assets_turn_t1": {
+    "dtype": "float64",
+    "min": -0.0549,
+    "max": 12.3729,
+    "mean": 0.640958,
+    "std": 0.541692
+  },
+  "fini_roa_t1": {
+    "dtype": "float64",
+    "min": -1610.9624,
+    "max": 1061.5626,
+    "mean": 5.625962,
+    "std": 15.1804
+  },
+  "fini_roe_t1": {
+    "dtype": "float64",
+    "min": -19098.3197,
+    "max": 5400.1671,
+    "mean": 3.272798,
+    "std": 167.102027
+  },
+  "fini_npta_t1": {
+    "dtype": "float64",
+    "min": -1611.2446,
+    "max": 1003.2189,
+    "mean": 4.050117,
+    "std": 14.677962
+  },
+  "fini_profit_to_gr_t1": {
+    "dtype": "float64",
+    "min": -5135637.8095,
+    "max": 10974.8619,
+    "mean": -158.666255,
+    "std": 24709.305368
+  },
+  "fini_op_of_gr_t1": {
+    "dtype": "float64",
+    "min": -5210058.9928,
+    "max": 14911.8499,
+    "mean": -155.518078,
+    "std": 25046.153049
+  },
+  "fini_ocf_to_debt_t1": {
+    "dtype": "float64",
+    "min": -25.0434,
+    "max": 11.6258,
+    "mean": 0.189931,
+    "std": 0.477434
+  },
+  "fini_q_ocf_to_sales_t1": {
+    "dtype": "float64",
+    "min": -75344792650.0,
+    "max": 3407322266.6667,
+    "mean": -1615212.14011,
+    "std": 357385429.455931
+  },
+  "fini_debt_to_eqt_t1": {
+    "dtype": "float64",
+    "min": -254.5355,
+    "max": 1556.4294,
+    "mean": 1.42775,
+    "std": 8.751903
+  },
+  "fini_assets_to_eqt_t1": {
+    "dtype": "float64",
+    "min": 0.837,
+    "max": 1557.6324,
+    "mean": 2.479226,
+    "std": 8.820203
+  },
+  "fini_current_ratio_t0_zind": {
+    "dtype": "float64",
+    "min": -2.480053460149914,
+    "max": 12.644633652552312,
+    "mean": 0.0,
+    "std": 0.987772
+  },
+  "fini_quick_ratio_t0_zind": {
+    "dtype": "float64",
+    "min": -2.5165476153810027,
+    "max": 12.724047197759697,
+    "mean": 0.0,
+    "std": 0.987772
+  },
+  "fini_assets_turn_t0_zind": {
+    "dtype": "float64",
+    "min": -3.0195738751610053,
+    "max": 9.41297639571619,
+    "mean": -0.0,
+    "std": 0.987732
+  },
+  "fini_fa_turn_t0_zind": {
+    "dtype": "float64",
+    "min": -2.001176178066175,
+    "max": 15.268120304336886,
+    "mean": 0.0,
+    "std": 0.987783
+  },
+  "fini_roa_t0_zind": {
+    "dtype": "float64",
+    "min": -10.077524540854773,
+    "max": 8.736665706170815,
+    "mean": -0.0,
+    "std": 0.987782
+  },
+  "fini_roe_t0_zind": {
+    "dtype": "float64",
+    "min": -15.11233976288959,
+    "max": 11.521874146475364,
+    "mean": 0.0,
+    "std": 0.987719
+  },
+  "fini_npta_t0_zind": {
+    "dtype": "float64",
+    "min": -10.40354571350029,
+    "max": 8.72457601566872,
+    "mean": 0.0,
+    "std": 0.987733
+  },
+  "fini_profit_to_gr_t0_zind": {
+    "dtype": "float64",
+    "min": -15.200982788376601,
+    "max": 11.606730315924315,
+    "mean": 0.0,
+    "std": 0.98773
+  },
+  "fini_op_of_gr_t0_zind": {
+    "dtype": "float64",
+    "min": -15.042156965707166,
+    "max": 12.693857599257399,
+    "mean": 0.0,
+    "std": 0.98773
+  },
+  "fini_ebit_of_gr_t0_zind": {
+    "dtype": "float64",
+    "min": -14.852243821077899,
+    "max": 13.985973749964828,
+    "mean": 0.0,
+    "std": 0.98778
+  },
+  "fini_ocf_to_debt_t0_zind": {
+    "dtype": "float64",
+    "min": -10.01084861213177,
+    "max": 11.570227904601666,
+    "mean": 0.0,
+    "std": 0.987731
+  },
+  "fini_q_ocf_to_sales_t0_zind": {
+    "dtype": "float64",
+    "min": -15.56821272491045,
+    "max": 12.953332161434103,
+    "mean": 0.0,
+    "std": 0.987713
+  },
+  "fini_ocfps_t0_zind": {
+    "dtype": "float64",
+    "min": -12.77306659740804,
+    "max": 12.135485362901544,
+    "mean": 0.0,
+    "std": 0.987731
+  },
+  "fini_debt_to_eqt_t0_zind": {
+    "dtype": "float64",
+    "min": -11.516600319654946,
+    "max": 16.39236991792844,
+    "mean": -0.0,
+    "std": 0.987707
+  },
+  "fini_assets_to_eqt_t0_zind": {
+    "dtype": "float64",
+    "min": -3.1270600299064046,
+    "max": 16.392320597280342,
+    "mean": 0.0,
+    "std": 0.987709
+  },
+  "audit_is_modified": {
+    "dtype": "int8",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.04567,
+    "std": 0.208771
+  },
+  "audit_type_code": {
+    "dtype": "int8",
+    "min": 1.0,
+    "max": 9.0,
+    "mean": 1.167644,
+    "std": 0.837711
+  },
+  "audit_fee_log": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 19.402721405029297,
+    "mean": 13.599192,
+    "std": 2.135316
+  },
+  "audit_fee_to_assets": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "std": 0.0
+  },
+  "audit_firm_change_flag": {
+    "dtype": "int8",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.170605,
+    "std": 0.376167
+  },
+  "pld_max_ratio2": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 63.15999984741211,
+    "mean": 3.047694,
+    "std": 5.555192
+  },
+  "pld_n_events": {
+    "dtype": "int32",
+    "min": 0.0,
+    "max": 240.0,
+    "mean": 3.913149,
+    "std": 9.159743
+  },
+  "pld_controller_max_ratio1": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 100.0,
+    "mean": 8.640992,
+    "std": 18.639311
+  },
+  "pld_high_pledge_flag": {
+    "dtype": "int8",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.057165,
+    "std": 0.23216
+  },
+  "pld_n_securities_pledgee": {
+    "dtype": "int32",
+    "min": 0.0,
+    "max": 210.0,
+    "mean": 2.398181,
+    "std": 7.055721
+  },
+  "pld_n_change_events": {
+    "dtype": "int32",
+    "min": 0.0,
+    "max": 171.0,
+    "mean": 3.276401,
+    "std": 7.692549
+  },
+  "ctrl_separation": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 77.64720153808594,
+    "mean": 4.660959,
+    "std": 7.382493
+  },
+  "ctrl_ownership": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 89.98999786376953,
+    "mean": 33.616467,
+    "std": 18.232315
+  },
+  "ctrl_voting": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 95.08999633789062,
+    "mean": 38.305061,
+    "std": 17.929306
+  },
+  "ctrl_separation_p90_flag": {
+    "dtype": "int8",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.091592,
+    "std": 0.288451
+  },
+  "ctrl_no_controller_flag": {
+    "dtype": "int8",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.025718,
+    "std": 0.158296
+  },
+  "ctrl_state_owned_flag": {
+    "dtype": "int8",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.217958,
+    "std": 0.412863
+  },
+  "ctrl_data_missing_flag": {
+    "dtype": "int8",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.045128,
+    "std": 0.207587
+  },
+  "rpt_total_amount": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 31.67759895324707,
+    "mean": 19.565933,
+    "std": 3.80541
+  },
+  "rpt_max_pannrsm": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 367.70001220703125,
+    "mean": 6.250767,
+    "std": 22.361214
+  },
+  "rpt_n_high_pannrsm": {
+    "dtype": "int32",
+    "min": 0.0,
+    "max": 66.0,
+    "mean": 0.407586,
+    "std": 2.102795
+  },
+  "rpt_total_isgplo": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 26.57402992248535,
+    "mean": 0.506113,
+    "std": 3.105145
+  },
+  "rpt_n_loan": {
+    "dtype": "int32",
+    "min": 0.0,
+    "max": 208.0,
+    "mean": 0.529966,
+    "std": 2.662072
+  },
+  "rpt_n_guarantee": {
+    "dtype": "int32",
+    "min": 0.0,
+    "max": 1750.0,
+    "mean": 12.61343,
+    "std": 32.235589
+  },
+  "rpt_affect_profit_ratio": {
+    "dtype": "float32",
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.020237,
+    "std": 0.072185
+  }
+}

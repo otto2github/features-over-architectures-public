@@ -118,3 +118,6 @@ __pycache__/
 logs/
 !experiments_peerj_v1_1/scores_persist/
 !experiments_peerj_v1_1/scores_persist/*.npz
+!data/synthetic_sample_M11.csv
+!data/synthetic_sample_M11.csv
+!data/synthetic_sample_schema.json
