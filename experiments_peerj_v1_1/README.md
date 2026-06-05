@@ -5,7 +5,7 @@ Science revision, addressing reviewer requests for (i) an imbalance-specialized 
 GNN, (ii) a reproducible score-persisted headline run with a pooled paired test, and
 (iii) a coarse per-architecture hyperparameter sweep. All scripts reuse the main
 benchmark's data loading, time-based split, leakage control, and evaluation
-(`scripts/p7_gnn/gnn_baseline_common.py` and `gnn_baseline_v1_1.py`); set
+(`scripts/training/gnn_baseline_common.py` and `gnn_baseline_v1_1.py`); set
 `THESIS_PROJECT_ROOT` to the project root before running.
 
 ## Scripts
@@ -19,7 +19,7 @@ benchmark's data loading, time-based split, leakage control, and evaluation
 Run example:
 
 ```bash
-cd scripts/p7_gnn
+cd scripts/training
 THESIS_PROJECT_ROOT=/path/to/project \
   python rerun_main_persist_scores.py --modal M11 --label-col fraud_v08_strict --lr 5e-4
 ```
