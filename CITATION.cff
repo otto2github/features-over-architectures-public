@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+title: "Features over Architectures: code and artifacts for the PeerJ Computer Science submission"
+authors:
+  - family-names: Cheng
+    given-names: Yi Qiu
+    orcid: https://orcid.org/0009-0006-9094-3951
+  - family-names: Cheng
+    given-names: Xiaorong
+    orcid: https://orcid.org/0009-0002-5328-0686
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.20556287
+repository-code: https://github.com/otto2github/features-over-architectures-public
+license: MIT
