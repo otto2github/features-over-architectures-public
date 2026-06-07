@@ -1,118 +1,83 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20556287.svg)](https://doi.org/10.5281/zenodo.20556287)
-# Features over Architectures
+# Disclosure Features over Standard Graph Architectures: A Multi-Seed Benchmark of GNNs and a Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms
 
-Reproducibility companion for the paper:
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20558032.svg)](https://doi.org/10.5281/zenodo.20558032)
+[![Code License: MIT](https://img.shields.io/badge/Code%20License-MIT-yellow.svg)](LICENSE-CODE)
+[![Paper License: CC BY 4.0](https://img.shields.io/badge/Paper%20License-CC%20BY%204.0-lightgrey.svg)](LICENSE-PAPER)
 
-> **Features over Architectures: A Multi-Seed Benchmark of Standard GNNs and a
-> Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms**
-> Yi Qiu Cheng, Xiaorong Cheng (co-first authors)
-> School of Management, Wuhan University of Technology
-> Submitted to *PeerJ Computer Science* (2026).
+Reproducibility companion for the **PeerJ Computer Science** submission (under review):
 
-A controlled benchmark testing whether standard graph neural networks (GNNs) outperform a
-matched-input MLP for post-filing financial-fraud risk scoring on Chinese A-share listed
-firms. On 51,675 firm-year observations (2010–2024; ~5% CSRC-sanction base rate) we train
-nine learners across three nested feature modalities and five seeds on a time-based split
-with explicit temporal-leakage control. **Main finding:** disclosure-feature acquisition
-dominates standard-architecture choice — adding audit-opinion / share-pledge / controller /
-related-party features lifts five-seed mean AUC for all nine learners, while no standard GNN
-exceeds the matched-input MLP. A reusable pure-graph/placebo diagnostic shows the
-disclosure-level static graph carries weak independent topological signal (AUC 0.45–0.57).
+> Cheng, Y. Q., & Cheng, X. *Disclosure Features over Standard Graph Architectures: A Multi-Seed Benchmark of GNNs and a Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms.*
 
-## Headline results (Table 2, five-seed mean test AUC at M11)
+This repository releases the code, per-seed results, persisted score arrays, and a synthetic data sample needed to regenerate the paper's tables and figures, subject to the licensed-data restrictions described under **Data availability** below.
 
-| Learner | Test AUC |
-|---|---|
-| **MLP (matched input)** | **0.7172 ± 0.0026** |
-| GraphSAGE | 0.7073 ± 0.0065 |
-| GCN | 0.7057 ± 0.0042 |
-| RGCN | 0.6938 ± 0.0050 |
-| GAT | 0.6882 ± 0.0257 |
+## Overview
 
-Five-seed paired t-test: MLP significantly exceeds GCN and RGCN (p < 0.01) and is tied with
-GraphSAGE (p = 0.056) and GAT (p = 0.074). A PC-GNN-style imbalance-specialized variant
-(0.7126 ± 0.0039) ranks above the standard GNNs but still does not exceed the MLP.
+The paper asks whether standard message-passing graph neural networks (GNNs) outperform a matched-input multilayer perceptron (MLP) for *post-filing* fraud risk scoring on Chinese A-share listed firms: given the fiscal-year-*t* annual report, rank firms by their likelihood of a subsequent China Securities Regulatory Commission (CSRC) sanction for year-*t* conduct.
 
-## Repository layout
+We benchmark **nine learners** — a matched-input MLP, four tabular learners (Lasso, Ridge, Random Forest, XGBoost), and four standard GNNs (GCN, GAT, GraphSAGE, RGCN) — across **three nested feature modalities** (M5 / M10 / M11) and **five seeds** (135 model instances) on **51,675 firm-year observations (2010–2024)**, using a time-based split (train 2010–2018 / validation 2019–2020 / test 2021–2024) with explicit leakage control.
 
-```
-scripts/
-  training/                  # main benchmark
-    gnn_baseline_common.py   #   shared time-split / metrics / DeLong
-    gnn_baseline_v1_1.py     #   MLP + GCN/GAT/GraphSAGE/RGCN, M5/M10/M11, five seeds
-    gnn_baseline_v1_2.py     #   v1.2 replication (see data/README.md audit note)
-    prepare_node_features_v1_1.py, build_kg_v1_2.py
-    run_benchmark.sh
-  analysis/                  # table/figure generation from the result JSON
-    generate_latex_tables.py, generate_figures.py
-data/
-  results/                   # per-seed/run result JSON reproducing every table & figure
-  README.md                  #   what each result file is; CSMAR access instructions; v1.2 audit
-experiments_peerj_v1_1/      # PeerJ-revision experiments (see its own README)
-  run_pcgnn.py               #   PC-GNN-style pick-and-choose variant            (§V-C)
-  rerun_main_persist_scores.py  # score-persisted rerun + pooled DeLong          (Table 5c)
-  gnn_tuning_sweep.py        #   coarse lr × hidden sweep                          (Table 5d)
-  scores_persist/*.npz       #   per-firm-year y_score/y_true (calibration & DeLong)
-  *.json / *.csv             #   result artifacts
-```
+### Headline findings
 
-## Quick start
+- **Positive and learner-class-invariant.** Acquiring audit-opinion, share-pledge, controller, and related-party-transaction *features* raises five-seed mean AUC for all nine learners.
+- **Architectural null (heavily scoped).** Under a unified protocol, no standard GNN exceeds the matched-input MLP in five-seed mean AUC (headline MLP × M11 = **0.7172**); a PC-GNN-style imbalance-specialized variant ranks above the standard GNNs but likewise does not exceed it. The result is stated as *absence of robust evidence* of a GNN advantage, not demonstrated MLP superiority, and it is protocol-conditional.
+- **Pure-graph diagnostic.** Stripping all node features yields near-random discrimination across architectures (**five-seed mean AUC 0.49–0.59**; single-seed range 0.45–0.57). Non-GNN structural baselines bound the topological signal (Node2Vec 0.6257; label propagation 0.5329).
 
-```bash
-# environment: PyTorch + PyTorch Geometric (CUDA optional), scikit-learn, xgboost, pandas
-export THESIS_PROJECT_ROOT=/path/to/project   # run-time data root (holds the licensed inputs)
+All conclusions are protocol-conditional and do not extend to faithful PC-GNN, CARE-GNN, UD-GNN, attention-based heterogeneous models, dynamic or edge-weighted transaction graphs, or text-based models. See the paper's Limitations.
 
-# main benchmark (all architectures, all modalities, five seeds)
-cd scripts/training
-python gnn_baseline_v1_1.py --modal M5 M10 M11 --label-col fraud_v08_strict --lr 5e-4
+> **Scope note.** The knowledge graph (v1.1) has five edge types — equity, cross-guarantee, common-director, common-supervisor, personnel-interlock. It contains **no genuine related-party-transaction (RPT) edges**; RPT information enters only as node-level features. The v1.2 artifact is a second-protocol replication of the same five-edge graph (the planned RPT edges were never built into the persisted artifact) and provides no evidence about RPT graph edges. See Supplemental Article S1 of the paper.
 
-# PeerJ revision experiments
-python ../../experiments_peerj_v1_1/rerun_main_persist_scores.py --modal M11 --lr 5e-4
-python ../../experiments_peerj_v1_1/run_pcgnn.py               --modal M11 --lr 5e-4
-python ../../experiments_peerj_v1_1/gnn_tuning_sweep.py        --modal M11
+## Repository structure
 
-# regenerate tables/figures from the released result JSON
-cd ../analysis
-python generate_latex_tables.py --project-root /path/to/project --out-dir ./tables
-```
+    .
+    ├── data/                     # feature schema / data dictionary + synthetic sample (no licensed raw data)
+    ├── experiments_peerj_v1_1/   # per-seed result JSON, persisted score arrays, run outputs
+    ├── scripts/                  # training / evaluation / table-generation scripts
+    ├── generate_synthetic_sample.py
+    ├── CITATION.cff
+    ├── LICENSE-CODE              # MIT (code)
+    ├── LICENSE-PAPER             # CC BY 4.0 (paper text, figures, tables)
+    └── README.md
 
-## What is and isn't in this repository
+*(Adjust the tree above to match your actual layout.)*
 
-**Included:** all experiment code; the complete set of per-seed/run **result JSON**
-(`data/results/`) that reproduces every table and figure in the paper; the PeerJ-revision
-experiments and their outputs (`experiments_peerj_v1_1/`); and the per-firm-year score
-arrays underlying the Appendix A reliability diagram, Table 10, and the pooled DeLong
-(`experiments_peerj_v1_1/scores_persist/`).
+**Key scripts** (names as referenced in the paper):
 
-**Not included (data licensing):** the raw CSMAR firm-level financial and disclosure data is
-licensed by Shenzhen GTA Education Tech and **cannot be redistributed**; this repository
-therefore contains **no CSMAR raw data, no constructed feature matrices, and no split
-files**. The CSRC enforcement records used for labels are public administrative-penalty
-announcements. To reproduce feature extraction, obtain an institutional CSMAR licence and
-follow the field list and pipeline described in `data/README.md`.
+- `gnn_baseline_v1_1.py` — MLP and standard-GNN (GCN/GAT/GraphSAGE/RGCN) training and evaluation on the v1.1 graph.
+- `rerun_main_persist_scores.py` — score-persisting rerun; produces the authoritative per-firm-year test scores used by the pooled DeLong test and the calibration analysis.
+- `run_pcgnn.py` — PC-GNN-style imbalance-specialized variant.
+- `gnn_tuning_sweep.py` — single-seed learning-rate × hidden-dimension sweep (Table 5d).
+- `generate_synthetic_sample.py` — generates the 50-row synthetic sample from the feature schema.
+- `generate_latex_tables.py` — regenerates the manuscript tables from the released result JSON.
 
-## Reproducibility
+## Data availability
 
-Seeds = {42, 123, 456, 789, 1024}. All neural/GNN learners use class-weighted BCE
-(pos_weight = N_neg/N_pos ≈ 30 on the training period), applied uniformly so the architecture
-comparison is not confounded by differential class handling. The score-persisted rerun in
-`experiments_peerj_v1_1/` is the authoritative run for all score-dependent analyses (pooled
-DeLong, and the Appendix A reliability diagram / Table 10 calibration).
+The empirical features are derived from **CSMAR** and from CSRC enforcement records, which are licensed / third-party data and **cannot be redistributed**. This repository therefore releases:
+
+- the **feature schema / data dictionary**;
+- a **50-row synthetic sample** (`generate_synthetic_sample.py`) matching the schema, for code-path testing;
+- **per-seed result JSON** and **persisted score arrays** sufficient to regenerate every table and figure;
+- all **training, evaluation, and table-generation code**.
+
+Raw CSMAR feature matrices and the train/validation/test split-index files are withheld because the split indices may encode licensed firm identifiers. Researchers holding a CSMAR license can reconstruct the model inputs from the released schema and code.
+
+## Reproducing the paper
+
+1. Create the environment (Python 3.x with PyTorch, PyTorch Geometric, scikit-learn, XGBoost, pandas, numpy).
+2. Generate the synthetic sample for a smoke test: `python generate_synthetic_sample.py`.
+3. With CSMAR access, build the feature matrices per the released schema; otherwise use the released per-seed result JSON to regenerate reported outputs.
+4. Regenerate the manuscript tables: `python scripts/generate_latex_tables.py`.
+
+Random seeds used throughout: {42, 123, 456, 789, 1024}.
 
 ## Citation
 
-```bibtex
-@article{cheng2026features,
-  title   = {Features over Architectures: A Multi-Seed Benchmark of Standard GNNs and a
-             Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms},
-  author  = {Cheng, Yi Qiu and Cheng, Xiaorong},
-  journal = {PeerJ Computer Science (under review)},
-  year    = {2026}
-}
-```
+If you use this repository, please cite the paper and the archived software. Citation metadata is in `CITATION.cff`. The **concept DOI (all versions)** is:
 
-## AI-use disclosure
+> **10.5281/zenodo.20558032**
 
-A large language model was used only for language editing and was not used to generate
-research data, code, figures, experimental results, scientific claims, or their
-interpretation. The authors take full responsibility for all content.
+Always cite the concept DOI so the reference resolves to the latest archived version.
+
+## License
+
+- **Code:** MIT — see [`LICENSE-CODE`](LICENSE-CODE).
+- **Paper text, figures, and tables:** Creative Commons Attribution 4.0 International (CC BY 4.0) — see [`LICENSE-PAPER`](LICENSE-PAPER).

@@ -1,14 +1,26 @@
 cff-version: 1.2.0
-title: "Features over Architectures: code and artifacts for the PeerJ Computer Science submission"
+message: "If you use this repository, please cite the associated paper and this software archive."
+title: "Disclosure Features over Standard Graph Architectures: A Multi-Seed Benchmark of GNNs and a Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms"
 authors:
   - family-names: Cheng
-    given-names: Yi Qiu
-    orcid: https://orcid.org/0009-0006-9094-3951
+    given-names: "Yi Qiu"
+    orcid: "https://orcid.org/0009-0006-9094-3951"
+    affiliation: "School of Management, Wuhan University of Technology, Wuhan, China"
   - family-names: Cheng
     given-names: Xiaorong
-    orcid: https://orcid.org/0009-0002-5328-0686
-identifiers:
-  - type: doi
-    value: 10.5281/zenodo.20556287
-repository-code: https://github.com/otto2github/features-over-architectures-public
+    orcid: "https://orcid.org/0009-0002-5328-0686"
+    affiliation: "School of Management, Wuhan University of Technology, Wuhan, China"
+version: 1.1.3
+doi: 10.5281/zenodo.20558032
+date-released: 2026-06-05
+url: "https://github.com/otto2github/features-over-architectures-public"
+repository-code: "https://github.com/otto2github/features-over-architectures-public"
 license: MIT
+keywords:
+  - financial fraud detection
+  - graph neural networks
+  - matched-input MLP
+  - benchmarking
+  - Chinese A-share listed firms
+  - post-filing risk scoring
+  - reproducibility
