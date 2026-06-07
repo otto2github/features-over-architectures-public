@@ -1,0 +1,28 @@
+{
+  "title": "Disclosure Features over Standard Graph Architectures: A Multi-Seed Benchmark of GNNs and a Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms",
+  "description": "Reproducibility companion for the PeerJ Computer Science submission. Releases the feature schema/data dictionary, a 50-row synthetic sample, per-seed result JSON, persisted score arrays, and all training/evaluation/table-generation code needed to regenerate the paper's tables and figures. Raw CSMAR feature matrices and train/validation/test split indices are withheld under licensed-data restrictions.",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Cheng, Yi Qiu",
+      "orcid": "0009-0006-9094-3951",
+      "affiliation": "School of Management, Wuhan University of Technology, Wuhan, China"
+    },
+    {
+      "name": "Cheng, Xiaorong",
+      "orcid": "0009-0002-5328-0686",
+      "affiliation": "School of Management, Wuhan University of Technology, Wuhan, China"
+    }
+  ],
+  "keywords": [
+    "financial fraud detection",
+    "graph neural networks",
+    "matched-input MLP",
+    "benchmarking",
+    "Chinese A-share listed firms",
+    "post-filing risk scoring",
+    "reproducibility"
+  ]
+}
