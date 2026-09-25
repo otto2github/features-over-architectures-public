@@ -1,4 +1,5 @@
-release_kit/01_GitHub_NOTICE_POST_NOW.md
+> **Supersession notice — reconstructed revision in preparation.** The original submission's endpoint, graph descriptions and headline numerical conclusions have been superseded by a reconstructed and more narrowly scoped analysis. Historical releases remain available for provenance; they should not be cited as the current results. The revised version-specific archive link will be added here once the release is published. This notice does not mean that the paper has been accepted by the journal.
+
 # Disclosure Features over Standard Graph Architectures: A Multi-Seed Benchmark of GNNs and a Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20558032.svg)](https://doi.org/10.5281/zenodo.20558032)
