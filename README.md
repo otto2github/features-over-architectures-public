@@ -1,3 +1,4 @@
+release_kit/01_GitHub_NOTICE_POST_NOW.md
 # Disclosure Features over Standard Graph Architectures: A Multi-Seed Benchmark of GNNs and a Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20558032.svg)](https://doi.org/10.5281/zenodo.20558032)
