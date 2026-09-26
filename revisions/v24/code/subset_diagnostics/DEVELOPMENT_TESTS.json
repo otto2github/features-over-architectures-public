@@ -1,0 +1,27 @@
+{
+  "weighted_metric_reference": {
+    "random_tied_zero_weight_cases": 100,
+    "max_absolute_error": 2.220446049250313e-16,
+    "metrics": [
+      "roc_auc",
+      "ap",
+      "f1_val_threshold",
+      "p_at_5pct",
+      "r_at_10fpr"
+    ],
+    "passed": true
+  },
+  "binary_count_metric_cases": 6,
+  "source_selector_eligible_and_missing": true,
+  "synthetic_document_case_join": true,
+  "crossed_resampling_identical_family_null": true,
+  "sandbox_parquet_io": "not executed: pyarrow/fastparquet unavailable; every real-machine launcher requires local Parquet selftest before data processing",
+  "private_data_used": false,
+  "model_fits": 0,
+  "r2_null_key_regression": {
+    "status": "PASS",
+    "case": "in-memory literal null versus CSV-parsed NA in label_group",
+    "fix_scope": "key canonicalization before sort; scientific value columns remain exact-equality checked",
+    "models_trained": 0
+  }
+}

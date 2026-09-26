@@ -1,0 +1,9 @@
+PeerJ 141707 | H1 NumPy writable-label hygiene patch
+time=2026-09-18T15:56:24+08:00
+before_sha256=2364c6a30f204e13bbd8d30cc17b81a6ffafdabc2b77f555e75b335aa485ac45
+after_sha256=6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7
+change=sup_y pandas/NumPy array now uses to_numpy(dtype=np.float32, copy=True)
+scientific_protocol_changed=false
+labels_changed=false
+graph_changed=false
+training_run=false

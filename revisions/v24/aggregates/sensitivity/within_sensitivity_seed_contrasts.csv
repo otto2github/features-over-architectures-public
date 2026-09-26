@@ -1,0 +1,7 @@
+scenario,left,right,mean_paired_auc_difference,sample_sd_paired_difference,positive_seed_pairs,negative_seed_pairs,n_pairs,inference
+asof,MLP_M11,MLP_M5,0.06430897207367792,0.01831242599261509,5,0,5,descriptive_only_no_new_test_sampling_CI
+asof,RandomForest_M11,RandomForest_M5,0.056171717171717206,0.025130531986913476,5,0,5,descriptive_only_no_new_test_sampling_CI
+asof,RandomForest_M11,MLP_M11,0.0733345216874629,0.009174483175066974,5,0,5,descriptive_only_no_new_test_sampling_CI
+fixed1095,MLP_M11,RandomForest_M11,0.03618716577540111,0.03396296251626498,4,1,5,descriptive_only_no_new_test_sampling_CI
+fixed1095,MLP_M11,GCN_M11,0.055905525846702296,0.039014815565562876,4,1,5,descriptive_only_no_new_test_sampling_CI
+fixed1095,MLP_M11,GraphSAGE_M11,0.08453297682709451,0.044622230685418394,5,0,5,descriptive_only_no_new_test_sampling_CI

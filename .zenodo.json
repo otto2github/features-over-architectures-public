@@ -1,28 +1,28 @@
 {
-  "title": "Disclosure Features over Standard Graph Architectures: A Multi-Seed Benchmark of GNNs and a Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms",
-  "description": "Reproducibility companion for the PeerJ Computer Science submission. Releases the feature schema/data dictionary, a 50-row synthetic sample, per-seed result JSON, persisted score arrays, and all training/evaluation/table-generation code needed to regenerate the paper's tables and figures. Raw CSMAR feature matrices and train/validation/test split indices are withheld under licensed-data restrictions.",
+  "title": "Graph neural networks versus feature-only learners for Chinese A-share sanction prediction: a holder–manager graph without transaction edges — reproducibility archive",
+  "description": "Reproducibility companion to Graph neural networks versus feature-only learners for Chinese A-share sanction prediction: a holder–manager graph without transaction edges. Contains source, fixed-fit aggregates, source documentation, and tests for table regeneration. The reconstructed common-cutoff endpoint and graph semantics supersede the original release. Licensed source rows, company-level scores, row-level masks and natural-person identifiers are excluded. Synthetic interface checks are not a synthetic reconstruction of the empirical sample.",
   "upload_type": "software",
+  "version": "v24-20260925",
+  "publication_date": "2026-09-25",
   "access_right": "open",
   "license": "MIT",
   "creators": [
     {
       "name": "Cheng, Yi Qiu",
-      "orcid": "0009-0006-9094-3951",
-      "affiliation": "School of Management, Wuhan University of Technology, Wuhan, China"
+      "affiliation": "School of Management, Wuhan University of Technology, Wuhan, China",
+      "orcid": "0009-0006-9094-3951"
     },
     {
       "name": "Cheng, Xiaorong",
-      "orcid": "0009-0002-5328-0686",
-      "affiliation": "School of Management, Wuhan University of Technology, Wuhan, China"
+      "affiliation": "School of Management, Wuhan University of Technology, Wuhan, China",
+      "orcid": "0009-0002-5328-0686"
     }
   ],
   "keywords": [
-    "financial fraud detection",
     "graph neural networks",
-    "matched-input MLP",
+    "corporate sanctions",
+    "Chinese A-share",
     "benchmarking",
-    "Chinese A-share listed firms",
-    "post-filing risk scoring",
     "reproducibility"
   ]
 }

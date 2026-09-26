@@ -1,0 +1,42 @@
+{
+  "01_full_test_points.csv": {
+    "sha256": "f6e85b8bcf50e4a16ef562086558896fdb90884cc3b571eeb7bfed13a9e4105f",
+    "bytes": 7381
+  },
+  "02_p5_tie_reconciliation.csv": {
+    "sha256": "20519e3e41847467c71e61f6d7a4d5885c558c805bae69f1321d1d1437c4f5c1",
+    "bytes": 8853
+  },
+  "03_overlap_by_vintage_test_positives.csv": {
+    "sha256": "ebbf9f5a1d3ca5670f23e2996bfa29e1f9f8ffede89b74997102f9627677728e",
+    "bytes": 337
+  },
+  "04_subset_per_seed_metrics.csv": {
+    "sha256": "3eb4fab6b4556c20242d7de8a2ddd09bd4d86850e5784d840c9a5304bd104d58",
+    "bytes": 67650
+  },
+  "05_subset_summaries.csv": {
+    "sha256": "ed8da6a35bc860ddf3afd3930b61d8d58f891fc724fae849ac3fbf1e4a9f547d",
+    "bytes": 16416
+  },
+  "06_sensitivity_paired_intervals.csv": {
+    "sha256": "18477844472d123c605783c43482885ca9b895c9ff7767ce068c4816eca69697",
+    "bytes": 24918
+  },
+  "07_resampling_scope.json": {
+    "sha256": "04abef2da72775776e90fd0d7a3f0beb8a44a8399590bf9c57d8dd2236c5f0c7",
+    "bytes": 560
+  },
+  "INPUT_FINGERPRINTS.json": {
+    "sha256": "5645e0bc719727dd7f2efd25a3b8a156a9084eab0ad1f5d07330a973e733f897",
+    "bytes": 39282
+  },
+  "RUN_STATUS.json": {
+    "sha256": "1607d9f450c9aa379938ce11ecc10f96c1f19c588bcd33a4fb6cbc1414a500d4",
+    "bytes": 1036
+  },
+  "summary.md": {
+    "sha256": "f5a6c8fd4bfd376149720ad46b5a139d8885b46756afb3907b2d953f9dd7e27f",
+    "bytes": 576
+  }
+}

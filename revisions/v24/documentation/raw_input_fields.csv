@@ -1,0 +1,160 @@
+provider,table_or_endpoint,field,source_program,scope
+CSMAR,STK_Violation_Main,DeclareDate,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,DisposalDate,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,ViolationYear,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,ViolationTypeID,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,Activity,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,PunishmentMeasure,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,Supervisor,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,Promulgator,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,CoFullName,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,ShortName,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,STK_Violation_Main,PunishmentTypeID,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,FIN_Audit,Stkcd,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,FIN_Audit,Accper,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,FIN_Audit,Audittyp,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,FIN_Audit,Tcost,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,FIN_Audit,Dadtunit,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,PLED_TRDDETL,Symbol,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,PLED_TRDDETL,DeclareDate,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,PLED_TRDDETL,Ratio1,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,PLED_TRDDETL,Ratio2,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,PLED_TRDDETL,RelationtoCom,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,PLED_TRDDETL,PledgeeCatergory,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,PLED_TRDDETL,Pledgee,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,PLED_TRDDETL,ChangeReason,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,HLD_Contrshr,Stkcd,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,HLD_Contrshr,Reptdt,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,HLD_Contrshr,S0701a,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,HLD_Contrshr,S0701b,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,HLD_Contrshr,S0704a,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,HLD_Contrshr,S0704b,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,HLD_Contrshr,S0704c,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,HLD_Contrshr,Seperation,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Stkcd,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Reptdt,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Repart,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,RalatedPartyID,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Relation,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Direction,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Repat,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Kind,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Isam,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Pannrsm,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Isgplo,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+CSMAR,RPT_Operation,Ifafcprf,"code/label_construction or code/recovered_builders; historical_source_evidence/A0006,A0029 for pledge/RPT",retained source/export alias; original spelling preserved
+Tushare,balancesheet,accounts_receiv,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,ann_date,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,comp_type,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,end_date,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,f_ann_date,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,fix_assets,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,oth_receiv,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,report_type,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,surplus_rese,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,total_assets,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,total_cur_assets,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,total_cur_liab,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,total_hldr_eqy_inc_min_int,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,total_liab,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,ts_code,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,undistr_porfit,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,balancesheet,update_flag,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,admin_exp,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,ann_date,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,comp_type,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,ebit,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,end_date,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,f_ann_date,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,n_income_attr_p,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,oper_cost,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,report_type,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,revenue,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,sell_exp,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,ts_code,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,income,update_flag,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,amort_intang_assets,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,ann_date,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,comp_type,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,depr_fa_coga_dpba,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,end_date,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,f_ann_date,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,n_cashflow_act,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,report_type,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,ts_code,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,cashflow,update_flag,code/subset_diagnostics/asof_rules.py,selected financial field; metadata only where present in source table
+Tushare,fina_indicator,adminexp_of_gr,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ann_date,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,assets_to_eqt,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,assets_turn,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,assets_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,bps,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,bps_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ca_to_assets,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ca_turn,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,cash_ratio,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,cfps,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,current_ratio,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,currentdebt_to_debt,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,debt_to_eqt,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,dt_eps_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ebit_of_gr,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ebit_ps,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ebt_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,end_date,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,eps,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,eqt_to_debt,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,eqt_to_interestdebt,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,eqt_to_talcapital,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,equity_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,expense_of_sales,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,fa_turn,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,fcfe_ps,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,fcff_ps,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,finaexp_of_gr,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,gc_of_gr,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,netprofit_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,npta,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ocf_to_debt,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ocf_to_shortdebt,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ocf_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ocfps,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,op_of_gr,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,op_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,profit_to_gr,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,profit_to_op,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,q_ocf_to_sales,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,quick_ratio,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,roa,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,roe,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,roe_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,roic,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,saleexp_to_gr,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,tangibleasset_to_debt,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,tbassets_to_totalassets,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,total_revenue_ps,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,tr_yoy,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,ts_code,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,turn_days,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,fina_indicator,undist_profit_ps,code/subset_diagnostics/baseline_audit/config/fini_fields.json,recorded source field
+Tushare,stock_basic,ts_code,code/recovered_builders and source inventory,recorded source field
+Tushare,stock_basic,industry,code/recovered_builders and source inventory,recorded source field
+Tushare,stock_basic,list_date,code/recovered_builders and source inventory,recorded source field
+Tushare,stock_basic,delist_date,code/recovered_builders and source inventory,recorded source field
+Tushare,top10_holders,ts_code,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,top10_holders,ann_date,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,top10_holders,end_date,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,top10_holders,holder_name,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,top10_floatholders,ts_code,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,top10_floatholders,ann_date,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,top10_floatholders,end_date,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,top10_floatholders,holder_name,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,stk_managers,ts_code,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,stk_managers,name,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,stk_managers,begin_date,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+Tushare,stk_managers,end_date,code/recovered_builders/A0020_build_kg_edges.py,recorded source field
+CNINFO,annual_report_announcement_metadata,secCode,code/label_construction/peerj_label_v1_stageB3.py,recorded source field
+CNINFO,annual_report_announcement_metadata,announcementTitle,code/label_construction/peerj_label_v1_stageB3.py,recorded source field
+CNINFO,annual_report_announcement_metadata,announcementTime,code/label_construction/peerj_label_v1_stageB3.py,recorded source field
+CNINFO,annual_report_announcement_metadata,announcementId,code/label_construction/peerj_label_v1_stageB3.py,recorded source field
+CNINFO,annual_report_announcement_metadata,adjunctUrl,code/label_construction/peerj_label_v1_stageB3.py,recorded source field

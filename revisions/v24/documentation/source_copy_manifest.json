@@ -1,0 +1,56 @@
+[
+  {
+    "archive": "peerj_rerun_v1_small_audit_bundle.tar.gz",
+    "member": "meta/protocol_v1.json",
+    "staged": "config/protocol_v1.json",
+    "sha256": "ec97e18c8867df6d7bd05f1eb73532a0744a23dc1cc5cade24c85872ccbdc4a4"
+  },
+  {
+    "archive": "peerj_rerun_v1_small_audit_bundle.tar.gz",
+    "member": "meta/run_matrix_core.csv",
+    "staged": "config/run_matrix_core.csv",
+    "sha256": "f00acac53f3ce6b0b68afa3a460e06d532b678bb54089f9a41e430111dae9adb"
+  },
+  {
+    "archive": "peerj_rerun_v1_small_audit_bundle.tar.gz",
+    "member": "meta/run_matrix_pure_graph.csv",
+    "staged": "config/run_matrix_pure_graph.csv",
+    "sha256": "b08a774191018fc0ac200e25dd58f382f50ae210dc87f194978acc21afdcbad8"
+  },
+  {
+    "archive": "peerj_rerun_v1_small_audit_bundle.tar.gz",
+    "member": "meta/requirements.freeze.txt",
+    "staged": "config/requirements.freeze.txt",
+    "sha256": "fe8483218298b5f31a07b551318555faba75d1e047dc02dae96907821944e8e7"
+  },
+  {
+    "archive": "peerj_rerun_v1_small_audit_bundle.tar.gz",
+    "member": "meta/code_patch_numpy_writable.txt",
+    "staged": "config/code_patch_numpy_writable.txt",
+    "sha256": "87f24f745ed2aceef4afda6ae42c749ee32e80d7988bc2571cb7c3d9eefda8b0"
+  },
+  {
+    "archive": "peerj_rerun_v1_small_audit_bundle.tar.gz",
+    "member": "meta/data_manifest.json",
+    "staged": "config/data_manifest.json",
+    "sha256": "2ba0f376bd2e4d2414113df9999d2427f1fbf38836cf80a1b1f6ba1df9df7c47"
+  },
+  {
+    "archive": "peerj_rerun_v1_small_audit_bundle.tar.gz",
+    "member": "code/formal_rerun_core.py",
+    "staged": "code/formal_rerun_core.py",
+    "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7"
+  },
+  {
+    "archive": "peerj_rerun_v1_small_audit_bundle.tar.gz",
+    "member": "code/run_matrix.py",
+    "staged": "code/run_matrix.py",
+    "sha256": "786e150849ba77b9c07d3bd2bc5aaac07a038b966e85ef8fdd35b457e22caa1c"
+  },
+  {
+    "archive": "peerj_rerun_v1_small_audit_bundle.tar.gz",
+    "member": "code/aggregate_core.py",
+    "staged": "code/aggregate_core.py",
+    "sha256": "78510e4ab68218002b74e0af99c5057624ee23be8777f63d8ff973c2d5d4d645"
+  }
+]

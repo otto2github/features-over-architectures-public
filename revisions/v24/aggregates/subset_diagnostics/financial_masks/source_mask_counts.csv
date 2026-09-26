@@ -1,0 +1,11 @@
+﻿partition,label_group,rows,post_anchor_fin,no_prior_candidate,asof_source_missing,final_feature_nonfinite,source_screen_rows,source_screen_binding_complete_rows
+outside_primary,null,10027,159,101,1171,2317,8812,8320
+test,negative,8415,403,266,527,1927,7751,7275
+test,null,922,12,10,904,913,16,13
+test,positive,20,14,12,12,16,6,5
+train,negative,23852,1108,1015,7768,12959,16006,15708
+train,null,421,46,45,358,392,62,60
+train,positive,254,100,90,129,218,116,108
+validation,negative,7269,368,315,565,2563,6651,6318
+validation,null,455,17,17,426,443,29,26
+validation,positive,40,24,22,22,33,16,14

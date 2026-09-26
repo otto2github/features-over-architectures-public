@@ -1,0 +1,278 @@
+SOURCE_ID: A0036
+SOURCE: <MOUNT>/Downloads/ch7_v1_integration_v1.tar.gz :: ch7_v1_integration/scripts/merge_features_v1_0.py
+ORIGINAL_SHA256: 5850a69f8b2f50bbb67949dbb0f9b1df39229e481e9aa6c61997e586afd5bca9
+ORIGINAL_BYTES: 10995
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | #!/usr/bin/env python3
+L00002 | # -*- coding: utf-8 -*-
+L00003 | """
+L00004 | merge_features_v1_0.py
+L00005 | ======================
+L00006 | 合并 v0.7 (109 维 + fraud) + audit (5) + pledge (6) + controller (6+1) = v1.0 (126+1 维 + 3 列 fraud).
+L00007 | 
+L00008 | 合并步骤:
+L00009 |   1. 加载 v0.7 features_v0_7.parquet (51,675 行 × ~110 列)
+L00010 |   2. drop v0.7 自带 fraud 列 (改用 v0.8 三列标签)
+L00011 |   3. 左 join audit_features_v1_0.parquet (5 维)
+L00012 |   4. 左 join pledge_features_v1_0.parquet (6 维)
+L00013 |   5. 左 join controller_features_v1_0.parquet (7 维: 6 主 + 1 missingness)
+L00014 |   6. 左 join fraud_labels_v0_8.parquet (3 列: fraud_v07/strict/loose)
+L00015 |   7. fillna(0) for 缺失数值列, 输出 features_v1_0.parquet
+L00016 | 
+L00017 | 输出:
+L00018 |   data/processed/features/features_v1_0.parquet
+L00019 |   data/interim/v1_integration_stats/merge_features_v1_0_stats.json
+L00020 | 
+L00021 | 设计要点:
+L00022 |   - 保留 v0.7 全部 109 维原始特征列 (向后兼容)
+L00023 |   - 新增 18 维 (5+6+7) 排在尾部, 列名前缀清晰 (audit_/pld_/ctrl_) 便于 Chapter 6 模态切分实验
+L00024 |   - 主标签 = fraud_v08_strict, 训练时用此列
+L00025 |   - fraud_v07/loose 保留供 Chapter 7 §7.5 鲁棒性分析
+L00026 | """
+L00027 | 
+L00028 | from __future__ import annotations
+L00029 | 
+L00030 | import argparse
+L00031 | import sys
+L00032 | from pathlib import Path
+L00033 | 
+L00034 | import numpy as np
+L00035 | import pandas as pd
+L00036 | 
+L00037 | sys.path.insert(0, str(Path(__file__).resolve().parent))
+L00038 | from _v1_common import (
+L00039 |     get_logger,
+L00040 |     get_paths,
+L00041 |     log_mem,
+L00042 |     write_stats_json,
+L00043 | )
+L00044 | 
+L00045 | 
+L00046 | # ============================================================
+L00047 | def merge_v1_0(
+L00048 |     v07_parquet: Path,
+L00049 |     audit_parquet: Path,
+L00050 |     pledge_parquet: Path,
+L00051 |     controller_parquet: Path,
+L00052 |     fraud_v08_parquet: Path,
+L00053 |     out_parquet: Path,
+L00054 |     out_stats: Path,
+L00055 |     log,
+L00056 | ):
+L00057 |     log.info("=" * 60)
+L00058 |     log.info("Step 1: 加载 v0.7 features")
+L00059 |     log.info("=" * 60)
+L00060 |     v07 = pd.read_parquet(v07_parquet)
+L00061 |     log.info(f"v0.7 shape: {v07.shape}")
+L00062 |     log.info(f"v0.7 列前 10: {v07.columns[:10].tolist()}, ... , 末 5: {v07.columns[-5:].tolist()}")
+L00063 | 
+L00064 |     # 规整 firm_id
+L00065 |     v07["firm_id"] = v07["firm_id"].astype(str).str.zfill(6)
+L00066 |     v07["year"] = v07["year"].astype(int)
+L00067 |     log_mem(log, "after_load_v07")
+L00068 | 
+L00069 |     # drop fraud 列 (改用 v0.8 三列)
+L00070 |     fraud_cols_in_v07 = [c for c in v07.columns if c.startswith("fraud") or c.startswith("label")]
+L00071 |     if fraud_cols_in_v07:
+L00072 |         log.info(f"v0.7 中已有 fraud-like 列: {fraud_cols_in_v07}, drop 之后用 v0.8")
+L00073 |         v07 = v07.drop(columns=fraud_cols_in_v07)
+L00074 | 
+L00075 |     # ---------- step 2: load audit ----------
+L00076 |     log.info("=" * 60)
+L00077 |     log.info("Step 2: load audit_features_v1_0")
+L00078 |     log.info("=" * 60)
+L00079 |     audit = pd.read_parquet(audit_parquet)
+L00080 |     audit["firm_id"] = audit["firm_id"].astype(str).str.zfill(6)
+L00081 |     audit["year"] = audit["year"].astype(int)
+L00082 |     log.info(f"audit shape: {audit.shape}, cols: {audit.columns.tolist()}")
+L00083 | 
+L00084 |     # ---------- step 3: load pledge ----------
+L00085 |     log.info("=" * 60)
+L00086 |     log.info("Step 3: load pledge_features_v1_0")
+L00087 |     log.info("=" * 60)
+L00088 |     pledge = pd.read_parquet(pledge_parquet)
+L00089 |     pledge["firm_id"] = pledge["firm_id"].astype(str).str.zfill(6)
+L00090 |     pledge["year"] = pledge["year"].astype(int)
+L00091 |     log.info(f"pledge shape: {pledge.shape}, cols: {pledge.columns.tolist()}")
+L00092 | 
+L00093 |     # ---------- step 4: load controller ----------
+L00094 |     log.info("=" * 60)
+L00095 |     log.info("Step 4: load controller_features_v1_0")
+L00096 |     log.info("=" * 60)
+L00097 |     controller = pd.read_parquet(controller_parquet)
+L00098 |     controller["firm_id"] = controller["firm_id"].astype(str).str.zfill(6)
+L00099 |     controller["year"] = controller["year"].astype(int)
+L00100 |     log.info(f"controller shape: {controller.shape}, cols: {controller.columns.tolist()}")
+L00101 | 
+L00102 |     # ---------- step 5: 顺次左 join ----------
+L00103 |     log.info("=" * 60)
+L00104 |     log.info("Step 5: 顺次左 join (以 v0.7 firm-year 为主键)")
+L00105 |     log.info("=" * 60)
+L00106 | 
+L00107 |     out = v07.merge(audit, on=["firm_id", "year"], how="left")
+L00108 |     log.info(f"after audit join: {out.shape}")
+L00109 | 
+L00110 |     out = out.merge(pledge, on=["firm_id", "year"], how="left")
+L00111 |     log.info(f"after pledge join: {out.shape}")
+L00112 | 
+L00113 |     out = out.merge(controller, on=["firm_id", "year"], how="left")
+L00114 |     log.info(f"after controller join: {out.shape}")
+L00115 |     log_mem(log, "after_all_joins")
+L00116 | 
+L00117 |     # ---------- step 6: load fraud labels ----------
+L00118 |     log.info("=" * 60)
+L00119 |     log.info("Step 6: load fraud_labels_v0_8")
+L00120 |     log.info("=" * 60)
+L00121 |     fraud = pd.read_parquet(fraud_v08_parquet)
+L00122 |     fraud["firm_id"] = fraud["firm_id"].astype(str).str.zfill(6)
+L00123 |     fraud["year"] = fraud["year"].astype(int)
+L00124 |     log.info(f"fraud shape: {fraud.shape}, cols: {fraud.columns.tolist()}")
+L00125 | 
+L00126 |     out = out.merge(fraud, on=["firm_id", "year"], how="left")
+L00127 |     # 三列 fraud 缺失填 0 (即 v0.7 全集中部分 firm-year 不在 fraud_v0_8 里 = 都 0)
+L00128 |     for c in ["fraud_v07", "fraud_v08_strict", "fraud_v08_loose"]:
+L00129 |         if c in out.columns:
+L00130 |             out[c] = out[c].fillna(0).astype("int8")
+L00131 | 
+L00132 |     log.info(f"after fraud join: {out.shape}")
+L00133 | 
+L00134 |     # ---------- step 7: 缺失值填充 (新增列若有 NaN, 归零 → 与 align 阶段重复但保证幂等) ----------
+L00135 |     log.info("=" * 60)
+L00136 |     log.info("Step 7: 数值列缺失 fillna(0)")
+L00137 |     log.info("=" * 60)
+L00138 | 
+L00139 |     new_feature_cols = (
+L00140 |         [c for c in audit.columns if c not in ["firm_id", "year"]]
+L00141 |         + [c for c in pledge.columns if c not in ["firm_id", "year"]]
+L00142 |         + [c for c in controller.columns if c not in ["firm_id", "year"]]
+L00143 |     )
+L00144 | 
+L00145 |     for c in new_feature_cols:
+L00146 |         if c in out.columns:
+L00147 |             out[c] = pd.to_numeric(out[c], errors="coerce").fillna(0)
+L00148 | 
+L00149 |     # ---------- step 8: 列序整理 ----------
+L00150 |     log.info("=" * 60)
+L00151 |     log.info("Step 8: 列序整理")
+L00152 |     log.info("=" * 60)
+L00153 | 
+L00154 |     id_cols = ["firm_id", "year"]
+L00155 |     fraud_cols = ["fraud_v07", "fraud_v08_strict", "fraud_v08_loose"]
+L00156 |     fraud_cols = [c for c in fraud_cols if c in out.columns]
+L00157 |     audit_cols_ordered = [c for c in audit.columns if c not in ["firm_id", "year"]]
+L00158 |     pledge_cols_ordered = [c for c in pledge.columns if c not in ["firm_id", "year"]]
+L00159 |     controller_cols_ordered = [c for c in controller.columns if c not in ["firm_id", "year"]]
+L00160 | 
+L00161 |     new_cols_set = set(audit_cols_ordered + pledge_cols_ordered + controller_cols_ordered + fraud_cols)
+L00162 |     v07_features = [c for c in v07.columns if c not in id_cols and c not in new_cols_set]
+L00163 | 
+L00164 |     final_order = (
+L00165 |         id_cols
+L00166 |         + v07_features
+L00167 |         + audit_cols_ordered
+L00168 |         + pledge_cols_ordered
+L00169 |         + controller_cols_ordered
+L00170 |         + fraud_cols
+L00171 |     )
+L00172 |     final_order = [c for c in final_order if c in out.columns]
+L00173 |     out = out[final_order]
+L00174 | 
+L00175 |     log.info(f"最终列数: {len(final_order)}")
+L00176 |     log.info(f"  id: {len(id_cols)} ({id_cols})")
+L00177 |     log.info(f"  v0.7 features: {len(v07_features)}")
+L00178 |     log.info(f"  audit: {len(audit_cols_ordered)} {audit_cols_ordered}")
+L00179 |     log.info(f"  pledge: {len(pledge_cols_ordered)} {pledge_cols_ordered}")
+L00180 |     log.info(f"  controller: {len(controller_cols_ordered)} {controller_cols_ordered}")
+L00181 |     log.info(f"  fraud labels: {len(fraud_cols)} {fraud_cols}")
+L00182 |     n_features = len(v07_features) + len(audit_cols_ordered) + len(pledge_cols_ordered) + len(controller_cols_ordered)
+L00183 |     log.info(f"特征总维数 (不含 id/fraud): {n_features}")
+L00184 | 
+L00185 |     # ---------- step 9: 持久化 ----------
+L00186 |     out_parquet.parent.mkdir(parents=True, exist_ok=True)
+L00187 |     out.to_parquet(out_parquet, index=False, compression="snappy")
+L00188 |     log.info(f"v1.0 写入: {out_parquet}  ({len(out)} 行 × {len(final_order)} 列)")
+L00189 |     log_mem(log, "after_write")
+L00190 | 
+L00191 |     # ---------- step 10: 切分统计 (与 v0.7 论文设计 A 一致) ----------
+L00192 |     splits = {}
+L00193 |     for split_name, year_range in [("train", (2010, 2018)), ("val", (2019, 2020)), ("test", (2021, 2024))]:
+L00194 |         m = (out["year"] >= year_range[0]) & (out["year"] <= year_range[1])
+L00195 |         sub = out.loc[m]
+L00196 |         for fraud_col in fraud_cols:
+L00197 |             splits[f"{split_name}_{fraud_col}"] = {
+L00198 |                 "n_total": int(len(sub)),
+L00199 |                 "n_positive": int(sub[fraud_col].sum()),
+L00200 |                 "positive_rate": float(sub[fraud_col].mean()) if len(sub) > 0 else 0.0,
+L00201 |             }
+L00202 | 
+L00203 |     stats = {
+L00204 |         "version": "v1.0",
+L00205 |         "input": {
+L00206 |             "v07": str(v07_parquet),
+L00207 |             "audit": str(audit_parquet),
+L00208 |             "pledge": str(pledge_parquet),
+L00209 |             "controller": str(controller_parquet),
+L00210 |             "fraud_v08": str(fraud_v08_parquet),
+L00211 |         },
+L00212 |         "output": str(out_parquet),
+L00213 |         "shape": list(out.shape),
+L00214 |         "n_total_features": n_features,
+L00215 |         "v07_features": len(v07_features),
+L00216 |         "new_features": {
+L00217 |             "audit": audit_cols_ordered,
+L00218 |             "pledge": pledge_cols_ordered,
+L00219 |             "controller": controller_cols_ordered,
+L00220 |         },
+L00221 |         "fraud_label_cols": fraud_cols,
+L00222 |         "main_label_recommendation": "fraud_v08_strict",
+L00223 |         "splits_by_design_A": splits,
+L00224 |         "notes": [
+L00225 |             "v1.0 是 Chapter 6/7 后续实验的主特征集",
+L00226 |             "训练用 fraud_v08_strict (主标签), Chapter 7 §7.5 切换 fraud_v07/loose 做敏感性分析",
+L00227 |             "所有新增列前缀清晰: audit_/pld_/ctrl_, 便于按模态分组实验",
+L00228 |             "ctrl_data_missing_flag 是 bonus 维度, 单列 missingness 信号",
+L00229 |         ],
+L00230 |     }
+L00231 |     write_stats_json(stats, out_stats, log=log)
+L00232 | 
+L00233 | 
+L00234 | # ============================================================
+L00235 | def main():
+L00236 |     p = argparse.ArgumentParser(description="合并 v0.7 + 17/18 维 = v1.0")
+L00237 |     p.add_argument("--project-root", type=Path, default=None)
+L00238 |     p.add_argument("--v07-parquet", type=Path, default=None)
+L00239 |     p.add_argument("--audit-parquet", type=Path, default=None)
+L00240 |     p.add_argument("--pledge-parquet", type=Path, default=None)
+L00241 |     p.add_argument("--controller-parquet", type=Path, default=None)
+L00242 |     p.add_argument("--fraud-v08-parquet", type=Path, default=None)
+L00243 |     p.add_argument("--out-parquet", type=Path, default=None)
+L00244 |     p.add_argument("--out-stats", type=Path, default=None)
+L00245 |     args = p.parse_args()
+L00246 | 
+L00247 |     paths = get_paths(args.project_root)
+L00248 |     log = get_logger("merge_features_v1_0", paths["stats"])
+L00249 | 
+L00250 |     v07 = args.v07_parquet or (paths["processed_features"] / "features_v0_7.parquet")
+L00251 |     audit = args.audit_parquet or (paths["processed_features"] / "audit_features_v1_0.parquet")
+L00252 |     pledge = args.pledge_parquet or (paths["processed_features"] / "pledge_features_v1_0.parquet")
+L00253 |     ctrl = args.controller_parquet or (paths["processed_features"] / "controller_features_v1_0.parquet")
+L00254 |     fraud = args.fraud_v08_parquet or (paths["processed_labels"] / "fraud_labels_v0_8.parquet")
+L00255 |     out = args.out_parquet or (paths["processed_features"] / "features_v1_0.parquet")
+L00256 |     out_stats = args.out_stats or (paths["stats"] / "merge_features_v1_0_stats.json")
+L00257 | 
+L00258 |     log.info(f"v07: {v07}")
+L00259 |     log.info(f"audit: {audit}")
+L00260 |     log.info(f"pledge: {pledge}")
+L00261 |     log.info(f"controller: {ctrl}")
+L00262 |     log.info(f"fraud: {fraud}")
+L00263 |     log.info(f"out: {out}")
+L00264 | 
+L00265 |     merge_v1_0(v07, audit, pledge, ctrl, fraud, out, out_stats, log)
+L00266 |     log.info("✓ merge_features_v1_0 完成")
+L00267 | 
+L00268 | 
+L00269 | if __name__ == "__main__":
+L00270 |     main()

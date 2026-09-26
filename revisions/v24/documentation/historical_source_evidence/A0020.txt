@@ -1,0 +1,381 @@
+SOURCE_ID: A0020
+SOURCE: <MOUNT>/Downloads/ch7_prep_v1.tar.gz :: ch7_prep/scripts/build_kg_edges.py
+ORIGINAL_SHA256: a06ff087e2fef159ca0754db089032501e322371d27b2ebe6085eb15bc548783
+ORIGINAL_BYTES: 14520
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | """
+L00002 | build_kg_edges.py
+L00003 | =================
+L00004 | 
+L00005 | 构建 5 种边类型 (Chapter 7 GNN).
+L00006 | 
+L00007 | 边类型 (按论文重要性排序):
+L00008 |   E1. 公司 → 持有人 (HOLDS_BY)            from top10_holders     attrs: hold_ratio, year
+L00009 |   E2. 公司 → 流通持有人 (FLOAT_HELD_BY)    from top10_floatholders attrs: hold_ratio, year
+L00010 |   E3. 公司 → 高管 (HAS_MANAGER)            from stk_managers       attrs: lev, title, year_active
+L00011 |   E4. 公司 ↔ 公司 派生: 共同股东 (CO_HELD)  E1+E2 派生              attrs: shared_holder_id, year, weight
+L00012 |   E5. 公司 ↔ 公司 派生: 共同高管 (CO_MGR)   E3 派生                 attrs: shared_person_id, year
+L00013 | 
+L00014 | 频度统一为年频:
+L00015 |   E1/E2: 季频 → 取每年最后季度的 hold_ratio (年末快照).
+L00016 |   E3:   按高管任职区间转换为 (公司, 自然人, year) 多年记录 (1 个高管 N 年 → N 行).
+L00017 |   E4/E5: 派生为年度边 (按 year 切片).
+L00018 | 
+L00019 | 输出:
+L00020 |   data/processed/kg/edges_company_holder.parquet
+L00021 |   data/processed/kg/edges_company_float_holder.parquet
+L00022 |   data/processed/kg/edges_company_manager.parquet
+L00023 |   data/processed/kg/edges_company_company_co_held.parquet
+L00024 |   data/processed/kg/edges_company_company_co_mgr.parquet
+L00025 |   data/interim/kg_stats/build_kg_edges.json
+L00026 | 
+L00027 | 用法:
+L00028 |   uv run --project ~/code python scripts/data_collect/kg/build_kg_edges.py
+L00029 |   --start-year 2010 --end-year 2024
+L00030 |   --co-held-min-shared 1   # 共同股东派生时, 至少共享 N 个 holder 才连边
+L00031 | """
+L00032 | from __future__ import annotations
+L00033 | 
+L00034 | import argparse
+L00035 | import sys
+L00036 | from pathlib import Path
+L00037 | 
+L00038 | import numpy as np
+L00039 | import pandas as pd
+L00040 | 
+L00041 | sys.path.insert(0, str(Path(__file__).parent))
+L00042 | from _kg_common import (  # noqa: E402
+L00043 |     KG_DIR,
+L00044 |     canonicalize_holder,
+L00045 |     classify_entity,
+L00046 |     get_paths,
+L00047 |     make_company_id,
+L00048 |     make_institution_id,
+L00049 |     make_person_id,
+L00050 |     setup_logger,
+L00051 |     write_stats_json,
+L00052 | )
+L00053 | 
+L00054 | TASK = "build_kg_edges"
+L00055 | 
+L00056 | 
+L00057 | # ============================================================================
+L00058 | # 工具
+L00059 | # ============================================================================
+L00060 | 
+L00061 | def load_partitions(d: Path, logger) -> pd.DataFrame:
+L00062 |     if not d.exists():
+L00063 |         return pd.DataFrame()
+L00064 |     parts = sorted(p for p in d.glob("*.parquet")
+L00065 |                    if not p.name.startswith("_") and ".tmp" not in p.name)
+L00066 |     if not parts:
+L00067 |         return pd.DataFrame()
+L00068 |     dfs = []
+L00069 |     for p in parts:
+L00070 |         try:
+L00071 |             dfs.append(pd.read_parquet(p))
+L00072 |         except Exception as e:
+L00073 |             logger.warning("读取失败 %s: %s", p, e)
+L00074 |     return pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
+L00075 | 
+L00076 | 
+L00077 | def add_holder_id(df: pd.DataFrame) -> pd.DataFrame:
+L00078 |     """给 holder df 添加规范化的 canonical / entity_type / holder_id."""
+L00079 |     df = df.copy()
+L00080 |     df["holder_name"] = df["holder_name"].astype(str)
+L00081 |     df["canonical"] = df["holder_name"].map(canonicalize_holder)
+L00082 |     df = df[df["canonical"].astype(bool)].reset_index(drop=True)
+L00083 |     df["entity_type"] = df.apply(
+L00084 |         lambda r: classify_entity(r["canonical"], raw_name=r["holder_name"]),
+L00085 |         axis=1,
+L00086 |     )
+L00087 |     df["holder_id"] = df.apply(
+L00088 |         lambda r: (make_person_id(r["canonical"])
+L00089 |                    if r["entity_type"] == "person"
+L00090 |                    else make_institution_id(r["canonical"])),
+L00091 |         axis=1,
+L00092 |     )
+L00093 |     return df
+L00094 | 
+L00095 | 
+L00096 | def add_period_year(df: pd.DataFrame) -> pd.DataFrame:
+L00097 |     """从 end_date / period 提取 year."""
+L00098 |     df = df.copy()
+L00099 |     if "end_date" in df.columns:
+L00100 |         df["year"] = pd.to_datetime(df["end_date"], format="%Y%m%d",
+L00101 |                                      errors="coerce").dt.year
+L00102 |     elif "period" in df.columns:
+L00103 |         df["year"] = pd.to_datetime(df["period"], format="%Y%m%d",
+L00104 |                                      errors="coerce").dt.year
+L00105 |     elif "ann_date" in df.columns:
+L00106 |         df["year"] = pd.to_datetime(df["ann_date"], format="%Y%m%d",
+L00107 |                                      errors="coerce").dt.year
+L00108 |     else:
+L00109 |         df["year"] = np.nan
+L00110 |     return df
+L00111 | 
+L00112 | 
+L00113 | # ============================================================================
+L00114 | # E1 / E2: 公司 → 持有人
+L00115 | # ============================================================================
+L00116 | 
+L00117 | def build_company_holder_edges(holders_df, year_col_for_snap, logger,
+L00118 |                                 edge_type: str) -> pd.DataFrame:
+L00119 |     """
+L00120 |     季频 → 年末快照 (取每年 max(end_date) 的记录).
+L00121 |     """
+L00122 |     if holders_df is None or holders_df.empty:
+L00123 |         return pd.DataFrame()
+L00124 |     df = add_period_year(holders_df)
+L00125 |     df = df.dropna(subset=["year"]).reset_index(drop=True)
+L00126 |     df["year"] = df["year"].astype(int)
+L00127 | 
+L00128 |     # 年末快照: 同 (ts_code, year, holder_name) 取最后一个 end_date
+L00129 |     if "end_date" not in df.columns:
+L00130 |         logger.warning("[%s] 无 end_date, 无法做年末快照", edge_type)
+L00131 |         return pd.DataFrame()
+L00132 | 
+L00133 |     df = df.sort_values(["ts_code", "year", "holder_name", "end_date"])
+L00134 |     snap = df.drop_duplicates(subset=["ts_code", "year", "holder_name"], keep="last")
+L00135 | 
+L00136 |     # 加 holder_id
+L00137 |     snap = add_holder_id(snap)
+L00138 | 
+L00139 |     # 抽边
+L00140 |     cols = ["ts_code", "year", "holder_id", "entity_type"]
+L00141 |     keep = ["hold_ratio"] if "hold_ratio" in snap.columns else []
+L00142 |     if "hold_amount" in snap.columns:
+L00143 |         keep.append("hold_amount")
+L00144 |     out = snap[cols + keep].copy()
+L00145 |     out["src"] = out["ts_code"].map(make_company_id)
+L00146 |     out["dst"] = out["holder_id"]
+L00147 |     out["edge_type"] = edge_type
+L00148 |     out = out[["src", "dst", "year", "edge_type", "entity_type"] + keep]
+L00149 |     logger.info("[%s] 抽出边 %d 行 (年末快照)", edge_type, len(out))
+L00150 |     return out
+L00151 | 
+L00152 | 
+L00153 | # ============================================================================
+L00154 | # E3: 公司 → 高管 (按任职年份展开)
+L00155 | # ============================================================================
+L00156 | 
+L00157 | def build_company_manager_edges(mgr_df, start_year, end_year, logger) -> pd.DataFrame:
+L00158 |     """
+L00159 |     stk_managers: ts_code, name, lev, title, begin_date, end_date
+L00160 |     按 [begin_date.year, end_date.year] 展开为多年记录.
+L00161 |     """
+L00162 |     if mgr_df is None or mgr_df.empty:
+L00163 |         return pd.DataFrame()
+L00164 |     df = mgr_df.copy()
+L00165 |     df["name"] = df["name"].astype(str)
+L00166 |     df["canonical"] = df["name"].map(canonicalize_holder)
+L00167 |     df = df[df["canonical"].astype(bool)].reset_index(drop=True)
+L00168 |     df["entity_type"] = df.apply(
+L00169 |         lambda r: classify_entity(r["canonical"], raw_name=r["name"]),
+L00170 |         axis=1,
+L00171 |     )
+L00172 |     df["mgr_id"] = df.apply(
+L00173 |         lambda r: (make_person_id(r["canonical"])
+L00174 |                    if r["entity_type"] == "person"
+L00175 |                    else make_institution_id(r["canonical"])),
+L00176 |         axis=1,
+L00177 |     )
+L00178 | 
+L00179 |     # 解析日期
+L00180 |     def parse_year(x, default):
+L00181 |         if pd.isna(x) or x is None or x == "":
+L00182 |             return default
+L00183 |         try:
+L00184 |             return int(str(x)[:4])
+L00185 |         except (ValueError, TypeError):
+L00186 |             return default
+L00187 | 
+L00188 |     df["begin_year"] = df["begin_date"].map(lambda x: parse_year(x, start_year))
+L00189 |     df["end_year"] = df["end_date"].map(lambda x: parse_year(x, end_year))
+L00190 |     # clip
+L00191 |     df["begin_year"] = df["begin_year"].clip(start_year, end_year)
+L00192 |     df["end_year"] = df["end_year"].clip(start_year, end_year)
+L00193 | 
+L00194 |     # 展开
+L00195 |     rows = []
+L00196 |     for _, r in df.iterrows():
+L00197 |         by, ey = r["begin_year"], r["end_year"]
+L00198 |         if by > ey:
+L00199 |             continue
+L00200 |         for y in range(by, ey + 1):
+L00201 |             rows.append({
+L00202 |                 "src": make_company_id(r["ts_code"]),
+L00203 |                 "dst": r["mgr_id"],
+L00204 |                 "year": y,
+L00205 |                 "edge_type": "HAS_MANAGER",
+L00206 |                 "entity_type": r["entity_type"],
+L00207 |                 "lev": r.get("lev"),
+L00208 |                 "title": r.get("title"),
+L00209 |             })
+L00210 |     out = pd.DataFrame(rows)
+L00211 |     logger.info("[HAS_MANAGER] 展开后边 %d 行 (年份维度)", len(out))
+L00212 |     return out
+L00213 | 
+L00214 | 
+L00215 | # ============================================================================
+L00216 | # E4 / E5: 公司 ↔ 公司 派生边
+L00217 | # ============================================================================
+L00218 | 
+L00219 | def derive_company_company_edges(company_holder_df: pd.DataFrame,
+L00220 |                                   edge_type: str,
+L00221 |                                   attr_name: str,
+L00222 |                                   min_shared: int,
+L00223 |                                   logger) -> pd.DataFrame:
+L00224 |     """
+L00225 |     通过 (company, holder, year) 派生 (company_a, company_b, year, shared_holder, weight).
+L00226 |     """
+L00227 |     if company_holder_df is None or company_holder_df.empty:
+L00228 |         return pd.DataFrame()
+L00229 |     df = company_holder_df[["src", "dst", "year"]].copy()
+L00230 |     df.columns = ["company", "holder", "year"]
+L00231 | 
+L00232 |     # 同 (holder, year) groupby, 笛卡尔积公司 → 公司对
+L00233 |     pairs = []
+L00234 |     grp = df.groupby(["holder", "year"])
+L00235 |     n_groups = len(grp)
+L00236 |     logger.info("[%s] 共 %d 个 (holder, year) 组待派生", edge_type, n_groups)
+L00237 |     cnt = 0
+L00238 |     skipped_huge = 0
+L00239 |     for (holder, year), g in grp:
+L00240 |         cs = g["company"].unique()
+L00241 |         if len(cs) < 2:
+L00242 |             continue
+L00243 |         # 大型 holder (e.g. 香港中央结算) 持有数百上市公司, 笛卡尔积爆炸 → 跳过
+L00244 |         if len(cs) > 50:
+L00245 |             skipped_huge += 1
+L00246 |             continue
+L00247 |         cs_sorted = sorted(cs)
+L00248 |         for i, ca in enumerate(cs_sorted):
+L00249 |             for cb in cs_sorted[i + 1:]:
+L00250 |                 pairs.append((ca, cb, year, holder))
+L00251 |         cnt += 1
+L00252 | 
+L00253 |     logger.info("[%s] 派生 %d 个公司对, 跳过 %d 个大型 holder (>50 公司)",
+L00254 |                 edge_type, len(pairs), skipped_huge)
+L00255 | 
+L00256 |     if not pairs:
+L00257 |         return pd.DataFrame()
+L00258 | 
+L00259 |     out = pd.DataFrame(pairs, columns=["src", "dst", "year", attr_name])
+L00260 |     # weight = 同 (src, dst, year) 共享 holder 数
+L00261 |     weight = (out.groupby(["src", "dst", "year"])
+L00262 |                  .size().reset_index(name="weight"))
+L00263 |     out_agg = (out.groupby(["src", "dst", "year"])
+L00264 |                   [attr_name].apply(lambda s: ",".join(map(str, sorted(set(s)))))
+L00265 |                   .reset_index())
+L00266 |     out_agg = out_agg.merge(weight, on=["src", "dst", "year"])
+L00267 |     out_agg["edge_type"] = edge_type
+L00268 |     out_agg = out_agg[out_agg["weight"] >= min_shared]
+L00269 |     logger.info("[%s] 聚合后公司对 %d 条 (min_shared=%d)",
+L00270 |                 edge_type, len(out_agg), min_shared)
+L00271 |     return out_agg
+L00272 | 
+L00273 | 
+L00274 | # ============================================================================
+L00275 | # 主流程
+L00276 | # ============================================================================
+L00277 | 
+L00278 | def main() -> int:
+L00279 |     p = argparse.ArgumentParser()
+L00280 |     p.add_argument("--start-year", type=int, default=2010)
+L00281 |     p.add_argument("--end-year", type=int, default=2024)
+L00282 |     p.add_argument("--co-held-min-shared", type=int, default=1,
+L00283 |                    help="共同股东派生时, 至少共享几个 holder 才连边")
+L00284 |     p.add_argument("--co-held-skip-large", type=int, default=50,
+L00285 |                    help="跳过持有 N 家以上公司的大型 holder (中央结算 / 汇金等)")
+L00286 |     p.add_argument("--no-export", action="store_true")
+L00287 |     p.add_argument("--no-derived", action="store_true",
+L00288 |                    help="跳过 E4/E5 派生边 (节省内存, 仅输出 E1/E2/E3)")
+L00289 |     args = p.parse_args()
+L00290 | 
+L00291 |     logger = setup_logger(TASK)
+L00292 |     paths = get_paths()
+L00293 | 
+L00294 |     # ---- 1. 加载 ----
+L00295 |     logger.info("加载原始数据 ...")
+L00296 |     holders = load_partitions(paths["TOP10_HOLDERS_DIR"], logger)
+L00297 |     floaters = load_partitions(paths["TOP10_FLOAT_DIR"], logger)
+L00298 |     mgrs = load_partitions(paths["STK_MANAGERS_DIR"], logger)
+L00299 |     logger.info("  top10_holders:      %d 行", len(holders))
+L00300 |     logger.info("  top10_floatholders: %d 行", len(floaters))
+L00301 |     logger.info("  stk_managers:       %d 行", len(mgrs))
+L00302 | 
+L00303 |     # ---- 2. E1 / E2 / E3 ----
+L00304 |     e1 = build_company_holder_edges(holders, "year", logger, "HOLDS_BY")
+L00305 |     e2 = build_company_holder_edges(floaters, "year", logger, "FLOAT_HELD_BY")
+L00306 |     e3 = build_company_manager_edges(mgrs, args.start_year, args.end_year, logger)
+L00307 | 
+L00308 |     # ---- 3. E4 / E5 派生 ----
+L00309 |     e4 = pd.DataFrame()
+L00310 |     e5 = pd.DataFrame()
+L00311 |     if not args.no_derived:
+L00312 |         # E4: 共同股东 (基于 E1, 因 E1 含全部 top10_holders)
+L00313 |         e4 = derive_company_company_edges(
+L00314 |             e1, "CO_HELD", "shared_holder",
+L00315 |             args.co_held_min_shared, logger,
+L00316 |         )
+L00317 |         # E5: 共同高管 (基于 E3 中 person 类型)
+L00318 |         e3_person = e3[e3["entity_type"] == "person"] if not e3.empty else pd.DataFrame()
+L00319 |         e5 = derive_company_company_edges(
+L00320 |             e3_person, "CO_MGR", "shared_person",
+L00321 |             1, logger,
+L00322 |         )
+L00323 | 
+L00324 |     # ---- 4. 输出 ----
+L00325 |     if not args.no_export:
+L00326 |         e1.to_parquet(KG_DIR / "edges_company_holder.parquet", index=False, compression="snappy")
+L00327 |         e2.to_parquet(KG_DIR / "edges_company_float_holder.parquet", index=False, compression="snappy")
+L00328 |         e3.to_parquet(KG_DIR / "edges_company_manager.parquet", index=False, compression="snappy")
+L00329 |         if not args.no_derived:
+L00330 |             e4.to_parquet(KG_DIR / "edges_company_company_co_held.parquet", index=False, compression="snappy")
+L00331 |             e5.to_parquet(KG_DIR / "edges_company_company_co_mgr.parquet", index=False, compression="snappy")
+L00332 |         logger.info("edges_*.parquet 已写入 %s", KG_DIR)
+L00333 | 
+L00334 |     # ---- 5. 统计 ----
+L00335 |     stats = {
+L00336 |         "params": {
+L00337 |             "start_year": args.start_year,
+L00338 |             "end_year": args.end_year,
+L00339 |             "co_held_min_shared": args.co_held_min_shared,
+L00340 |             "co_held_skip_large": args.co_held_skip_large,
+L00341 |         },
+L00342 |         "edge_counts": {
+L00343 |             "E1_HOLDS_BY":      int(len(e1)),
+L00344 |             "E2_FLOAT_HELD_BY": int(len(e2)),
+L00345 |             "E3_HAS_MANAGER":   int(len(e3)),
+L00346 |             "E4_CO_HELD":       int(len(e4)),
+L00347 |             "E5_CO_MGR":        int(len(e5)),
+L00348 |             "total":            int(len(e1) + len(e2) + len(e3) + len(e4) + len(e5)),
+L00349 |         },
+L00350 |         "year_distribution_E1": (
+L00351 |             dict(e1.groupby("year").size().to_dict()) if not e1.empty else {}
+L00352 |         ),
+L00353 |         "year_distribution_E3": (
+L00354 |             dict(e3.groupby("year").size().to_dict()) if not e3.empty else {}
+L00355 |         ),
+L00356 |         "co_held_weight_p50_p90_max": (
+L00357 |             {"p50": int(e4["weight"].quantile(0.5)),
+L00358 |              "p90": int(e4["weight"].quantile(0.9)),
+L00359 |              "max": int(e4["weight"].max())} if not e4.empty else {}
+L00360 |         ),
+L00361 |     }
+L00362 |     write_stats_json(TASK, stats)
+L00363 |     logger.info("统计写入 %s/%s.json", paths["STATS_DIR"], TASK)
+L00364 |     logger.info("=" * 60)
+L00365 |     logger.info("build_kg_edges 完成. 各类型边总数:")
+L00366 |     for k, v in stats["edge_counts"].items():
+L00367 |         logger.info("  %-20s %d", k, v)
+L00368 |     logger.info("=" * 60)
+L00369 |     return 0
+L00370 | 
+L00371 | 
+L00372 | if __name__ == "__main__":
+L00373 |     sys.exit(main())

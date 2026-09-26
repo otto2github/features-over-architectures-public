@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "definition": "For each company-fiscal-year score row and each source fiscal lag, retain only source records whose recorded availability date is no later than that row's annual-report public anchor. For fin tables availability is max(ann_date,f_ann_date) over nonmissing recorded dates; select maximum update_flag among available candidates, then latest availability date, then smallest SQLite rowid. For fina_indicator require ann_date<=anchor and select latest ann_date, then smallest rowid. Recompute fin/fini raw fields and the same industry-year z-score transforms. This is a current-snapshot as-of sensitivity, not certification of a historical vendor snapshot.",
+  "source_label_sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+  "source_node_sha256": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+  "financial_db_sha256": "5cc0550b95c7bbd44fb9d819096ec4b4cb5827839a837af2210d7fc69a3d30cb",
+  "stock_basic_sha256": "c9e88cd7871b43c71f7cdce72fa03965b8c965a0475242c169114be408df44fe",
+  "output_private_path": "<HOME>/peerj_141707_sensitivity_prep/asof/20260924_193318_3533872/PRIVATE/node_features_asof_financial_v1.parquet",
+  "output_sha256": "9f15e48a1427111d6f66d017f49bddf18aa4b9d8bb6a73c1285e1f659575eaf0",
+  "replaced_feature_count": 87,
+  "retained_fin_count": 18,
+  "retained_fini_count": 69,
+  "generated_candidate_financial_count": 96,
+  "generated_not_frozen_intermediate_fields": [
+    "fini_bps_t0",
+    "fini_cfps_t0",
+    "fini_ebit_ps_t0",
+    "fini_eps_t0",
+    "fini_fcfe_ps_t0",
+    "fini_fcff_ps_t0",
+    "fini_ocfps_t0",
+    "fini_total_revenue_ps_t0",
+    "fini_undist_profit_ps_t0"
+  ],
+  "replay_fin_raw_min_finite_match_rate": 0.9977164797413357,
+  "replay_fini_raw_min_finite_match_rate": 0.9933480195239947,
+  "replay_zind_min_pearson_r": 0.9976842137607743,
+  "replay_zind_max_median_abs_diff": 1.535974658573025e-08,
+  "industry_reference_for_zind": "frozen_v16_node_features.industry",
+  "stock_basic_company_codes_with_conflicting_nonmissing_industry": 0,
+  "limitations": [
+    "Current DB snapshot may not contain every historically available vendor version.",
+    "Source date semantics are treated as recorded availability dates but are not independently vendor-certified.",
+    "Industry-year z-scores use the frozen v16 row-level industry metadata and each company-year row's as-of reconstructed raw value; this is a current-snapshot sensitivity and does not certify a fully contemporaneous cross-company information set at every individual filing timestamp."
+  ]
+}

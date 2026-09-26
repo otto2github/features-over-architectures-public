@@ -1,0 +1,18 @@
+{
+  "source_archive_name": "PeerJ_141707_External_Review2_Revision_v16_20260923(1).zip",
+  "source_archive_sha256": "9ac41db226c9367dd2878e0bf8768d32866d4db6392c7ecda555fe228daeee7e",
+  "baseline_manifest_entries_verified": 205,
+  "baseline_manifest_all_match": true,
+  "no_baseline_files_modified": true,
+  "source_contracts": {
+    "config/data_manifest.json": "2ba0f376bd2e4d2414113df9999d2427f1fbf38836cf80a1b1f6ba1df9df7c47",
+    "code/formal_rerun_core.py": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+    "code/peerj_tabular_primary_v1.py": "62fb5dac496a6c8ec792a8f82da0bb93556b5fa7c05968086c9ec3902c1ac593",
+    "code/label_construction/peerj_label_v1_stageF.py": "fad1aec1ff8c441f31dbac99ac7a96f2d927cf2eda99b0e63cd609a035fd8b7e",
+    "code/label_construction/peerj_label_v1_stageE.py": "74aa5269761020ed0d702acde3063f4b8b212fc765a919301467bf8cd0aaa94d",
+    "code/label_construction/peerj_label_v1_stageA.py": "e5e3934bcf670f0d23964611ea397f78226d65c7b9c6741a057608b8b4a25313",
+    "code/recovered_builders/A0017_build_kg_nodes.py": "eefb45a2124383b86d36b4299752bc17024ae34da2bb775579fe26a4e5f16fe4",
+    "source_review_records/previous_M5/MAC_S0009_setup_compute_derived_financials_v0.sh.SOURCE_ONLY.txt": "ebcd74842813b0a3501551bd715de0b623dd7b82fe0c5ae60eca32d32df3fb81",
+    "source_review_records/previous_M5/MAC_S0040_compute_fina_indicator_v0.py.SOURCE_ONLY.txt": "31c115e57ba0f6d00b00396cc353327da840d92e78f743c1470bf95a1a551104"
+  }
+}

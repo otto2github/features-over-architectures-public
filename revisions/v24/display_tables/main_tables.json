@@ -1,0 +1,585 @@
+[
+  {
+    "table": "1",
+    "title": "Table 1. Primary sample and fixed-window sensitivity accounting",
+    "headers": [
+      "Partition / fiscal years",
+      "Feature-panel N",
+      "Eligible N",
+      "Primary positive",
+      "Primary negative",
+      "Null",
+      "Fixed-window positive"
+    ],
+    "rows": [
+      [
+        "Training (2010–2018)",
+        "24,527",
+        "24,106",
+        "254",
+        "23,852",
+        "421",
+        "119"
+      ],
+      [
+        "Validation (2019–2020)",
+        "7,764",
+        "7,309",
+        "40",
+        "7,269",
+        "455",
+        "25"
+      ],
+      [
+        "Test (2021–2022)",
+        "9,357",
+        "8,435",
+        "20",
+        "8,415",
+        "922",
+        "20"
+      ],
+      [
+        "Deferred (2023–2024)",
+        "10,027",
+        "0",
+        "0",
+        "0",
+        "10,027",
+        "0"
+      ],
+      [
+        "Total",
+        "51,675",
+        "39,850",
+        "314",
+        "39,536",
+        "11,825",
+        "164"
+      ]
+    ],
+    "note": "The primary endpoint accepts qualifying post-anchor sanctions up to 8 May 2026 and requires at least 1,095 days of follow-up. The separate sensitivity restricts qualifying events to the first 1,095 days. Eligible rows and nulls are unchanged; 135 training and 15 validation positives become zeros, while all 20 test positives remain positive. Deferred 2023–2024 rows remain null, including known sanctions. Source: frozen label counts and fixed1095_counts.csv.",
+    "type": "numeric_panel"
+  },
+  {
+    "table": "2A",
+    "title": "Table 2A. Matched-input M11 results: feature-only learners and graph references",
+    "headers": [
+      "Learner",
+      "ROC-AUC ± SD",
+      "AP",
+      "F1 (val)",
+      "P@5%",
+      "R@10FPR"
+    ],
+    "rows": [
+      [
+        "MLP",
+        "0.832 ± 0.013",
+        "0.0109",
+        "0.0145",
+        "0.0147",
+        "0.44"
+      ],
+      [
+        "L1 logistic",
+        "0.659 ± 0.000",
+        "0.0098",
+        "0.0278",
+        "0.0118",
+        "0.30"
+      ],
+      [
+        "L2 logistic",
+        "0.653 ± 0.000",
+        "0.0092",
+        "0.0294",
+        "0.0118",
+        "0.30"
+      ],
+      [
+        "Random Forest",
+        "0.864 ± 0.006",
+        "0.0148",
+        "0.0265",
+        "0.0166",
+        "0.46"
+      ],
+      [
+        "XGBoost",
+        "0.736 ± 0.000",
+        "0.0094",
+        "0.0000",
+        "0.0095",
+        "0.45"
+      ],
+      [
+        "GCN (reverse)",
+        "0.818 ± 0.015",
+        "0.0083",
+        "0.0086",
+        "0.0057",
+        "0.47"
+      ],
+      [
+        "GAT (reverse)",
+        "0.712 ± 0.088",
+        "0.0053",
+        "0.0035",
+        "0.0062",
+        "0.17"
+      ],
+      [
+        "GraphSAGE (reverse)",
+        "0.817 ± 0.021",
+        "0.0091",
+        "0.0059",
+        "0.0095",
+        "0.44"
+      ],
+      [
+        "RGCN (reverse)",
+        "0.697 ± 0.044",
+        "0.0075",
+        "0.0157",
+        "0.0095",
+        "0.39"
+      ]
+    ],
+    "note": "All rows use M11 company inputs and the same 8,435 test observations, including 20 positives. GNNs use the reverse-message graph reference. Means and sample SDs describe five fixed fits; they are not confidence intervals. MLP and GNN losses are positively weighted; the four tabular learners are unweighted. F1 uses a validation-selected threshold; P@5% reviews 422 rows; R@10FPR is a test-ROC summary. L1/L2 logistic and XGBoost have exactly zero recorded across-seed SD. Table 4A supplies direct crossed comparisons; fixed-fit intervals are in Supplement S3/S8a.",
+    "type": "numeric_panel"
+  },
+  {
+    "table": "2B",
+    "title": "Table 2B. Retrospective source-status scores (no fitted model)",
+    "headers": [
+      "Binary score (1 = flagged)",
+      "Validation AUC",
+      "Validation AP",
+      "Test AUC",
+      "Test AP"
+    ],
+    "rows": [
+      [
+        "Compatible post-anchor fin_ input",
+        "0.7747",
+        "0.03892",
+        "0.8261",
+        "0.02421"
+      ],
+      [
+        "Post-anchor input; no pre-anchor candidate",
+        "0.7533",
+        "0.03837",
+        "0.7842",
+        "0.02685"
+      ],
+      [
+        "Any selected source missing after filtering",
+        "0.7361",
+        "0.02308",
+        "0.7687",
+        "0.01431"
+      ],
+      [
+        "Any final financial nonfinite value",
+        "0.7362",
+        "0.01145",
+        "0.7855",
+        "0.00706"
+      ]
+    ],
+    "note": "Validation N = 7,309 / 40 positives; test N = 8,435 / 20 positives. The first three scores use source-selection counts; the fourth flags any nonfinite value among 87 final as-of financial columns before learner preprocessing. AUC and step-weighted AP are exact two-bin calculations, not trained baselines or estimates of causal model dependence. Source absence and predictor nonfiniteness are distinct. No confidence intervals are inferred from the counts. Sources: Supplement S9d and the aggregate source_mask_counts.csv.",
+    "type": "numeric_panel"
+  },
+  {
+    "table": "2C",
+    "title": "Table 2C. Primary M11 fixed-prediction subset diagnostics",
+    "headers": [
+      "Evaluation population",
+      "N / positive",
+      "5% budget",
+      "MLP\nAUC / retrieved",
+      "RF\nAUC / retrieved",
+      "GCN (reverse)\nAUC / retrieved",
+      "GraphSAGE (reverse)\nAUC / retrieved"
+    ],
+    "rows": [
+      [
+        "Full test",
+        "8,435 / 20",
+        "422",
+        "0.8319 / 6.2",
+        "0.8639 / 7.0",
+        "0.8181 / 2.4",
+        "0.8173 / 4.0"
+      ],
+      [
+        "D: no detected earlier document match",
+        "8,422 / 7",
+        "422",
+        "0.6738 / 0.0",
+        "0.7314 / 0.0",
+        "0.7260 / 1.2",
+        "0.6699 / 0.2"
+      ],
+      [
+        "O: earlier document match",
+        "8,428 / 13",
+        "422",
+        "0.9170 / 6.2",
+        "0.9352 / 7.0",
+        "0.8677 / —",
+        "0.8967 / —"
+      ],
+      [
+        "S: source screen",
+        "7,757 / 6",
+        "388",
+        "0.8131 / 1.8",
+        "0.8592 / 1.2",
+        "0.8629 / 1.0",
+        "0.8204 / 2.0"
+      ],
+      [
+        "B: S + raw fin_ binding screen",
+        "7,280 / 5",
+        "364",
+        "0.8574 / 2.0",
+        "0.8823 / 1.2",
+        "0.8827 / 1.0",
+        "0.8650 / 2.0"
+      ],
+      [
+        "J: D positive rule + S",
+        "7,753 / 2",
+        "388",
+        "0.5964 / 0.0",
+        "0.7511 / 0.0",
+        "0.7842 / 0.2",
+        "0.6150 / 0.0"
+      ]
+    ],
+    "note": "Cells give five-fit mean AUC / mean hits at the stated budget. D and O retain all 8,415 negatives; O AUC is derived per seed as (20×full−7×D)/13. O MLP/RF hits equal full-test hits because every D hit count is zero; “—” denotes an uncomputed GNN complement yield. S/B filter both classes and J applies D’s positive rule within S. The populations are descriptive screens, not historically clean or independently new cases. No random-composition reference or subset interval is reported. J has two positives, one with unresolved raw fin_ binding. Full metrics and tie details are in S12–S14.",
+    "type": "numeric_panel"
+  },
+  {
+    "table": "3",
+    "title": "Table 3. Primary feature expansion within five non-graph learners",
+    "headers": [
+      "Learner",
+      "M10 − M5",
+      "M11 − M10",
+      "M11 − M5"
+    ],
+    "rows": [
+      [
+        "MLP",
+        "0.0826",
+        "−0.0101",
+        "0.0725"
+      ],
+      [
+        "L1 logistic",
+        "0.0033",
+        "0.0194",
+        "0.0227"
+      ],
+      [
+        "L2 logistic",
+        "0.0104",
+        "0.0160",
+        "0.0264"
+      ],
+      [
+        "Random Forest",
+        "0.0652",
+        "0.0184",
+        "0.0837"
+      ],
+      [
+        "XGBoost",
+        "0.0953",
+        "−0.0251",
+        "0.0702"
+      ]
+    ],
+    "note": "Differences are richer minus leaner at fixed primary settings, calculated from unrounded means. This panel is descriptive. Original fixed-fit paired intervals are preserved in Supplement Table S3b and the aggregate source; three of five M11−M5 intervals include zero. Stored-message GNN increments in S3 do not evaluate reverse-message feature expansion. Table 5B separately gives crossed financial-reconstruction contrasts.",
+    "type": "numeric_panel"
+  },
+  {
+    "table": "4A",
+    "title": "Table 4A. Primary M11 paired comparisons: crossed company-and-seed uncertainty",
+    "headers": [
+      "Paired comparison (left minus right)",
+      "Mean ΔAUC",
+      "95% company × seed interval"
+    ],
+    "rows": [
+      [
+        "RF (unweighted) − MLP (weighted)",
+        "+0.0320",
+        "[−0.0253, +0.0928]"
+      ],
+      [
+        "RF (unweighted) − GCN (reverse)",
+        "+0.0458",
+        "[−0.0298, +0.1217]"
+      ],
+      [
+        "RF (unweighted) − GraphSAGE (reverse)",
+        "+0.0465",
+        "[−0.0117, +0.1057]"
+      ],
+      [
+        "MLP (weighted) − GCN (reverse)",
+        "+0.0138",
+        "[−0.0393, +0.0659]"
+      ],
+      [
+        "MLP (weighted) − GAT (reverse)",
+        "+0.1196",
+        "[+0.0434, +0.1952]"
+      ],
+      [
+        "MLP (weighted) − GraphSAGE (reverse)",
+        "+0.0145",
+        "[−0.0233, +0.0616]"
+      ],
+      [
+        "MLP (weighted) − RGCN (reverse)",
+        "+0.1352",
+        "[+0.0449, +0.2279]"
+      ],
+      [
+        "GCN (reverse) − GCN stored",
+        "+0.1753",
+        "[+0.0739, +0.2890]"
+      ],
+      [
+        "GAT (reverse) − GAT stored",
+        "+0.1009",
+        "[−0.0245, +0.2303]"
+      ],
+      [
+        "GraphSAGE (reverse) − GraphSAGE stored",
+        "+0.0574",
+        "[+0.0000027, +0.1321]"
+      ],
+      [
+        "RGCN (reverse) − RGCN stored",
+        "−0.0191",
+        "[−0.1250, +0.0798]"
+      ]
+    ],
+    "note": "Reference means: weighted MLP 0.8319; unweighted RF 0.8639. GNN references use reverse messages; the last four rows compare these references with the post-hoc stored-message ablation. Intervals use 2,000 shared company-cluster draws crossed with matched seed labels (4,531 companies; 8,435 observations; 20 positives). They omit case/network blocks, new training data and post-hoc selection and are marginal and unadjusted. GraphSAGE reverse−stored has lower endpoint approximately +0.0000027, not a robust positive margin. The fixed-fit scheme is in Supplement S11. Differences use unrounded means.",
+    "type": "numeric_panel"
+  },
+  {
+    "table": "4B",
+    "title": "Table 4B. Findings, evidence and limits",
+    "headers": [
+      "Finding",
+      "Evidence",
+      "Interpretation limit"
+    ],
+    "rows": [
+      [
+        "No consistent evidence of GNN superiority at matched M11 inputs; GCN/GraphSAGE gaps are unresolved and GAT/RGCN are lower than MLP.",
+        "Tables 2A, 4A; §5.3",
+        "Fixed models, weighting and one full test; neither equivalence nor architecture-wide inferiority."
+      ],
+      [
+        "Richer inputs raise mean AUC within five feature-only learners.",
+        "Table 3; §5.2",
+        "Descriptive configuration-specific increments, not validated leakage-free disclosure signals."
+      ],
+      [
+        "Indicator-only and historical-graph diagnostics expose different kinds of information.",
+        "§5.4; Supplement S8e",
+        "No universal bound on structural signal; historical-label scores differ from annual GNN inputs."
+      ],
+      [
+        "MLP/RF budgeted hits are document-matched; financial-record flags discriminate outcomes.",
+        "Tables 2B–2C; §§5.6, 6.3",
+        "Observed source and outcome composition, not causal attribution or new-case validation."
+      ],
+      [
+        "Omitting reverse records lowers GCN AUC in the post-hoc ablation.",
+        "Table 4A; Figure 2",
+        "An implementation diagnostic changing accessibility and normalization, not the main learner-ranking result."
+      ]
+    ],
+    "note": "",
+    "type": "narrative_map"
+  },
+  {
+    "table": "5A",
+    "title": "Table 5A. Temporal sensitivity results and paired changes from primary references",
+    "headers": [
+      "Condition / learner / input",
+      "Primary AUC",
+      "Sensitivity AUC ± SD",
+      "ΔAUC",
+      "95% company × seed interval for Δ",
+      "AP",
+      "P@5%",
+      "R@10FPR"
+    ],
+    "rows": [
+      [
+        "Financial as-of · MLP M5",
+        "0.7594",
+        "0.7673 ± 0.0220",
+        "+0.0079",
+        "[−0.0125, +0.0284]",
+        "0.00672",
+        "0.00616",
+        "0.30"
+      ],
+      [
+        "Financial as-of · MLP M11",
+        "0.8319",
+        "0.8316 ± 0.0155",
+        "−0.0003",
+        "[−0.0137, +0.0113]",
+        "0.01096",
+        "0.01374",
+        "0.45"
+      ],
+      [
+        "Financial as-of · RF M5",
+        "0.7802",
+        "0.8488 ± 0.0202",
+        "+0.0686",
+        "[+0.0173, +0.1240]",
+        "0.03607",
+        "0.01943",
+        "0.58"
+      ],
+      [
+        "Financial as-of · RF M11",
+        "0.8639",
+        "0.9049 ± 0.0077",
+        "+0.0411",
+        "[−0.0120, +0.1074]",
+        "0.03016",
+        "0.02133",
+        "0.67"
+      ],
+      [
+        "Fixed 1,095 d · MLP M11",
+        "0.8319",
+        "0.8222 ± 0.0146",
+        "−0.0097",
+        "[−0.0333, +0.0094]",
+        "0.00989",
+        "0.01232",
+        "0.48"
+      ],
+      [
+        "Fixed 1,095 d · RF M11",
+        "0.8639",
+        "0.7860 ± 0.0237",
+        "−0.0779",
+        "[−0.1405, −0.0235]",
+        "0.01369",
+        "0.01943",
+        "0.49"
+      ],
+      [
+        "Fixed 1,095 d · GCN (reverse) M11",
+        "0.8181",
+        "0.7663 ± 0.0297",
+        "−0.0518",
+        "[−0.1258, +0.0014]",
+        "0.00745",
+        "0.00711",
+        "0.39"
+      ],
+      [
+        "Fixed 1,095 d · GraphSAGE (reverse) M11",
+        "0.8173",
+        "0.7376 ± 0.0393",
+        "−0.0797",
+        "[−0.1696, −0.0137]",
+        "0.00742",
+        "0.00900",
+        "0.39"
+      ]
+    ],
+    "note": "Five fits per condition; the same 8,435 test labels and 20 positives. Changes are sensitivity minus corresponding primary, with reverse-message references for GCN/GraphSAGE. Intervals use 2,000 crossed company-and-matched-seed draws and omit case/network dependence and new training-data variation. Financial reconstruction changes only 87 fields under the available snapshot. Fixed-window fits retain original features and 119/25 training/validation positives, neural weight 201.5714 and reselected checkpoints/thresholds. Families are separate. Differences use unrounded means.",
+    "type": "numeric_panel"
+  },
+  {
+    "table": "5B",
+    "title": "Table 5B. Within-family paired contrasts on the full test",
+    "headers": [
+      "Contrast (left minus right)",
+      "ΔAUC",
+      "95% company × seed interval",
+      "ΔAP",
+      "95% company × seed interval (AP)"
+    ],
+    "rows": [
+      [
+        "Financial: MLP − RF (M11)",
+        "−0.0733",
+        "[−0.1388, −0.0083]",
+        "−0.01921",
+        "[−0.06084, −0.00402]"
+      ],
+      [
+        "Financial: MLP M11 − M5",
+        "+0.0643",
+        "[−0.0056, +0.1440]",
+        "+0.00424",
+        "[−0.00067, +0.01468]"
+      ],
+      [
+        "Financial: RF M11 − M5",
+        "+0.0562",
+        "[−0.0045, +0.1334]",
+        "−0.00591",
+        "[−0.04629, +0.00774]"
+      ],
+      [
+        "Fixed window: MLP − RF",
+        "+0.0362",
+        "[−0.0491, +0.1182]",
+        "−0.00380",
+        "[−0.01591, +0.00199]"
+      ],
+      [
+        "Fixed window: MLP − GCN reverse",
+        "+0.0559",
+        "[−0.0140, +0.1400]",
+        "+0.00244",
+        "[−0.00172, +0.00864]"
+      ],
+      [
+        "Fixed window: MLP − GraphSAGE reverse",
+        "+0.0845",
+        "[+0.0124, +0.1801]",
+        "+0.00247",
+        "[−0.00167, +0.00851]"
+      ],
+      [
+        "Fixed window: RF − GCN reverse",
+        "+0.0197",
+        "[−0.0898, +0.1346]",
+        "+0.00624",
+        "[−0.00117, +0.02129]"
+      ],
+      [
+        "Fixed window: RF − GraphSAGE reverse",
+        "+0.0483",
+        "[−0.0390, +0.1547]",
+        "+0.00627",
+        "[+0.00031, +0.01904]"
+      ]
+    ],
+    "note": "Same crossed scheme as Table 5A. MLP is positively weighted; RF is unweighted. Intervals describe these fitted pipelines and test rows, not clean-input, new-case or architecture-wide effects. Both financial M11−M5 AUC intervals contain zero despite positive differences in every seed. Supplement S13 preserves all 16 contrasts, both interval schemes and five metrics.",
+    "type": "numeric_panel"
+  }
+]

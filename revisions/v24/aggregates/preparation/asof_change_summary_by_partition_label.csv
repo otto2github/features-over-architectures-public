@@ -1,0 +1,11 @@
+partition,label_group,rows,rows_with_any_financial_feature_changed,fraction_changed,rows_with_any_asof_source_missing,selected_source_post_anchor_after_asof_filter
+outside_primary,null,10027,8991,0.8966789667896679,1171,0
+test,negative,8415,7685,0.9132501485442662,527,0
+test,null,922,910,0.9869848156182213,904,0
+test,positive,20,18,0.9,12,0
+train,negative,23852,17164,0.7196042260607077,7768,0
+train,null,421,375,0.8907363420427553,358,0
+train,positive,254,147,0.5787401574803149,129,0
+validation,negative,7269,6372,0.8765992571192737,565,0
+validation,null,455,436,0.9582417582417583,426,0
+validation,positive,40,32,0.8,22,0

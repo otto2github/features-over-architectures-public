@@ -1,0 +1,16 @@
+{
+  "python": "3.12.3",
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.1",
+    "scikit-learn": "1.9.1"
+  },
+  "tool_version": "1.0.0",
+  "role": "server",
+  "bootstrap": 2000,
+  "workers": 8,
+  "CUDA_VISIBLE_DEVICES": "",
+  "training_executed": false,
+  "baseline": "v16"
+}

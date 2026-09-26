@@ -1,0 +1,5 @@
+﻿key_level,partition,positive_rows_total,positive_rows_with_usable_key,positive_rows_with_no_usable_key,positive_rows_with_key_also_in_earlier_partition,unique_keys_here,unique_keys_spanning_multiple_partitions,interpretation
+source_record,validation,40,40,0,22,32,24,source-row recurrence only; do not call this case leakage
+source_record,test,20,20,0,12,17,10,source-row recurrence only; do not call this case leakage
+issuer_document,validation,40,39,1,21,31,23,document overlap lower bound on identifiable keys; source records are not legal cases
+issuer_document,test,20,20,0,13,16,10,document overlap lower bound on identifiable keys; source records are not legal cases

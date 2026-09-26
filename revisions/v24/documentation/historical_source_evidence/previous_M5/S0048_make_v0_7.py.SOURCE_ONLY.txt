@@ -1,0 +1,90 @@
+"""
+N1 + N2: make_v0_7.py
+=========================
+
+I13.4: v0.7 = v0.6 - 9 个 _ps 字段 (DROP_PS 决策)
+I13.5: timing v2 std bug 在 v0.7 起修复 (fillna(0) 等价 ddof=0 单观测点)
+
+输入:
+  data/processed/features/features_v0_6.parquet (51,675 × 121)
+
+输出:
+  data/processed/features/features_v0_7.parquet (51,675 × 112)
+    = 121 - 9 (_ps) ; std_quarter_offset 不删, 仅 fillna(0)
+
+注: v0.5/v0.6 保持原状作为版本演化记录, std bug 源头修复待 P5.5 时机
+    (届时 extract_p5_full_dataset.py 改 ddof=0, v0.8 重生).
+"""
+
+from pathlib import Path
+import pandas as pd
+
+PROJECT_ROOT = Path.home() / "code" / "thesis_project"
+V0_6 = PROJECT_ROOT / "data" / "processed" / "features" / "features_v0_6.parquet"
+V0_7 = PROJECT_ROOT / "data" / "processed" / "features" / "features_v0_7.parquet"
+
+# I13.4: 9 个 _ps 字段
+PS_DROP = [
+    "fini_bps_t0",
+    "fini_eps_t0",
+    "fini_undist_profit_ps_t0",
+    "fini_total_revenue_ps_t0",
+    "fini_ocfps_t0",
+    "fini_cfps_t0",
+    "fini_fcfe_ps_t0",
+    "fini_fcff_ps_t0",
+    "fini_ebit_ps_t0",
+]
+
+# I13.5: timing v2 std bug 列
+TIMING_STD_COL = "feat_t0_std_quarter_offset"
+
+
+def main():
+    print(f"读 v0.6: {V0_6}")
+    df = pd.read_parquet(V0_6)
+    print(f"  shape: {df.shape}")
+
+    # ---- I13.4: 删 _ps ----
+    actual_drop = [c for c in PS_DROP if c in df.columns]
+    missing_drop = [c for c in PS_DROP if c not in df.columns]
+    if missing_drop:
+        print(f"  [WARN] PS_DROP 中 {len(missing_drop)} 个不在 v0.6: {missing_drop}")
+    print(f"\nI13.4 删除 {len(actual_drop)} 个 _ps 字段:")
+    for c in actual_drop:
+        print(f"  - {c}")
+    df = df.drop(columns=actual_drop)
+    print(f"  shape after drop: {df.shape}")
+
+    # ---- I13.5: 修 timing v2 std bug ----
+    if TIMING_STD_COL in df.columns:
+        nan_rate = df[TIMING_STD_COL].isna().mean()
+        if nan_rate > 0.99:
+            df[TIMING_STD_COL] = df[TIMING_STD_COL].fillna(0)
+            print(f"\nI13.5 修复 {TIMING_STD_COL}:")
+            print(f"  原 NaN 率: {nan_rate:.1%} → fillna(0)")
+            print(f"  数学含义: 单观测点 std 用 ddof=0 = 0 (而非 ddof=1 的 NaN)")
+            print(f"  (源脚本 extract_p5_full_dataset.py 待 P5.5 时机改 ddof=0 重生 v0.8)")
+        else:
+            print(f"\nI13.5: {TIMING_STD_COL} NaN 率正常 ({nan_rate:.1%}), 跳过")
+    else:
+        print(f"\nI13.5: {TIMING_STD_COL} 不在矩阵, 跳过")
+
+    # ---- 列分类 sanity ----
+    feat_cols = [c for c in df.columns if c.startswith("feat_")]
+    fin_cols = [c for c in df.columns if c.startswith("fin_") and not c.startswith("fini_")]
+    fini_cols = [c for c in df.columns if c.startswith("fini_")]
+    print(f"\n[v0.7 模态分布]")
+    print(f"  feat_  (insider)       : {len(feat_cols)}")
+    print(f"  fin_   (派生财务 P4.5)  : {len(fin_cols)}")
+    print(f"  fini_  (fina_indicator) : {len(fini_cols)}")
+    print(f"  其他 (元数据/标签)      : {len(df.columns) - len(feat_cols) - len(fin_cols) - len(fini_cols)}")
+
+    # ---- 落盘 ----
+    df.to_parquet(V0_7, index=False)
+    print(f"\n[OK] 已写入: {V0_7}")
+    print(f"     {len(df):,} 行 × {len(df.columns)} 列")
+
+
+if __name__ == "__main__":
+    main()

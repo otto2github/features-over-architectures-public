@@ -1,0 +1,250 @@
+SOURCE_ID: A0001
+SOURCE: <MOUNT>/Downloads/ch7_patch_v1_2.tar.gz :: ch7_patch_v1_2/align_with_p5.py
+ORIGINAL_SHA256: db36088376c1191eca61c5e3c22c2850bc0e7d71f2a9792813371f593e74ce2e
+ORIGINAL_BYTES: 9192
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | """
+L00002 | align_with_p5.py  [v1.2 修复版]
+L00003 | ================================
+L00004 | 
+L00005 | 修复点 (相对 v1.1):
+L00006 | [WITHHELD: IDENTIFIER_LITERAL]
+L00007 |   - 不需要重跑 build_kg_nodes 即可对齐成功
+L00008 | 
+L00009 | 修复点 (相对 v1.0):
+L00010 |   - 兼容 v0.7 用 firm_id 而非 ts_code 列名
+L00011 |   - firm_id 若为纯 6 位数字, 自动按 A 股交易所规则映射
+L00012 | """
+L00013 | from __future__ import annotations
+L00014 | 
+L00015 | import argparse
+L00016 | import sys
+L00017 | from pathlib import Path
+L00018 | 
+L00019 | import pandas as pd
+L00020 | 
+L00021 | sys.path.insert(0, str(Path(__file__).parent))
+L00022 | from _kg_common import (  # noqa: E402
+L00023 |     KG_DIR, get_paths, make_company_id, setup_logger, write_stats_json,
+L00024 | )
+L00025 | 
+L00026 | TASK = "align_with_p5"
+L00027 | 
+L00028 | 
+L00029 | def infer_ts_code(firm_id) -> str:
+L00030 |     """从 firm_id 推导标准 ts_code (含交易所后缀)."""
+L00031 |     if firm_id is None or pd.isna(firm_id):
+L00032 |         return ""
+L00033 |     s = str(firm_id).strip()
+L00034 |     if not s:
+L00035 |         return ""
+L00036 |     upper = s.upper()
+L00037 |     if upper.endswith((".SZ", ".SH", ".BJ", ".XBEI")):
+L00038 |         return upper
+L00039 |     if not s.isdigit():
+L00040 |         return upper
+L00041 |     code = s.zfill(6)
+L00042 |     if code[0] in ("0", "3"):
+L00043 |         return f"{code}.SZ"
+L00044 |     if code[0] == "6":
+L00045 |         return f"{code}.SH"
+L00046 |     if code[0] in ("8", "4"):
+L00047 |         return f"{code}.BJ"
+L00048 |     if code[0] == "9":
+L00049 |         # 9xxxxx 是上海 B 股 (历史代码), 默认归入 .SH
+L00050 |         return f"{code}.SH"
+L00051 |     return f"{code}.SZ"
+L00052 | 
+L00053 | 
+L00054 | def derive_ts_code_from_id(node_id: str) -> str:
+L00055 |     """
+L00056 | [WITHHELD: IDENTIFIER_LITERAL]
+L00057 |     若不是公司节点, 返回空串.
+L00058 |     """
+L00059 |     if not isinstance(node_id, str):
+L00060 |         return ""
+L00061 |     if not node_id.startswith("C:"):
+L00062 |         return ""
+L00063 |     return node_id[2:]
+L00064 | 
+L00065 | 
+L00066 | def main() -> int:
+L00067 |     p = argparse.ArgumentParser()
+L00068 |     p.add_argument("--features-v07-path", type=str,
+L00069 |                    default="data/processed/features/features_v0_7.parquet")
+L00070 |     args = p.parse_args()
+L00071 | 
+L00072 |     logger = setup_logger(TASK)
+L00073 |     paths = get_paths()
+L00074 | 
+L00075 |     f_path = Path(args.features_v07_path)
+L00076 |     if not f_path.is_absolute():
+L00077 |         f_path = paths["PROJECT_ROOT"] / f_path
+L00078 |     if not f_path.exists():
+L00079 |         logger.error("v0.7 特征文件不存在: %s", f_path)
+L00080 |         return 1
+L00081 |     feats = pd.read_parquet(f_path)
+L00082 |     logger.info("v0.7 特征: %d 行 × %d 列", len(feats), len(feats.columns))
+L00083 |     logger.info("  列名头部: %s", list(feats.columns[:8]))
+L00084 | 
+L00085 |     # ---- v0.7 列名兼容: firm_id → ts_code ----
+L00086 |     if "ts_code" not in feats.columns:
+L00087 |         if "firm_id" in feats.columns:
+L00088 |             logger.info("v0.7 用 firm_id 列, 自动映射为 ts_code")
+L00089 |             feats["ts_code"] = feats["firm_id"].map(infer_ts_code)
+L00090 |             sample = feats[["firm_id", "ts_code"]].head(5)
+L00091 |             logger.info("  firm_id → ts_code 示例:\n%s", sample.to_string(index=False))
+L00092 |         else:
+L00093 |             logger.error("v0.7 无 ts_code 也无 firm_id 列, 无法继续")
+L00094 |             return 2
+L00095 | 
+L00096 |     if "year" not in feats.columns:
+L00097 |         logger.error("v0.7 缺失 year 列")
+L00098 |         return 2
+L00099 | 
+L00100 |     # ---- 读 nodes ----
+L00101 |     nodes_path = KG_DIR / "nodes.parquet"
+L00102 |     if not nodes_path.exists():
+L00103 |         logger.error("nodes.parquet 不存在, 先跑 build_kg_nodes.py")
+L00104 |         return 3
+L00105 |     nodes = pd.read_parquet(nodes_path)
+L00106 |     logger.info("nodes 列: %s", list(nodes.columns))
+L00107 | 
+L00108 |     # ---- 修复: nodes 缺失 ts_code 列时, 从 id 反推 ----
+L00109 |     if "ts_code" not in nodes.columns:
+L00110 | [WITHHELD: IDENTIFIER_LITERAL]
+L00111 |         nodes["ts_code"] = nodes["id"].map(derive_ts_code_from_id)
+L00112 |         sample_company = nodes[nodes["type"] == "company"].head(5)
+L00113 |         logger.info("  公司节点 id → ts_code 示例:\n%s",
+L00114 |                     sample_company[["id", "ts_code"]].to_string(index=False))
+L00115 | 
+L00116 |     companies = nodes[nodes["type"] == "company"].copy()
+L00117 |     # 过滤空 ts_code (理论应为 0)
+L00118 |     n_before = len(companies)
+L00119 |     companies = companies[companies["ts_code"].astype(bool)].reset_index(drop=True)
+L00120 |     if n_before != len(companies):
+L00121 |         logger.warning("公司节点中 %d 个 ts_code 为空, 已剔除",
+L00122 |                        n_before - len(companies))
+L00123 |     logger.info("公司节点 (含 ts_code): %d", len(companies))
+L00124 | 
+L00125 |     # ---- 对齐检查 ----
+L00126 |     feat_codes = set(feats["ts_code"].astype(str).unique())
+L00127 |     node_codes = set(companies["ts_code"].astype(str).unique())
+L00128 |     missing_in_nodes = feat_codes - node_codes
+L00129 |     extra_in_nodes = node_codes - feat_codes
+L00130 |     intersection = feat_codes & node_codes
+L00131 |     logger.info("v0.7 唯一 ts_code: %d", len(feat_codes))
+L00132 |     logger.info("nodes 公司 ts_code: %d", len(node_codes))
+L00133 |     logger.info("交集: %d (v0.7 对齐率 %.2f%%, nodes 利用率 %.2f%%)",
+L00134 |                 len(intersection),
+L00135 |                 len(intersection) / max(len(feat_codes), 1) * 100,
+L00136 |                 len(intersection) / max(len(node_codes), 1) * 100)
+L00137 |     logger.info("v0.7 漏对齐: %d", len(missing_in_nodes))
+L00138 |     logger.info("nodes 未使用: %d", len(extra_in_nodes))
+L00139 |     if missing_in_nodes:
+L00140 |         logger.warning("  v0.7 漏对齐示例 (前 10): %s",
+L00141 |                        sorted(list(missing_in_nodes))[:10])
+L00142 |     if extra_in_nodes:
+L00143 |         logger.info("  nodes 未使用示例 (前 5): %s",
+L00144 |                     sorted(list(extra_in_nodes))[:5])
+L00145 | 
+L00146 |     # ---- 生成 node_features_v0_8 ----
+L00147 |     logger.info("生成 node_features_v0_8 ...")
+L00148 |     feats["node_id"] = feats["ts_code"].map(make_company_id)
+L00149 |     front_cols = ["node_id", "ts_code", "year"]
+L00150 |     label_cols = [c for c in feats.columns
+L00151 |                   if c.lower() in ("fraud_label", "label", "fraud", "y")]
+L00152 |     feature_cols = [c for c in feats.columns
+L00153 |                     if c not in front_cols + label_cols
+L00154 |                     and c not in ("ts_code", "firm_id")]
+L00155 |     out = feats[front_cols + label_cols + feature_cols]
+L00156 |     out_path = KG_DIR / "node_features_v0_8.parquet"
+L00157 |     out.to_parquet(out_path, index=False, compression="snappy")
+L00158 |     logger.info("  写入 %s (%d 行 × %d 列, 标签列 %s)",
+L00159 |                 out_path, len(out), len(out.columns), label_cols)
+L00160 | 
+L00161 |     # ---- node_id_index ----
+L00162 |     logger.info("生成 node_id_index ...")
+L00163 |     company_ids_used = sorted(intersection)
+L00164 |     persons_df = nodes[nodes["type"] == "person"]
+L00165 |     insts_df = nodes[nodes["type"] == "institution"]
+L00166 |     person_ids = sorted(persons_df["id"].tolist())
+L00167 |     inst_ids = sorted(insts_df["id"].tolist())
+L00168 | 
+L00169 |     rows = []
+L00170 |     idx = 0
+L00171 |     for tc in company_ids_used:
+L00172 |         rows.append({
+L00173 |             "node_idx": idx, "node_id": make_company_id(tc),
+L00174 |             "node_type": "company", "ts_code": tc,
+L00175 |         })
+L00176 |         idx += 1
+L00177 |     for pid in person_ids:
+L00178 |         rows.append({
+L00179 |             "node_idx": idx, "node_id": pid, "node_type": "person",
+L00180 |             "ts_code": None,
+L00181 |         })
+L00182 |         idx += 1
+L00183 |     for iid in inst_ids:
+L00184 |         rows.append({
+L00185 |             "node_idx": idx, "node_id": iid, "node_type": "institution",
+L00186 |             "ts_code": None,
+L00187 |         })
+L00188 |         idx += 1
+L00189 |     idx_df = pd.DataFrame(rows)
+L00190 |     idx_path = KG_DIR / "node_id_index.parquet"
+L00191 |     idx_df.to_parquet(idx_path, index=False, compression="snappy")
+L00192 |     logger.info("  写入 %s (%d 节点)", idx_path, len(idx_df))
+L00193 | 
+L00194 |     # ---- 写 ts_code 回 nodes.parquet (后续脚本用) ----
+L00195 |     if "ts_code" in nodes.columns:
+L00196 |         nodes_path_v2 = KG_DIR / "nodes.parquet"
+L00197 |         nodes.to_parquet(nodes_path_v2, index=False, compression="snappy")
+L00198 |         logger.info("  nodes.parquet 已更新, 添加 ts_code 列")
+L00199 | 
+L00200 |     # ---- 统计 ----
+L00201 |     stats = {
+L00202 |         "v07_path": str(f_path),
+L00203 |         "v07_rows": int(len(feats)),
+L00204 |         "v07_unique_codes": int(len(feat_codes)),
+L00205 |         "v07_feature_dim": int(len(feature_cols)),
+L00206 |         "v07_year_range": [int(feats["year"].min()), int(feats["year"].max())],
+L00207 |         "label_cols_detected": label_cols,
+L00208 |         "nodes_total": int(len(nodes)),
+L00209 |         "nodes_by_type": {k: int(v) for k, v in
+L00210 |                           nodes["type"].value_counts().to_dict().items()},
+L00211 |         "alignment": {
+L00212 |             "v07_in_nodes": int(len(intersection)),
+L00213 |             "v07_only": int(len(missing_in_nodes)),
+L00214 |             "nodes_only": int(len(extra_in_nodes)),
+L00215 |             "v07_in_nodes_ratio": round(len(intersection) / max(len(feat_codes), 1), 4),
+L00216 |             "v07_only_examples": sorted(list(missing_in_nodes))[:10],
+L00217 |             "nodes_only_examples": sorted(list(extra_in_nodes))[:10],
+L00218 |         },
+L00219 |         "node_id_index": {
+L00220 |             "total_nodes": int(len(idx_df)),
+L00221 |             "company": int((idx_df["node_type"] == "company").sum()),
+L00222 |             "person": int((idx_df["node_type"] == "person").sum()),
+L00223 |             "institution": int((idx_df["node_type"] == "institution").sum()),
+L00224 |         },
+L00225 |         "node_features_v0_8": {
+L00226 |             "rows": int(len(out)),
+L00227 |             "cols": int(len(out.columns)),
+L00228 |             "feature_dim": int(len(feature_cols)),
+L00229 |         },
+L00230 |     }
+L00231 |     write_stats_json(TASK, stats)
+L00232 |     logger.info("=" * 60)
+L00233 |     logger.info("align_with_p5 完成")
+L00234 |     logger.info("  对齐成功率: %d / %d = %.2f%%",
+L00235 |                 len(intersection), len(feat_codes),
+L00236 |                 len(intersection) / max(len(feat_codes), 1) * 100)
+L00237 |     logger.info("=" * 60)
+L00238 |     return 0
+L00239 | 
+L00240 | 
+L00241 | if __name__ == "__main__":
+L00242 |     sys.exit(main())

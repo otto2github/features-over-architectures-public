@@ -1,0 +1,9 @@
+{
+  "node_type_source": "C:/P:/I: prefix in pinned mapping from retained graph builder",
+  "degree_does_not_prove_false_name_merge": true,
+  "distinct_homonyms_independently_identified": false,
+  "names_or_node_identifiers_exported": false,
+  "edges_deleted_or_modified": false,
+  "self_loops_excluded_for_training_union_coverage": true,
+  "annual_hub_stats_use_original_E1_E2_E3_records_not_appended_reverse_duplicates": true
+}

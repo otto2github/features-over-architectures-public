@@ -1,0 +1,31 @@
+{
+  "replayed_fin_nonstandardized_features": 9,
+  "replayed_fini_nonstandardized_features": 63,
+  "standardized_columns_not_reconstructed": 24,
+  "selected_update_flag_1_is_not_proof_of_post_anchor_availability": true,
+  "record_dates_reported_separately": [
+    "ann_date",
+    "f_ann_date"
+  ],
+  "any_recorded_date_is_conservative_vendor_date_exposure_not_a_new_historical_availability_claim": true,
+  "source_date_semantics_independently_verified": false,
+  "full_historical_database_snapshot_provenance_proven": false,
+  "value_matches_are_rule_replay_compatibility_not_unique_historical_source_identification": true,
+  "ties_not_treated_as_uniquely_identified_retained_rows": true,
+  "all_fin_fini_columns_certified_as_of": false,
+  "cross_sectional_zind_and_other_feature_blocks_not_cleared_by_this_check": true,
+  "first_announced_or_asof_feature_matrix_written": false,
+  "models_trained": 0,
+  "problems": [
+    "FROZEN_COLUMN_NOT_FOUND:fini_bps_t0",
+    "FROZEN_COLUMN_NOT_FOUND:fini_cfps_t0",
+    "FROZEN_COLUMN_NOT_FOUND:fini_ebit_ps_t0",
+    "FROZEN_COLUMN_NOT_FOUND:fini_eps_t0",
+    "FROZEN_COLUMN_NOT_FOUND:fini_fcfe_ps_t0",
+    "FROZEN_COLUMN_NOT_FOUND:fini_fcff_ps_t0",
+    "FROZEN_COLUMN_NOT_FOUND:fini_ocfps_t0",
+    "FROZEN_COLUMN_NOT_FOUND:fini_total_revenue_ps_t0",
+    "FROZEN_COLUMN_NOT_FOUND:fini_undist_profit_ps_t0"
+  ],
+  "next_decision": "Review date counts, value binding, missingness, tied selections and available historical candidates before authorizing any sensitivity training."
+}

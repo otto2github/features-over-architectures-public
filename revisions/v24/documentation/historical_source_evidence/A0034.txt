@@ -1,0 +1,324 @@
+SOURCE_ID: A0034
+SOURCE: <MOUNT>/Downloads/ch7_v1_integration_v1.tar.gz :: ch7_v1_integration/scripts/integrate_audit_features.py
+ORIGINAL_SHA256: 1c2be9cc52b3a9e8402cc00e829c6ecb7c01fb878d923c07c2fbb0a881354bd2
+ORIGINAL_BYTES: 13634
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | #!/usr/bin/env python3
+L00002 | # -*- coding: utf-8 -*-
+L00003 | """
+L00004 | integrate_audit_features.py
+L00005 | ===========================
+L00006 | FIN_Audit → 5 维审计特征.
+L00007 | 
+L00008 | 输出 5 维 (firm-year 聚合):
+L00009 |   audit_is_modified           : 二值 (非标准无保留意见 = 1)  ★强信号
+L00010 |   audit_type_code             : categorical 编码 1-9 (Audittyp 中文 → 数字)
+L00011 |   audit_fee_log               : log(Tcost + 1) 审计费对数
+L00012 |   audit_fee_to_assets         : 审计费 / 公司资产 (异常高 = 红旗)
+L00013 |   audit_firm_change_flag      : 二值 (年度间会计师事务所变更, 由 Dadtunit 跨年比较)
+L00014 | 
+L00015 | CSMAR Audittyp 中文 → 数字编码 (论文需建立映射, 不是数字直接给):
+L00016 |   1 = 标准无保留意见 (Unqualified)
+L00017 |   2 = 带强调事项段的无保留意见 (Unqualified with explanatory paragraph)
+L00018 |   3 = 带解释性说明无保留意见 (Unqualified with emphasis of matter)
+L00019 |   4 = 保留意见 (Qualified)
+L00020 |   5 = 否定意见 (Adverse)
+L00021 |   6 = 拒绝表示意见 (Disclaimer of opinion)
+L00022 |   7 = 无法表示意见 (Disclaimer)  -- 与 6 同义, CSMAR 不同年代措辞差异
+L00023 |   8 = 其他非标准意见
+L00024 |   9 = 未知 / 缺失 (置 1 表示未审计完成)
+L00025 | 
+L00026 | is_modified = 1 当 type_code != 1 (任何非标准无保留意见均算非标审计)
+L00027 | 
+L00028 | 数据特性 (依据 inventory):
+L00029 |   68,607 行 → 清洁 42,523 行 / 4,107 公司
+L00030 |   非标审计意见占比 ≈ 4.8% (≈ 欺诈率量级, 极强信号)
+L00031 |   Tcost: P50=89.5万, P90=260万
+L00032 | 
+L00033 | 聚合策略:
+L00034 |   - Accper 提取 year (会计年度)
+L00035 |   - 同 firm-year 多条 (年报+审计报告分开): 取 Audittyp 最严重者 (type_code 最大)
+L00036 |   - audit_firm_change_flag: 用 Dadtunit (会计师事务所), 与上年比较
+L00037 | """
+L00038 | 
+L00039 | from __future__ import annotations
+L00040 | 
+L00041 | import argparse
+L00042 | import sys
+L00043 | from pathlib import Path
+L00044 | 
+L00045 | import numpy as np
+L00046 | import pandas as pd
+L00047 | 
+L00048 | sys.path.insert(0, str(Path(__file__).resolve().parent))
+L00049 | from _v1_common import (
+L00050 |     extract_year,
+L00051 |     get_logger,
+L00052 |     get_paths,
+L00053 |     log_mem,
+L00054 |     read_csmar_xlsx,
+L00055 |     write_stats_json,
+L00056 | )
+L00057 | 
+L00058 | # ============================================================ Audittyp 编码映射
+L00059 | AUDIT_TYPE_MAPPING = {
+L00060 |     # type_code: [中文关键词列表 (按出现频率排序)]
+L00061 |     1: ["标准无保留", "无保留意见", "标准审计"],  # 默认 1
+L00062 |     2: ["带强调事项", "强调事项"],
+L00063 |     3: ["带解释性说明", "解释性说明"],
+L00064 |     4: ["保留意见"],
+L00065 |     5: ["否定意见"],
+L00066 |     6: ["拒绝表示", "无法表示"],
+L00067 |     8: ["其他"],
+L00068 | }
+L00069 | 
+L00070 | 
+L00071 | def encode_audittyp(s: str) -> int:
+L00072 |     """中文 Audittyp 字符串 → 1-9 数字编码 (启发式匹配关键词)"""
+L00073 |     if pd.isna(s) or not isinstance(s, str) or s.strip() == "":
+L00074 |         return 9
+L00075 |     text = str(s).strip()
+L00076 |     # 注意优先级: 先匹配修饰版 (带强调/带解释), 再匹配基础版
+L00077 |     for code in [2, 3, 4, 5, 6, 8]:
+L00078 |         for kw in AUDIT_TYPE_MAPPING[code]:
+L00079 |             if kw in text:
+L00080 |                 return code
+L00081 |     # 最后判断标准无保留 (避免被"无保留"无差别匹配)
+L00082 |     if "标准" in text and "无保留" in text:
+L00083 |         return 1
+L00084 |     if "标准无保留" in text:
+L00085 |         return 1
+L00086 |     if "无保留" in text and not any(k in text for k in ["保留意见", "带强调", "带解释"]):
+L00087 |         return 1
+L00088 |     return 8  # 兜底: 其他非标
+L00089 | 
+L00090 | 
+L00091 | # ============================================================
+L00092 | def build_audit_features(
+L00093 |     audit_xlsx: Path,
+L00094 |     base_firm_year_parquet: Path,
+L00095 |     out_parquet: Path,
+L00096 |     out_stats: Path,
+L00097 |     base_features_for_assets: Path | None,
+L00098 |     log,
+L00099 | ):
+L00100 |     # ---------- step 1: 读 FIN_Audit ----------
+L00101 |     log.info("=" * 60)
+L00102 |     log.info("Step 1: 读 FIN_Audit")
+L00103 |     log.info("=" * 60)
+L00104 | 
+L00105 |     df = read_csmar_xlsx(audit_xlsx, code_col="Stkcd", log=log)
+L00106 |     log.info(f"清洁后行数: {len(df)}")
+L00107 |     log_mem(log, "after_read_audit")
+L00108 | 
+L00109 |     # ---------- step 2: year ----------
+L00110 |     df["year"] = extract_year(df["Accper"]).astype("Int64")
+L00111 |     df = df.dropna(subset=["year"]).copy()
+L00112 |     df["year"] = df["year"].astype(int)
+L00113 |     df = df.rename(columns={"Stkcd": "firm_id"})
+L00114 | 
+L00115 |     # ---------- step 3: Audittyp 编码 ----------
+L00116 |     log.info("=" * 60)
+L00117 |     log.info("Step 3: Audittyp 中文 → 数字编码")
+L00118 |     log.info("=" * 60)
+L00119 | 
+L00120 |     df["audit_type_code"] = df["Audittyp"].astype(str).apply(encode_audittyp).astype("int8")
+L00121 | 
+L00122 |     # 编码分布
+L00123 |     code_dist = df["audit_type_code"].value_counts().to_dict()
+L00124 |     log.info(f"audit_type_code 分布: {dict(sorted({int(k):int(v) for k,v in code_dist.items()}.items()))}")
+L00125 | 
+L00126 |     # 兜底: 看一下被 encode 为 8 的中文样本, 确认映射没漏
+L00127 |     other_samples = df.loc[df["audit_type_code"] == 8, "Audittyp"].drop_duplicates().head(20).tolist()
+L00128 |     if other_samples:
+L00129 |         log.info(f"被编码为 8 的 Audittyp 样例 (top 20): {other_samples}")
+L00130 | 
+L00131 |     df["audit_is_modified"] = (df["audit_type_code"] != 1).astype("int8")
+L00132 | 
+L00133 |     # ---------- step 4: Tcost log + fee_to_assets ----------
+L00134 |     log.info("=" * 60)
+L00135 |     log.info("Step 4: 审计费 log + 审计费率")
+L00136 |     log.info("=" * 60)
+L00137 | 
+L00138 |     if "Tcost" in df.columns:
+L00139 |         df["Tcost_num"] = pd.to_numeric(df["Tcost"], errors="coerce")
+L00140 |         df["audit_fee_log"] = np.log1p(df["Tcost_num"].fillna(0)).astype("float32")
+L00141 |     else:
+L00142 |         log.warning("FIN_Audit 缺 Tcost 字段")
+L00143 |         df["Tcost_num"] = 0
+L00144 |         df["audit_fee_log"] = 0.0
+L00145 | 
+L00146 |     # ---------- step 5: 同 firm-year 取最严重 ----------
+L00147 |     log.info("=" * 60)
+L00148 |     log.info("Step 5: firm-year 聚合 (取 audit_type_code 最大者)")
+L00149 |     log.info("=" * 60)
+L00150 | 
+L00151 |     df_sorted = df.sort_values(["firm_id", "year", "audit_type_code"], ascending=[True, True, False])
+L00152 |     fy = df_sorted.drop_duplicates(["firm_id", "year"], keep="first").copy()
+L00153 |     log.info(f"firm-year 聚合后: {len(fy)} 行")
+L00154 | 
+L00155 |     # ---------- step 6: audit_firm_change_flag ----------
+L00156 |     log.info("=" * 60)
+L00157 |     log.info("Step 6: 会计师事务所变更标志")
+L00158 |     log.info("=" * 60)
+L00159 | 
+L00160 |     if "Dadtunit" in fy.columns:
+L00161 |         fy_sorted = fy.sort_values(["firm_id", "year"]).copy()
+L00162 |         fy_sorted["_prev_dadtunit"] = fy_sorted.groupby("firm_id")["Dadtunit"].shift(1)
+L00163 |         fy_sorted["audit_firm_change_flag"] = (
+L00164 |             fy_sorted["_prev_dadtunit"].notna()
+L00165 |             & (fy_sorted["Dadtunit"].astype(str) != fy_sorted["_prev_dadtunit"].astype(str))
+L00166 |         ).astype("int8")
+L00167 |         # 对应回 fy
+L00168 |         fy = fy.merge(
+L00169 |             fy_sorted[["firm_id", "year", "audit_firm_change_flag"]],
+L00170 |             on=["firm_id", "year"],
+L00171 |             how="left",
+L00172 |         )
+L00173 |         fy["audit_firm_change_flag"] = fy["audit_firm_change_flag"].fillna(0).astype("int8")
+L00174 |         n_change = int(fy["audit_firm_change_flag"].sum())
+L00175 |         log.info(f"会计师事务所变更事件: {n_change} firm-year ({n_change/len(fy)*100:.2f}%)")
+L00176 |     else:
+L00177 |         log.warning("FIN_Audit 缺 Dadtunit 字段, audit_firm_change_flag 全置 0")
+L00178 |         fy["audit_firm_change_flag"] = 0
+L00179 | 
+L00180 |     # ---------- step 7: audit_fee_to_assets (需 join 资产数据) ----------
+L00181 |     log.info("=" * 60)
+L00182 |     log.info("Step 7: audit_fee_to_assets (需 join 总资产)")
+L00183 |     log.info("=" * 60)
+L00184 | 
+L00185 |     fy["audit_fee_to_assets"] = np.nan  # 默认占位
+L00186 | 
+L00187 |     if base_features_for_assets is not None and base_features_for_assets.exists():
+L00188 |         # v0.7 features_v0_7.parquet 应该有 total_assets 或类似字段
+L00189 |         # 尝试常见列名
+L00190 |         try:
+L00191 |             base_cols = pd.read_parquet(base_features_for_assets).columns.tolist()
+L00192 |             asset_col = None
+L00193 |             for cand in ["total_assets", "Tot_Assets", "TotalAssets", "assets", "ta_log"]:
+L00194 |                 if cand in base_cols:
+L00195 |                     asset_col = cand
+L00196 |                     break
+L00197 |             if asset_col is not None:
+L00198 |                 base = pd.read_parquet(base_features_for_assets, columns=["firm_id", "year", asset_col])
+L00199 |                 base["firm_id"] = base["firm_id"].astype(str).str.zfill(6)
+L00200 |                 base["year"] = base["year"].astype(int)
+L00201 |                 base = base.rename(columns={asset_col: "_assets"}).drop_duplicates(["firm_id", "year"])
+L00202 | 
+L00203 |                 fy = fy.merge(base, on=["firm_id", "year"], how="left")
+L00204 |                 # 若 base 中是对数, 取 exp 还原 (启发); 一般 ta_log 才需还原
+L00205 |                 if asset_col == "ta_log":
+L00206 |                     fy["_assets"] = np.expm1(fy["_assets"])
+L00207 |                 # fee / assets, 安全分母
+L00208 |                 with np.errstate(divide="ignore", invalid="ignore"):
+L00209 |                     fy["audit_fee_to_assets"] = np.where(
+L00210 |                         fy["_assets"] > 0,
+L00211 |                         fy["Tcost_num"].fillna(0) / fy["_assets"],
+L00212 |                         np.nan,
+L00213 |                     )
+L00214 |                 log.info(f"用 v0.7 列 '{asset_col}' 计算 audit_fee_to_assets")
+L00215 |             else:
+L00216 |                 log.warning(f"v0.7 features 中未找到资产列 (查询: total_assets/Tot_Assets/...)")
+L00217 |         except Exception as e:
+L00218 |             log.warning(f"读取 v0.7 features 失败: {e}")
+L00219 |     else:
+L00220 |         log.warning("未指定或不存在 base-features-for-assets, audit_fee_to_assets 全 NaN (后续 fillna 0)")
+L00221 | 
+L00222 |     fy["audit_fee_to_assets"] = pd.to_numeric(fy["audit_fee_to_assets"], errors="coerce").astype("float32")
+L00223 | 
+L00224 |     # ---------- step 8: 与 v0.7 全集对齐 ----------
+L00225 |     log.info("=" * 60)
+L00226 |     log.info("Step 8: 与 v0.7 全集对齐 (fillna)")
+L00227 |     log.info("=" * 60)
+L00228 | 
+L00229 |     feature_cols = [
+L00230 |         "audit_is_modified",
+L00231 |         "audit_type_code",
+L00232 |         "audit_fee_log",
+L00233 |         "audit_fee_to_assets",
+L00234 |         "audit_firm_change_flag",
+L00235 |     ]
+L00236 |     out_df = fy[["firm_id", "year"] + feature_cols].copy()
+L00237 | 
+L00238 |     if base_firm_year_parquet is not None and base_firm_year_parquet.exists():
+L00239 |         base = pd.read_parquet(base_firm_year_parquet, columns=["firm_id", "year"])
+L00240 |         base["firm_id"] = base["firm_id"].astype(str).str.zfill(6)
+L00241 |         base["year"] = base["year"].astype(int)
+L00242 |         base = base.drop_duplicates()
+L00243 | 
+L00244 |         merged = base.merge(out_df, on=["firm_id", "year"], how="left")
+L00245 |         # 缺失填充 (无审计记录视为 type_code=9, is_modified=0, 费用 0)
+L00246 |         merged["audit_type_code"] = merged["audit_type_code"].fillna(9).astype("int8")
+L00247 |         merged["audit_is_modified"] = merged["audit_is_modified"].fillna(0).astype("int8")
+L00248 |         merged["audit_fee_log"] = merged["audit_fee_log"].fillna(0).astype("float32")
+L00249 |         merged["audit_fee_to_assets"] = merged["audit_fee_to_assets"].fillna(0).astype("float32")
+L00250 |         merged["audit_firm_change_flag"] = merged["audit_firm_change_flag"].fillna(0).astype("int8")
+L00251 | 
+L00252 |         n_covered = int((merged["audit_type_code"] != 9).sum())
+L00253 |         log.info(f"v0.7 中有审计记录: {n_covered} firm-year ({n_covered/len(merged)*100:.1f}%)")
+L00254 |         out_df = merged
+L00255 | 
+L00256 |     # ---------- step 9: 持久化 ----------
+L00257 |     out_parquet.parent.mkdir(parents=True, exist_ok=True)
+L00258 |     out_df.to_parquet(out_parquet, index=False, compression="snappy")
+L00259 |     log.info(f"特征写入: {out_parquet}  ({len(out_df)} 行)")
+L00260 | 
+L00261 |     stats = {
+L00262 |         "feature_set": "audit (FIN_Audit)",
+L00263 |         "input": str(audit_xlsx),
+L00264 |         "n_rows_output": int(len(out_df)),
+L00265 |         "feature_cols": feature_cols,
+L00266 |         "audit_type_code_distribution": {int(k): int(v) for k, v in out_df["audit_type_code"].value_counts().items()},
+L00267 |         "audit_is_modified_rate": float(out_df["audit_is_modified"].mean()),
+L00268 |         "audit_firm_change_rate": float(out_df["audit_firm_change_flag"].mean()),
+L00269 |         "audit_fee_log_stats": {
+L00270 |             "mean": float(out_df["audit_fee_log"].mean()),
+L00271 |             "p50": float(out_df["audit_fee_log"].median()),
+L00272 |             "p90": float(out_df["audit_fee_log"].quantile(0.9)),
+L00273 |         },
+L00274 |         "audit_type_mapping": {str(k): v for k, v in AUDIT_TYPE_MAPPING.items()},
+L00275 |         "notes": [
+L00276 |             "audit_is_modified == 1 是非标审计意见, 与欺诈率量级 (4.8%) 接近, 强信号",
+L00277 |             "audit_type_code=9 表示未审计/缺失, 占比 = 100% - 覆盖率",
+L00278 |             "audit_fee_to_assets 异常高 (P95+) 是审计师 risk premium, 间接欺诈信号",
+L00279 |         ],
+L00280 |     }
+L00281 |     write_stats_json(stats, out_stats, log=log)
+L00282 | 
+L00283 | 
+L00284 | # ============================================================
+L00285 | def main():
+L00286 |     p = argparse.ArgumentParser(description="FIN_Audit → 5 维审计特征")
+L00287 |     p.add_argument("--project-root", type=Path, default=None)
+L00288 |     p.add_argument("--audit-xlsx", type=Path, default=None)
+L00289 |     p.add_argument("--base-firm-year", type=Path, default=None,
+L00290 |                    help="v0.7 features parquet (用于 firm-year 全集对齐)")
+L00291 |     p.add_argument("--base-features-for-assets", type=Path, default=None,
+L00292 |                    help="v0.7 features parquet, 含 total_assets 列 (用于计算 fee_to_assets)")
+L00293 |     p.add_argument("--out-parquet", type=Path, default=None)
+L00294 |     p.add_argument("--out-stats", type=Path, default=None)
+L00295 |     args = p.parse_args()
+L00296 | 
+L00297 |     paths = get_paths(args.project_root)
+L00298 |     log = get_logger("integrate_audit_features", paths["stats"])
+L00299 | 
+L00300 |     audit_xlsx = args.audit_xlsx or (paths["raw_csmar"] / "FIN_Audit.xlsx")
+L00301 |     base = args.base_firm_year or (paths["processed_features"] / "features_v0_7.parquet")
+L00302 |     base_assets = args.base_features_for_assets or (paths["processed_features"] / "features_v0_7.parquet")
+L00303 |     out_parquet = args.out_parquet or (paths["processed_features"] / "audit_features_v1_0.parquet")
+L00304 |     out_stats = args.out_stats or (paths["stats"] / "integrate_audit_stats.json")
+L00305 | 
+L00306 |     log.info(f"Audit xlsx: {audit_xlsx}")
+L00307 |     log.info(f"Base firm-year: {base}")
+L00308 |     log.info(f"Base for assets: {base_assets}")
+L00309 |     log.info(f"Out: {out_parquet}")
+L00310 | 
+L00311 |     build_audit_features(audit_xlsx, base, out_parquet, out_stats, base_assets, log)
+L00312 |     log.info("✓ integrate_audit_features 完成")
+L00313 | 
+L00314 | 
+L00315 | if __name__ == "__main__":
+L00316 |     main()

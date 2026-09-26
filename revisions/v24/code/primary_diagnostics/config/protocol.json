@@ -1,0 +1,49 @@
+{
+  "tool_version": "1.0.0",
+  "manuscript_baseline": "v16",
+  "primary_label": "label_v1_strict_ab_primary",
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024
+  ],
+  "cutoff": "2026-05-08",
+  "fixed_window_days": 1095,
+  "bootstrap_replicates": 2000,
+  "bootstrap_company_seed": 141707,
+  "bootstrap_fit_seed": 1707141,
+  "frozen_hashes": {
+    "features_v1_1.parquet": "1aff9146f517f0d2a7b078f13f16ddec9fb3b10b26f702011769fd16c937151c",
+    "fraud_labels_v1_0.parquet": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+    "global_edge_index.parquet": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09",
+    "node_features_v1_1.parquet": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+    "node_id_index_label_v1_0_fiverel_derived.parquet": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770"
+  },
+  "stageF_manifest_sha256": "ece6a36416c6715a0e36eda9e00624ec31cc4aca4eb015b603c4324b5c2d1b9e",
+  "expected_panel_rows": 51675,
+  "expected_counts": {
+    "train": [
+      24106,
+      254
+    ],
+    "validation": [
+      7309,
+      40
+    ],
+    "test": [
+      8435,
+      20
+    ]
+  },
+  "expected_test_companies": 4531,
+  "expected_nodes": 303775,
+  "expected_edges": 4469735,
+  "mac_project_default": "private_inputs/project",
+  "server_project_default": "~/cyq/peerj_141707_rerun_v1",
+  "audit_default": "~/peerj_141707_audit",
+  "reverse_relative": "experiments/direction_sensitivity_v13",
+  "training_authorized": false,
+  "paper_edits_authorized": false
+}

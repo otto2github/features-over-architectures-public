@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "Cite this specific version DOI for the revised reproducibility archive."
+title: "Graph neural networks versus feature-only learners for Chinese A-share sanction prediction: a holder–manager graph without transaction edges"
+type: software
+version: "v24-20260925"
+doi: "10.5281/zenodo.22958631"
+date-released: "2026-09-25"
+repository-code: "https://github.com/otto2github/features-over-architectures-public"
+authors:
+  - family-names: Cheng
+    given-names: Yi Qiu
+  - family-names: Cheng
+    given-names: Xiaorong
+abstract: "Source, fixed-fit aggregates and aggregate-regeneration tests for CS-2026:06:141707. Licensed rows, private scores, row-level masks and natural-person mappings are excluded."

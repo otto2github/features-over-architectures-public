@@ -1,0 +1,251 @@
+SOURCE_ID: A0031
+SOURCE: <MOUNT>/Downloads/ch7_v1_integration_v1.tar.gz :: ch7_v1_integration/scripts/integrate_pledge_features.py
+ORIGINAL_SHA256: 602850599632f9a699554b3121741c2e637ba64d8b29125263bbdcbb4f3c9650
+ORIGINAL_BYTES: 9995
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | #!/usr/bin/env python3
+L00002 | # -*- coding: utf-8 -*-
+L00003 | """
+L00004 | integrate_pledge_features.py
+L00005 | ============================
+L00006 | PLED_TRDDETL 股权质押 → 6 维质押特征.
+L00007 | 
+L00008 | 输出 6 维 (firm-year 聚合, 默认 fillna 0):
+L00009 |   pld_max_ratio2                : 公司年度最高质押占公司总股本比例 % (Ratio2 max)
+L00010 |   pld_n_events                  : 年度质押事件数 (含新增/解除/再质押所有 ChangeReason)
+L00011 |   pld_controller_max_ratio1     : 控股股东+实控人质押方个人最高质押比例 % (Ratio1 max for RelationtoCom ∈ {控股股东, 实际控制人})
+L00012 |   pld_high_pledge_flag          : 二值 (Ratio1 ≥ 80% 极端个人质押 → 控股股东资金链危机信号)
+L00013 |   pld_n_securities_pledgee      : 年度质押方为证券公司的事件数 (高杠杆代理: 券商质押融资比例高)
+L00014 |   pld_n_change_events           : 年度状态变更事件数 (新增 - 解除, 净值)
+L00015 | 
+L00016 | 数据特性 (依据 inventory):
+L00017 |   214,190 行 → 清洁后 117,742 行 / 2,010 公司
+L00018 |   firm-year 聚合后 12,880 行, 与 v0.7 全集 25% 覆盖 (稀疏)
+L00019 |   缺失 75% firm-year fillna(0) — 无质押 = 真实 0
+L00020 | 
+L00021 | 聚合策略:
+L00022 |   - 用 DeclareDate 提取 year (公告年, 即质押发生年)
+L00023 |   - StartDate / EndDate 不用 (数据稀疏 + 跨年事件归属模糊)
+L00024 |   - ChangeReason 含 "新增" / "解除" / "再质押" / "解押"
+L00025 | 
+L00026 | 输出:
+L00027 |   data/processed/features/pledge_features_v1_0.parquet
+L00028 |   data/interim/v1_integration_stats/integrate_pledge_stats.json
+L00029 | """
+L00030 | 
+L00031 | from __future__ import annotations
+L00032 | 
+L00033 | import argparse
+L00034 | import re
+L00035 | import sys
+L00036 | from pathlib import Path
+L00037 | 
+L00038 | import numpy as np
+L00039 | import pandas as pd
+L00040 | 
+L00041 | sys.path.insert(0, str(Path(__file__).resolve().parent))
+L00042 | from _v1_common import (
+L00043 |     extract_year,
+L00044 |     get_logger,
+L00045 |     get_paths,
+L00046 |     log_mem,
+L00047 |     read_csmar_xlsx,
+L00048 |     write_stats_json,
+L00049 | )
+L00050 | 
+L00051 | # ============================================================ 关键字
+L00052 | CONTROLLER_RELATIONS = ["控股股东", "实际控制人", "控股", "实控"]
+L00053 | SECURITIES_PLEDGEE_KEYWORDS = ["证券", "券商", "证券公司"]
+L00054 | NEW_PLEDGE_KEYWORDS = ["新增", "新质押", "首次质押", "再质押", "补充质押"]
+L00055 | RELEASE_KEYWORDS = ["解除", "解押", "终止"]
+L00056 | 
+L00057 | HIGH_RATIO1_THRESHOLD = 80.0  # 个人质押比例 ≥ 80% 视作极端
+L00058 | 
+L00059 | 
+L00060 | # ============================================================
+L00061 | def build_pledge_features(
+L00062 |     pled_xlsx: Path,
+L00063 |     base_firm_year_parquet: Path,
+L00064 |     out_parquet: Path,
+L00065 |     out_stats: Path,
+L00066 |     log,
+L00067 | ):
+L00068 |     # ---------- step 1: 读 PLED_TRDDETL ----------
+L00069 |     log.info("=" * 60)
+L00070 |     log.info("Step 1: 读 PLED_TRDDETL")
+L00071 |     log.info("=" * 60)
+L00072 | 
+L00073 |     df = read_csmar_xlsx(pled_xlsx, code_col="Symbol", log=log)
+L00074 |     log.info(f"清洁后行数: {len(df)}")
+L00075 |     log_mem(log, "after_read_pled")
+L00076 | 
+L00077 |     # ---------- step 2: year 抽取 ----------
+L00078 |     df["year"] = extract_year(df["DeclareDate"]).astype("Int64")
+L00079 |     df = df.dropna(subset=["year"]).copy()
+L00080 |     df["year"] = df["year"].astype(int)
+L00081 | [WITHHELD: EMBEDDED_RECORD]
+L00082 | 
+L00083 |     # ---------- step 3: 数值字段 ----------
+L00084 |     for col in ["Ratio1", "Ratio2"]:
+L00085 |         if col in df.columns:
+L00086 |             df[col] = pd.to_numeric(df[col], errors="coerce")
+L00087 | 
+L00088 |     # ---------- step 4: 派生标志 ----------
+L00089 |     log.info("=" * 60)
+L00090 |     log.info("Step 4: 派生标志列")
+L00091 |     log.info("=" * 60)
+L00092 | 
+L00093 |     rel = df.get("RelationtoCom", pd.Series([""] * len(df))).astype(str)
+L00094 |     df["_is_controller"] = rel.str.contains("|".join(CONTROLLER_RELATIONS), regex=True, na=False)
+L00095 | 
+L00096 |     pledgee_cat = df.get("PledgeeCatergory", pd.Series([""] * len(df))).astype(str)
+L00097 |     pledgee_name = df.get("Pledgee", pd.Series([""] * len(df))).astype(str)
+L00098 |     sec_pat = "|".join(SECURITIES_PLEDGEE_KEYWORDS)
+L00099 |     df["_is_securities_pledgee"] = (
+L00100 |         pledgee_cat.str.contains(sec_pat, regex=True, na=False)
+L00101 |         | pledgee_name.str.contains(sec_pat, regex=True, na=False)
+L00102 |     )
+L00103 | 
+L00104 |     cr = df.get("ChangeReason", pd.Series([""] * len(df))).astype(str)
+L00105 |     df["_is_new"] = cr.str.contains("|".join(NEW_PLEDGE_KEYWORDS), regex=True, na=False)
+L00106 |     df["_is_release"] = cr.str.contains("|".join(RELEASE_KEYWORDS), regex=True, na=False)
+L00107 | 
+L00108 |     log.info(f"控股股东/实控人质押行数: {int(df['_is_controller'].sum())}")
+L00109 |     log.info(f"证券公司质押行数: {int(df['_is_securities_pledgee'].sum())}")
+L00110 |     log.info(f"新增质押行数: {int(df['_is_new'].sum())}, 解押行数: {int(df['_is_release'].sum())}")
+L00111 | 
+L00112 |     # ---------- step 5: firm-year 聚合 ----------
+L00113 |     log.info("=" * 60)
+L00114 |     log.info("Step 5: firm-year 聚合 (6 维特征)")
+L00115 |     log.info("=" * 60)
+L00116 | 
+L00117 |     grouped = df.groupby(["firm_id", "year"], as_index=False).agg(
+L00118 |         pld_max_ratio2=("Ratio2", "max"),
+L00119 |         pld_n_events=("Ratio2", "size"),
+L00120 |         pld_n_securities_pledgee=("_is_securities_pledgee", "sum"),
+L00121 |         _n_new=("_is_new", "sum"),
+L00122 |         _n_release=("_is_release", "sum"),
+L00123 |         _ratio1_all_max=("Ratio1", "max"),
+L00124 |     )
+L00125 | 
+L00126 |     # 控股股东/实控人专属最大 Ratio1
+L00127 |     ctrl_grp = (
+L00128 |         df.loc[df["_is_controller"]]
+L00129 |         .groupby(["firm_id", "year"], as_index=False)
+L00130 |         .agg(pld_controller_max_ratio1=("Ratio1", "max"))
+L00131 |     )
+L00132 | 
+L00133 |     # 高质押 flag: 控股股东 Ratio1 >= 80%
+L00134 |     grouped = grouped.merge(ctrl_grp, on=["firm_id", "year"], how="left")
+L00135 |     grouped["pld_high_pledge_flag"] = (
+L00136 |         (grouped["pld_controller_max_ratio1"].fillna(0) >= HIGH_RATIO1_THRESHOLD)
+L00137 |         | (grouped["_ratio1_all_max"].fillna(0) >= HIGH_RATIO1_THRESHOLD)  # 兜底
+L00138 |     ).astype("int8")
+L00139 | 
+L00140 |     grouped["pld_n_change_events"] = (grouped["_n_new"] - grouped["_n_release"]).astype(int)
+L00141 | 
+L00142 |     # 整理列
+L00143 |     feature_cols = [
+L00144 |         "pld_max_ratio2",
+L00145 |         "pld_n_events",
+L00146 |         "pld_controller_max_ratio1",
+L00147 |         "pld_high_pledge_flag",
+L00148 |         "pld_n_securities_pledgee",
+L00149 |         "pld_n_change_events",
+L00150 |     ]
+L00151 |     out_df = grouped[["firm_id", "year"] + feature_cols].copy()
+L00152 |     log.info(f"firm-year 聚合后行数: {len(out_df)}")
+L00153 | 
+L00154 |     # ---------- step 6: 与 v0.7 全集对齐 + fillna ----------
+L00155 |     log.info("=" * 60)
+L00156 |     log.info("Step 6: 与 v0.7 全集对齐 (fillna 0)")
+L00157 |     log.info("=" * 60)
+L00158 | 
+L00159 |     if base_firm_year_parquet is not None and base_firm_year_parquet.exists():
+L00160 |         base = pd.read_parquet(base_firm_year_parquet, columns=["firm_id", "year"])
+L00161 |         base["firm_id"] = base["firm_id"].astype(str).str.zfill(6)
+L00162 |         base["year"] = base["year"].astype(int)
+L00163 |         base = base.drop_duplicates()
+L00164 |         log.info(f"v0.7 全集: {len(base)} firm-year")
+L00165 | 
+L00166 |         merged = base.merge(out_df, on=["firm_id", "year"], how="left")
+L00167 |         # 全部 fillna(0): 无质押事件 = 真实 0
+L00168 |         for c in feature_cols:
+L00169 |             merged[c] = merged[c].fillna(0)
+L00170 |         merged["pld_max_ratio2"] = merged["pld_max_ratio2"].astype("float32")
+L00171 |         merged["pld_controller_max_ratio1"] = merged["pld_controller_max_ratio1"].astype("float32")
+L00172 |         merged["pld_high_pledge_flag"] = merged["pld_high_pledge_flag"].astype("int8")
+L00173 |         for c in ["pld_n_events", "pld_n_securities_pledgee", "pld_n_change_events"]:
+L00174 |             merged[c] = merged[c].astype("int32")
+L00175 | 
+L00176 |         n_covered = int((merged["pld_n_events"] > 0).sum())
+L00177 |         log.info(f"v0.7 中有质押记录: {n_covered} firm-year ({n_covered/len(merged)*100:.1f}%)")
+L00178 |         out_df = merged
+L00179 |     else:
+L00180 |         log.warning(f"v0.7 base 不存在, 跳过对齐")
+L00181 | 
+L00182 |     # ---------- step 7: 持久化 ----------
+L00183 |     out_parquet.parent.mkdir(parents=True, exist_ok=True)
+L00184 |     out_df.to_parquet(out_parquet, index=False, compression="snappy")
+L00185 |     log.info(f"特征写入: {out_parquet}")
+L00186 | 
+L00187 |     # ---------- step 8: 统计 ----------
+L00188 |     stats = {
+L00189 |         "feature_set": "pledge (PLED_TRDDETL)",
+L00190 |         "input": str(pled_xlsx),
+L00191 |         "output_parquet": str(out_parquet),
+L00192 |         "n_rows_output": int(len(out_df)),
+L00193 |         "n_features": len(feature_cols),
+L00194 |         "feature_cols": feature_cols,
+L00195 |         "feature_distributions": {
+L00196 |             c: {
+L00197 |                 "mean": float(pd.to_numeric(out_df[c], errors="coerce").mean()),
+L00198 |                 "p50": float(pd.to_numeric(out_df[c], errors="coerce").median()),
+L00199 |                 "p90": float(pd.to_numeric(out_df[c], errors="coerce").quantile(0.9)),
+L00200 |                 "max": float(pd.to_numeric(out_df[c], errors="coerce").max()),
+L00201 |             }
+L00202 |             for c in feature_cols
+L00203 |         },
+L00204 |         "high_ratio1_threshold": HIGH_RATIO1_THRESHOLD,
+L00205 |         "controller_relations": CONTROLLER_RELATIONS,
+L00206 |         "securities_pledgee_keywords": SECURITIES_PLEDGEE_KEYWORDS,
+L00207 |         "notes": [
+L00208 |             "稀疏特征: 仅 25% v0.7 firm-year 有质押事件",
+L00209 |             "fillna(0) 是合理选择 — 无质押 = 真实 0, 不是 missing",
+L00210 |             "pld_high_pledge_flag 是控股股东资金链危机的强信号 (Liu & Tian 2012)",
+L00211 |         ],
+L00212 |     }
+L00213 |     write_stats_json(stats, out_stats, log=log)
+L00214 | 
+L00215 | 
+L00216 | # ============================================================
+L00217 | def main():
+L00218 |     p = argparse.ArgumentParser(description="PLED_TRDDETL → 6 维质押特征")
+L00219 |     p.add_argument("--project-root", type=Path, default=None)
+L00220 |     p.add_argument("--pled-xlsx", type=Path, default=None)
+L00221 |     p.add_argument("--base-firm-year", type=Path, default=None)
+L00222 |     p.add_argument("--out-parquet", type=Path, default=None)
+L00223 |     p.add_argument("--out-stats", type=Path, default=None)
+L00224 |     args = p.parse_args()
+L00225 | 
+L00226 |     paths = get_paths(args.project_root)
+L00227 |     log = get_logger("integrate_pledge_features", paths["stats"])
+L00228 | 
+L00229 |     pled_xlsx = args.pled_xlsx or (paths["raw_csmar"] / "PLED_TRDDETL.xlsx")
+L00230 |     base = args.base_firm_year or (paths["processed_features"] / "features_v0_7.parquet")
+L00231 |     out_parquet = args.out_parquet or (paths["processed_features"] / "pledge_features_v1_0.parquet")
+L00232 |     out_stats = args.out_stats or (paths["stats"] / "integrate_pledge_stats.json")
+L00233 | 
+L00234 |     log.info(f"PLED xlsx: {pled_xlsx}")
+L00235 |     log.info(f"v0.7 base: {base}")
+L00236 |     log.info(f"Out: {out_parquet}")
+L00237 | 
+L00238 |     build_pledge_features(pled_xlsx, base, out_parquet, out_stats, log)
+L00239 |     log.info("✓ integrate_pledge_features 完成")
+L00240 | 
+L00241 | 
+L00242 | if __name__ == "__main__":
+L00243 |     main()

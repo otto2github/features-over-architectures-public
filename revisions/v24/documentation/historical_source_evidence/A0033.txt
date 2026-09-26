@@ -1,0 +1,157 @@
+SOURCE_ID: A0033
+SOURCE: <MOUNT>/Downloads/ch7_v1_integration_v1.tar.gz :: ch7_v1_integration/scripts/merge_features_v1_1.py
+ORIGINAL_SHA256: c6d2f72c65ce6707a005674176c65f473b5277f89f9aefa0fb5a03453b6b89b7
+ORIGINAL_BYTES: 5166
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | #!/usr/bin/env python3
+L00002 | # -*- coding: utf-8 -*-
+L00003 | """
+L00004 | merge_features_v1_1.py
+L00005 | ======================
+L00006 | v1.0 (126 维 + 3 fraud 列) + RPT_Operation 7 维 = v1.1 (133 维 + 3 fraud 列).
+L00007 | 
+L00008 | 合并步骤:
+L00009 |   1. 加载 features_v1_0.parquet
+L00010 |   2. 加载 rpt_operation_features_v1_1.parquet
+L00011 |   3. 左 join (主键 firm_id × year)
+L00012 |   4. RPT 列缺失 fillna(0) (无关联交易记录 = 真实 0)
+L00013 |   5. 保持 fraud 列在最末 (训练脚本约定)
+L00014 | 
+L00015 | 输出:
+L00016 |   data/processed/features/features_v1_1.parquet
+L00017 |   data/interim/v1_integration_stats/merge_features_v1_1_stats.json
+L00018 | """
+L00019 | 
+L00020 | from __future__ import annotations
+L00021 | 
+L00022 | import argparse
+L00023 | import sys
+L00024 | from pathlib import Path
+L00025 | 
+L00026 | import numpy as np
+L00027 | import pandas as pd
+L00028 | 
+L00029 | sys.path.insert(0, str(Path(__file__).resolve().parent))
+L00030 | from _v1_common import (
+L00031 |     get_logger,
+L00032 |     get_paths,
+L00033 |     log_mem,
+L00034 |     write_stats_json,
+L00035 | )
+L00036 | 
+L00037 | 
+L00038 | def merge_v1_1(
+L00039 |     v1_0_parquet: Path,
+L00040 |     rpt_parquet: Path,
+L00041 |     out_parquet: Path,
+L00042 |     out_stats: Path,
+L00043 |     log,
+L00044 | ):
+L00045 |     log.info("=" * 60)
+L00046 |     log.info("Step 1: 加载 v1.0")
+L00047 |     log.info("=" * 60)
+L00048 |     v10 = pd.read_parquet(v1_0_parquet)
+L00049 |     log.info(f"v1.0 shape: {v10.shape}")
+L00050 |     v10["firm_id"] = v10["firm_id"].astype(str).str.zfill(6)
+L00051 |     v10["year"] = v10["year"].astype(int)
+L00052 |     log_mem(log, "after_load_v10")
+L00053 | 
+L00054 |     log.info("=" * 60)
+L00055 |     log.info("Step 2: 加载 RPT_Operation 7 维特征")
+L00056 |     log.info("=" * 60)
+L00057 |     rpt = pd.read_parquet(rpt_parquet)
+L00058 |     rpt["firm_id"] = rpt["firm_id"].astype(str).str.zfill(6)
+L00059 |     rpt["year"] = rpt["year"].astype(int)
+L00060 |     rpt_cols = [c for c in rpt.columns if c not in ["firm_id", "year"]]
+L00061 |     log.info(f"RPT shape: {rpt.shape}, cols: {rpt_cols}")
+L00062 | 
+L00063 |     log.info("=" * 60)
+L00064 |     log.info("Step 3: 左 join")
+L00065 |     log.info("=" * 60)
+L00066 | 
+L00067 |     # 把 fraud 列暂时移到末尾以便最终再放回
+L00068 |     fraud_cols_present = [c for c in v10.columns if c.startswith("fraud_")]
+L00069 |     feature_part = v10.drop(columns=fraud_cols_present)
+L00070 | 
+L00071 |     out = feature_part.merge(rpt, on=["firm_id", "year"], how="left")
+L00072 |     # RPT 缺失 fillna 0
+L00073 |     for c in rpt_cols:
+L00074 |         if c in out.columns:
+L00075 |             out[c] = pd.to_numeric(out[c], errors="coerce").fillna(0)
+L00076 | 
+L00077 |     # 还原 fraud 列到末尾
+L00078 |     if fraud_cols_present:
+L00079 |         fraud_part = v10[["firm_id", "year"] + fraud_cols_present]
+L00080 |         out = out.merge(fraud_part, on=["firm_id", "year"], how="left")
+L00081 |         for c in fraud_cols_present:
+L00082 |             out[c] = out[c].fillna(0).astype("int8")
+L00083 | 
+L00084 |     log.info(f"v1.1 shape: {out.shape}")
+L00085 |     n_features = len(out.columns) - 2 - len(fraud_cols_present)
+L00086 |     log.info(f"特征维数 (不含 id/fraud): {n_features}")
+L00087 | 
+L00088 |     out_parquet.parent.mkdir(parents=True, exist_ok=True)
+L00089 |     out.to_parquet(out_parquet, index=False, compression="snappy")
+L00090 |     log.info(f"v1.1 写入: {out_parquet}")
+L00091 | 
+L00092 |     # 切分统计
+L00093 |     splits = {}
+L00094 |     for split_name, year_range in [("train", (2010, 2018)), ("val", (2019, 2020)), ("test", (2021, 2024))]:
+L00095 |         m = (out["year"] >= year_range[0]) & (out["year"] <= year_range[1])
+L00096 |         sub = out.loc[m]
+L00097 |         for fraud_col in fraud_cols_present:
+L00098 |             splits[f"{split_name}_{fraud_col}"] = {
+L00099 |                 "n_total": int(len(sub)),
+L00100 |                 "n_positive": int(sub[fraud_col].sum()),
+L00101 |                 "positive_rate": float(sub[fraud_col].mean()) if len(sub) > 0 else 0.0,
+L00102 |             }
+L00103 | 
+L00104 |     stats = {
+L00105 |         "version": "v1.1",
+L00106 |         "input": {"v1_0": str(v1_0_parquet), "rpt_operation": str(rpt_parquet)},
+L00107 |         "output": str(out_parquet),
+L00108 |         "shape": list(out.shape),
+L00109 |         "n_total_features": n_features,
+L00110 |         "rpt_features": rpt_cols,
+L00111 |         "fraud_label_cols": fraud_cols_present,
+L00112 |         "main_label_recommendation": "fraud_v08_strict",
+L00113 |         "splits_by_design_A": splits,
+L00114 |         "notes": [
+L00115 |             "v1.1 是 Chapter 7 §7.4 异构图实验 + Chapter 6 多模态实验的最终特征集",
+L00116 |             "rpt_* 7 维与 KG E7 边互补: 特征捕捉数量, 边捕捉关系结构",
+L00117 |             "保留 v1.0 全部 126 维 + 3 fraud 列, 仅追加 7 维 RPT",
+L00118 |         ],
+L00119 |     }
+L00120 |     write_stats_json(stats, out_stats, log=log)
+L00121 | 
+L00122 | 
+L00123 | def main():
+L00124 |     p = argparse.ArgumentParser(description="合并 v1.0 + 7 维 RPT = v1.1")
+L00125 |     p.add_argument("--project-root", type=Path, default=None)
+L00126 |     p.add_argument("--v1-0-parquet", type=Path, default=None)
+L00127 |     p.add_argument("--rpt-parquet", type=Path, default=None)
+L00128 |     p.add_argument("--out-parquet", type=Path, default=None)
+L00129 |     p.add_argument("--out-stats", type=Path, default=None)
+L00130 |     args = p.parse_args()
+L00131 | 
+L00132 |     paths = get_paths(args.project_root)
+L00133 |     log = get_logger("merge_features_v1_1", paths["stats"])
+L00134 | 
+L00135 |     v10 = args.v1_0_parquet or (paths["processed_features"] / "features_v1_0.parquet")
+L00136 |     rpt = args.rpt_parquet or (paths["processed_features"] / "rpt_operation_features_v1_1.parquet")
+L00137 |     out = args.out_parquet or (paths["processed_features"] / "features_v1_1.parquet")
+L00138 |     out_stats = args.out_stats or (paths["stats"] / "merge_features_v1_1_stats.json")
+L00139 | 
+L00140 |     log.info(f"v1.0: {v10}")
+L00141 |     log.info(f"RPT: {rpt}")
+L00142 |     log.info(f"out: {out}")
+L00143 | 
+L00144 |     merge_v1_1(v10, rpt, out, out_stats, log)
+L00145 |     log.info("✓ merge_features_v1_1 完成")
+L00146 | 
+L00147 | 
+L00148 | if __name__ == "__main__":
+L00149 |     main()

@@ -1,0 +1,5 @@
+﻿partition,panel_rows,eligible_rows,positive_rows,negative_rows,null_rows
+outside_primary,10027,0,0,0,10027
+test,9357,8435,20,8415,922
+train,24527,24106,254,23852,421
+validation,7764,7309,40,7269,455

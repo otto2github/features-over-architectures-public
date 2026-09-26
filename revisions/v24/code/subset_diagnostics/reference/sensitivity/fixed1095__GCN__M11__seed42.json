@@ -1,0 +1,40 @@
+{
+  "best_epoch": 7,
+  "best_val_auc": 0.7996814936847886,
+  "direction": "append_reverse_same_relation_preserve_multiplicity",
+  "label_counts": {
+    "test": {
+      "n": 8435,
+      "positive": 20
+    },
+    "train": {
+      "n": 24106,
+      "positive": 119
+    },
+    "validation": {
+      "n": 7309,
+      "positive": 25
+    }
+  },
+  "metrics": {
+    "ap": 0.008456985760744686,
+    "f1_val_threshold": 0.011235955056179775,
+    "n": 8435,
+    "n_neg": 8415,
+    "n_pos": 20,
+    "p_at_5pct": 0.0071090047393364926,
+    "r_at_10fpr": 0.5,
+    "roc_auc": 0.7815389185977422
+  },
+  "modal": "M11",
+  "model": "GCN",
+  "model_display": "GCN",
+  "pos_weight": 201.57142857142858,
+  "runtime_seconds": 16.156277418136597,
+  "scenario": "fixed1095",
+  "seed": 42,
+  "test_evaluated": true,
+  "train_neg": 23987,
+  "train_pos": 119,
+  "val_threshold": 0.756231963634491
+}

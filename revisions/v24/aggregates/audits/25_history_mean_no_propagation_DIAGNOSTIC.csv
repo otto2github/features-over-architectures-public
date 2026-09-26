@@ -1,0 +1,3 @@
+﻿partition,rows,positive_rows,companies_without_eligible_training_history,roc_auc,ap,p_at_5pct,r_at_10fpr,score_definition,scope
+validation,7309,40,464,0.7900141009767506,0.1493560316108088,0.06557377049180328,0.6,eligible 2010-2018 training label mean per company; unknown=0,"retrospective training-label-memory diagnostic, NOT an as-of or deployable baseline"
+test,8435,20,1195,0.5901901366607248,0.0317119892508852,0.009478672985781991,0.2,eligible 2010-2018 training label mean per company; unknown=0,"retrospective training-label-memory diagnostic, NOT an as-of or deployable baseline"

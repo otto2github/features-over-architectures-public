@@ -1,0 +1,34 @@
+[
+  {
+    "role": "approved_financial_db",
+    "basename": "financials.db",
+    "sha256": "5cc0550b95c7bbd44fb9d819096ec4b4cb5827839a837af2210d7fc69a3d30cb",
+    "bytes": 1085132800,
+    "mtime_ns": 1777995695844718496,
+    "pinned_hash_match": true
+  },
+  {
+    "role": "approved_asof_features",
+    "basename": "node_features_asof_financial_v1.parquet",
+    "sha256": "9f15e48a1427111d6f66d017f49bddf18aa4b9d8bb6a73c1285e1f659575eaf0",
+    "bytes": 31779798,
+    "mtime_ns": 1790249612070082409,
+    "pinned_hash_match": true
+  },
+  {
+    "role": "fraud_labels_v1_0.parquet",
+    "basename": "fraud_labels_v1_0.parquet",
+    "sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+    "bytes": 226750,
+    "mtime_ns": 1790240158187522231,
+    "pinned_hash_match": true
+  },
+  {
+    "role": "node_features_v1_1.parquet",
+    "basename": "node_features_v1_1.parquet",
+    "sha256": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+    "bytes": 23261997,
+    "mtime_ns": 1790240251021481632,
+    "pinned_hash_match": true
+  }
+]

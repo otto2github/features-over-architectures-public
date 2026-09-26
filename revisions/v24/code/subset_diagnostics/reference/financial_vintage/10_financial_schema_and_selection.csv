@@ -1,0 +1,5 @@
+﻿table,selected_annual_rows_before_dedup,retained_rows_after_dedup,missing_required_numeric_fields,ann_date_present,f_ann_date_present,update_flag_present,selection_rule,historical_snapshot_identity_verified
+balancesheet,140679,82260,,True,True,True,"maximum raw update_flag per (ts_code,end_date)",False
+income,126172,99903,,True,True,True,"maximum raw update_flag per (ts_code,end_date)",False
+cashflow,115364,86074,,True,True,True,"maximum raw update_flag per (ts_code,end_date)",False
+fina_indicator,130998,75380,,True,False,False,maximum ann_date,False

@@ -1,0 +1,6 @@
+{
+  "file": "code/primary_diagnostics/config/protocol.json",
+  "original_sha256": "e091c73926100ad97712a0fd4a535093a05f1797ebc7d19773c8ac2f1550edde",
+  "distributed_sha256": "1d28cdc662632c15bb0d0976dadd1cc19ef403bed648c455dbc8a9cf54ef6110",
+  "change": "mac_project_default path only; frozen input hashes, statistical settings and analysis code unchanged"
+}

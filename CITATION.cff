@@ -1,6 +1,12 @@
 cff-version: 1.2.0
-message: "If you use this repository, please cite the associated paper and this software archive."
-title: "Disclosure Features over Standard Graph Architectures: A Multi-Seed Benchmark of GNNs and a Matched-Input MLP for Post-Filing Fraud Risk Scoring in Chinese A-Share Firms"
+message: "Cite this specific version DOI for the revised reproducibility archive."
+title: "Graph neural networks versus feature-only learners for Chinese A-share sanction prediction: a holder–manager graph without transaction edges — reproducibility archive"
+type: software
+version: "v24-20260925"
+doi: "10.5281/zenodo.22958631"
+date-released: "2026-09-25"
+url: "https://github.com/otto2github/features-over-architectures-public"
+repository-code: "https://github.com/otto2github/features-over-architectures-public"
 authors:
   - family-names: Cheng
     given-names: "Yi Qiu"
@@ -10,17 +16,11 @@ authors:
     given-names: Xiaorong
     orcid: "https://orcid.org/0009-0002-5328-0686"
     affiliation: "School of Management, Wuhan University of Technology, Wuhan, China"
-version: 1.1.4-peerj-v35
-doi: 10.5281/zenodo.20558032
-date-released: 2026-06-07
-url: "https://github.com/otto2github/features-over-architectures-public"
-repository-code: "https://github.com/otto2github/features-over-architectures-public"
+abstract: "Source, fixed-fit aggregates and aggregate-regeneration tests for CS-2026:06:141707. Licensed rows, private scores, row-level masks and natural-person mappings are excluded."
 license: MIT
 keywords:
-  - financial fraud detection
   - graph neural networks
-  - matched-input MLP
+  - corporate sanctions
+  - Chinese A-share
   - benchmarking
-  - Chinese A-share listed firms
-  - post-filing risk scoring
   - reproducibility

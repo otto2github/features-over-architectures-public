@@ -1,0 +1,833 @@
+#!/usr/bin/env bash
+# setup_compute_derived_financials_v0.sh
+# 在 ~/code/thesis_project/scripts/ 创建 compute_derived_financials_v0.py
+#
+# 依赖（必须已存在）:
+#   - data/raw/financials/financials.db (P2 完成)
+#   - data/raw/stock_basic.db (persist_stock_basic.py 已跑)
+#   - data/processed/features/insider_features_v0_full.parquet (P5 extract)
+#
+# 实现 P4.5 设计文档 v0.1 全部 I1-I12 决策:
+#   I1 处罚公告年份语义 / I2 t0+t1 双版本 / I4 components 落盘
+#   I5 Z'-Score 私有公司版 / I6 OCF/NI 分母过滤
+#   I7 仅年报 / I8 仅合并报表 / I9 update_flag dedup
+#   I10 pd.to_numeric cast / I11 firm_id ↔ ts_code 映射 / I12 行业 z-score
+#
+# 运行:
+#   bash setup_compute_derived_financials_v0.sh
+#   uv run --project ~/code python ~/code/thesis_project/scripts/compute_derived_financials_v0.py
+
+set -euo pipefail
+
+TARGET_DIR="$HOME/code/thesis_project/scripts"
+TARGET_FILE="$TARGET_DIR/compute_derived_financials_v0.py"
+
+mkdir -p "$TARGET_DIR"
+
+cat > "$TARGET_FILE" << 'PYEOF'
+#!/usr/bin/env python3
+"""
+P4.5 派生财务指标计算 v0
+
+输出:
+  data/processed/features/derived_financials_v0.parquet            (51,675 × 20)
+  data/processed/features/derived_financials_v0_components.parquet (51,675 × ~25)
+  logs/compute_derived_financials_v0_<timestamp>.log
+  logs/derived_financials_v0_anomalies.csv
+  logs/derived_financials_v0_diagnose.json
+
+5 个派生指标:
+  - DSRI   (跨期, t0/t1 双版本)
+  - M-Score (跨期, t0/t1 双版本; 8 分量 → components)
+  - OCF/NI (跨期形式但单期可算, t0/t1 双版本)
+  - oth_recv/TA (单期, 但仍做 t0/t1 双版本以与其他跨期指标对齐)
+  - Z'-Score (单期, 仅 t0)
+
+每个指标加 _zind 行业内 z-score 版本 (I12, 分组 (year, industry), min_samples=10)。
+
+主矩阵 20 列:
+  firm_id, year, industry,
+  fin_dsri_t0, fin_dsri_t1, fin_mscore_t0, fin_mscore_t1,
+  fin_ocf_to_ni_t0, fin_ocf_to_ni_t1, fin_oth_recv_to_ta_t0, fin_oth_recv_to_ta_t1,
+  fin_zscore_t0,
+  fin_dsri_t0_zind, fin_dsri_t1_zind,
+  fin_mscore_t0_zind, fin_mscore_t1_zind,
+  fin_ocf_to_ni_t0_zind, fin_ocf_to_ni_t1_zind,
+  fin_oth_recv_to_ta_t0_zind, fin_oth_recv_to_ta_t1_zind,
+  fin_zscore_t0_zind
+"""
+
+import json
+import logging
+import sqlite3
+import sys
+from datetime import datetime
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+from sklearn.metrics import roc_auc_score
+
+# ===================== 路径与常量 =====================
+
+PROJECT_ROOT = Path.home() / "code" / "thesis_project"
+FIN_DB = PROJECT_ROOT / "data" / "raw" / "financials" / "financials.db"
+BASIC_DB = PROJECT_ROOT / "data" / "raw" / "stock_basic.db"
+LABEL_PATH = PROJECT_ROOT / "data" / "processed" / "features" / "insider_features_v0_full.parquet"
+
+OUTPUT_DIR = PROJECT_ROOT / "data" / "processed" / "features"
+MAIN_OUTPUT = OUTPUT_DIR / "derived_financials_v0.parquet"
+COMPONENTS_OUTPUT = OUTPUT_DIR / "derived_financials_v0_components.parquet"
+
+LOG_DIR = PROJECT_ROOT / "logs"
+ANOMALIES_PATH = LOG_DIR / "derived_financials_v0_anomalies.csv"
+DIAGNOSE_PATH = LOG_DIR / "derived_financials_v0_diagnose.json"
+
+# I7 + I8 过滤参数
+ANNUAL_MMDD = "1231"
+COMP_TYPE_CONSOLIDATED = "1"
+
+# I6 OCF/NI 分母门槛
+OCF_NI_DENOM_THRESHOLD = 1_000_000  # 1M RMB
+
+# I12 行业 z-score 分组样本数门槛
+ZIND_MIN_SAMPLES = 10
+
+# 异常值阈值（仅 log，不强制处理）
+ANOMALY_THRESHOLDS = {
+    "fin_mscore": 10.0,
+    "fin_zscore": 100.0,
+    "fin_dsri": 100.0,
+    "fin_sgi": 50.0,
+    "fin_ocf_to_ni": 100.0,
+    "fin_oth_recv_to_ta": 0.5,
+    "_zind": 10.0,  # zind 列统一阈值
+}
+
+# I10 元字段（不做 numeric cast）
+META_FIELDS = {
+    "ts_code", "ann_date", "f_ann_date", "end_date",
+    "comp_type", "report_type", "update_flag",
+    "download_at", "end_type", "fetched_at",
+}
+
+# 5 个派生指标的清单（用于循环装配）
+INDICATOR_TIMING = [
+    ("fin_dsri", "cross"),         # 跨期，t0/t1
+    ("fin_mscore", "cross"),       # 跨期，t0/t1
+    ("fin_ocf_to_ni", "cross"),    # 形式跨期，t0/t1
+    ("fin_oth_recv_to_ta", "cross"),  # 形式跨期，t0/t1
+    ("fin_zscore", "single"),      # 单期，仅 t0
+]
+
+# RANDOM_SEED for reproducibility (quick check 用)
+RANDOM_SEED = 42
+
+# ===================== 日志 =====================
+
+
+def setup_logging():
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_file = LOG_DIR / f"compute_derived_financials_v0_{timestamp}.log"
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(message)s",
+        datefmt="%H:%M:%S",
+        handlers=[
+            logging.FileHandler(log_file),
+            logging.StreamHandler(sys.stdout),
+        ],
+    )
+    return log_file
+
+
+# ===================== 工具函数 =====================
+
+
+def cast_numeric(df: pd.DataFrame) -> pd.DataFrame:
+    """I10: 非元字段统一 pd.to_numeric(errors='coerce')"""
+    for col in df.columns:
+        if col not in META_FIELDS:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+    return df
+
+
+def safe_div(numer: pd.Series, denom: pd.Series) -> pd.Series:
+    """安全除法：分母为 0 或 NaN → NaN"""
+    result = numer / denom.replace(0, np.nan)
+    # ±inf → NaN
+    result = result.replace([np.inf, -np.inf], np.nan)
+    return result
+
+
+def log_anomalies(series: pd.Series, name: str, df_meta: pd.DataFrame,
+                  threshold: float, anomaly_records: list):
+    """记录异常值（不修改原值，仅 log）"""
+    mask = series.abs() > threshold
+    n_anomalies = int(mask.sum())
+    if n_anomalies > 0:
+        for idx in series.index[mask]:
+            row = {
+                "feature": name,
+                "firm_id": df_meta.loc[idx, "firm_id"] if idx in df_meta.index else None,
+                "year": df_meta.loc[idx, "year"] if idx in df_meta.index else None,
+                "value": float(series.loc[idx]),
+                "threshold": threshold,
+            }
+            anomaly_records.append(row)
+    return n_anomalies
+
+
+# ===================== 主类 =====================
+
+
+class DerivedFinancialsCalculator:
+    def __init__(self):
+        self.fin_conn = None
+        self.basic_conn = None
+        self.firm_id_to_ts_code = {}     # I11 mapping
+        self.ts_code_to_firm_id = {}
+        self.df_labels = None             # 51,675 × 56
+        self.df_basic = None              # stock_basic 5,836 × 18
+        self.bs = None                    # balancesheet (yr-keyed dict)
+        self.inc = None
+        self.cf = None
+        self.anomaly_records = []
+        self.diagnose_data = {}
+
+    # ============= 数据加载 =============
+
+    def open_connections(self):
+        if not FIN_DB.exists():
+            raise FileNotFoundError(f"P2 financials.db 不存在: {FIN_DB}")
+        if not BASIC_DB.exists():
+            raise FileNotFoundError(f"stock_basic.db 不存在，先跑 persist_stock_basic.py: {BASIC_DB}")
+        if not LABEL_PATH.exists():
+            raise FileNotFoundError(f"insider_features_v0_full.parquet 不存在: {LABEL_PATH}")
+
+        self.fin_conn = sqlite3.connect(FIN_DB)
+        self.basic_conn = sqlite3.connect(BASIC_DB)
+
+    def close_connections(self):
+        if self.fin_conn:
+            self.fin_conn.close()
+        if self.basic_conn:
+            self.basic_conn.close()
+
+    def build_firm_id_mapping(self):
+        """I11: 从 financials.db 反查 ts_code → firm_id 映射"""
+        df = pd.read_sql(
+            "SELECT DISTINCT ts_code FROM balancesheet", self.fin_conn
+        )
+        df["firm_id"] = df["ts_code"].str.split(".").str[0]
+
+        n_dup = df["firm_id"].duplicated().sum()
+        if n_dup > 0:
+            logging.warning(f"  ⚠ firm_id 重复 {n_dup} 个，将取第一个映射")
+            df = df.drop_duplicates("firm_id", keep="first")
+
+        self.firm_id_to_ts_code = dict(zip(df["firm_id"], df["ts_code"]))
+        self.ts_code_to_firm_id = dict(zip(df["ts_code"], df["firm_id"]))
+        logging.info(f"  I11 映射表: {len(df)} 条 (firm_id ↔ ts_code)")
+
+    def load_labels(self):
+        """加载 51,675 行清洁全集"""
+        self.df_labels = pd.read_parquet(LABEL_PATH)
+        logging.info(f"  insider_features_v0_full: {self.df_labels.shape}")
+
+        # I11 检查匹配率
+        unique_firms = self.df_labels["firm_id"].unique()
+        n_matched = sum(1 for f in unique_firms if f in self.firm_id_to_ts_code)
+        n_unmatched = len(unique_firms) - n_matched
+        logging.info(
+            f"  I11 firm_id 匹配率: {n_matched}/{len(unique_firms)} "
+            f"({n_matched/len(unique_firms)*100:.2f}%)，"
+            f"未匹配 {n_unmatched} 个公司将派生列保 NaN"
+        )
+
+    def load_stock_basic(self):
+        """加载 stock_basic 用于 I12 行业 z-score"""
+        self.df_basic = pd.read_sql(
+            "SELECT firm_id, ts_code, industry, market FROM stock_basic",
+            self.basic_conn,
+        )
+        n_with_industry = self.df_basic["industry"].notna().sum()
+        logging.info(
+            f"  stock_basic: {len(self.df_basic)} 行, "
+            f"industry 非空 {n_with_industry} ({n_with_industry/len(self.df_basic)*100:.1f}%)"
+        )
+
+    def load_financial_table(self, table: str) -> pd.DataFrame:
+        """
+        加载单表，应用 I7+I8+I9+I10:
+          I7: end_date LIKE '%1231'
+          I8: comp_type='1' (合并报表) — fina_indicator 没有此字段，跳过
+          I10: pd.to_numeric cast
+          I9: dedup by (ts_code, end_date), keep update_flag max
+        """
+        # 检查字段
+        cols = pd.read_sql(f"PRAGMA table_info({table})", self.fin_conn)
+        col_names = set(cols["name"].tolist())
+
+        # 构造 SQL: I7 年报过滤
+        where_parts = [f"end_date LIKE '%{ANNUAL_MMDD}'"]
+        if "comp_type" in col_names:
+            # I8: 合并报表
+            where_parts.append(f"comp_type = '{COMP_TYPE_CONSOLIDATED}'")
+        where_sql = " AND ".join(where_parts)
+        sql = f"SELECT * FROM {table} WHERE {where_sql}"
+
+        df = pd.read_sql(sql, self.fin_conn)
+        n_raw = len(df)
+
+        # I10 cast
+        df = cast_numeric(df)
+
+        # I9 dedup: 按 (ts_code, end_date) 取 update_flag 最大
+        if "update_flag" in df.columns:
+            df = (
+                df
+                .sort_values(["ts_code", "end_date", "update_flag"],
+                             ascending=[True, True, False])
+                .drop_duplicates(["ts_code", "end_date"], keep="first")
+            )
+
+        # 加 year 列
+        df["year"] = df["end_date"].astype(str).str[:4].astype(int)
+
+        # 加 firm_id 列（从 ts_code）
+        df["firm_id"] = df["ts_code"].str.split(".").str[0]
+
+        n_after = len(df)
+        logging.info(
+            f"  {table}: 加载 {n_raw} → dedup 后 {n_after} 行 "
+            f"({n_raw - n_after} 重复版本)"
+        )
+        return df
+
+    def load_all_tables(self):
+        logging.info("\n=== 加载财务表 (I7 年报 + I8 合并 + I9 dedup + I10 cast) ===")
+        self.bs = self.load_financial_table("balancesheet")
+        self.inc = self.load_financial_table("income")
+        self.cf = self.load_financial_table("cashflow")
+
+    # ============= 公共构造：(firm_id, year) 期间数据 =============
+
+    def get_period_data(self, year: int) -> pd.DataFrame:
+        """
+        获取某 year 的 (firm_id, financial_fields_from_3_tables) 拼接表。
+
+        Returns:
+            DataFrame: index = firm_id, columns = financial fields (from bs/inc/cf merged)
+        """
+        bs_y = self.bs[self.bs["year"] == year].set_index("firm_id")
+        inc_y = self.inc[self.inc["year"] == year].set_index("firm_id")
+        cf_y = self.cf[self.cf["year"] == year].set_index("firm_id")
+
+        # 选取需要的字段，避免列名冲突时加 _bs/_inc/_cf 后缀
+        bs_cols = [
+            "total_assets", "total_cur_assets", "total_cur_liab", "total_liab",
+            "accounts_receiv", "oth_receiv", "fix_assets",
+            "surplus_rese", "undistr_porfit", "total_hldr_eqy_inc_min_int",
+        ]
+        inc_cols = [
+            "revenue", "oper_cost", "sell_exp", "admin_exp",
+            "n_income_attr_p", "ebit",
+        ]
+        cf_cols = [
+            "n_cashflow_act", "depr_fa_coga_dpba", "amort_intang_assets",
+        ]
+
+        bs_y = bs_y[[c for c in bs_cols if c in bs_y.columns]]
+        inc_y = inc_y[[c for c in inc_cols if c in inc_y.columns]]
+        cf_y = cf_y[[c for c in cf_cols if c in cf_y.columns]]
+
+        # 外连接合并（任一表缺失字段则那一行全 NaN）
+        merged = bs_y.join(inc_y, how="outer").join(cf_y, how="outer")
+        return merged
+
+    # ============= 5 个派生指标 =============
+
+    def compute_dsri(self, df_t: pd.DataFrame, df_tm1: pd.DataFrame) -> pd.Series:
+        """DSRI_t = (AR_t / Sales_t) / (AR_{t-1} / Sales_{t-1})"""
+        ratio_t = safe_div(df_t["accounts_receiv"], df_t["revenue"])
+        ratio_tm1 = safe_div(df_tm1["accounts_receiv"], df_tm1["revenue"])
+        # align indices (firm_id)
+        common = ratio_t.index.intersection(ratio_tm1.index)
+        return safe_div(ratio_t.loc[common], ratio_tm1.loc[common])
+
+    def compute_mscore_components(self, df_t: pd.DataFrame, df_tm1: pd.DataFrame
+                                   ) -> tuple[pd.DataFrame, pd.Series]:
+        """
+        Returns:
+            (components_df, mscore_series), index = firm_id
+        """
+        common = df_t.index.intersection(df_tm1.index)
+        t = df_t.loc[common]
+        m = df_tm1.loc[common]
+
+        # DSRI
+        ratio_t = safe_div(t["accounts_receiv"], t["revenue"])
+        ratio_m = safe_div(m["accounts_receiv"], m["revenue"])
+        dsri = safe_div(ratio_t, ratio_m)
+
+        # GMI = GM_{t-1} / GM_t；GM = (Sales - COGS) / Sales = 1 - COGS/Sales
+        gm_t = 1 - safe_div(t["oper_cost"], t["revenue"])
+        gm_m = 1 - safe_div(m["oper_cost"], m["revenue"])
+        gmi = safe_div(gm_m, gm_t)
+
+        # AQI = (1 - (CA+PPE)/TA)_t / (1 - (CA+PPE)/TA)_{t-1}
+        aq_t = 1 - safe_div(t["total_cur_assets"] + t["fix_assets"], t["total_assets"])
+        aq_m = 1 - safe_div(m["total_cur_assets"] + m["fix_assets"], m["total_assets"])
+        aqi = safe_div(aq_t, aq_m)
+
+        # SGI
+        sgi = safe_div(t["revenue"], m["revenue"])
+
+        # DEPI = (Depr_{t-1}/(Depr_{t-1}+PPE_{t-1})) / (Depr_t/(Depr_t+PPE_t))
+        depr_t = t["depr_fa_coga_dpba"].fillna(0) + t["amort_intang_assets"].fillna(0)
+        depr_m = m["depr_fa_coga_dpba"].fillna(0) + m["amort_intang_assets"].fillna(0)
+        depi_num = safe_div(depr_m, depr_m + m["fix_assets"])
+        depi_den = safe_div(depr_t, depr_t + t["fix_assets"])
+        depi = safe_div(depi_num, depi_den)
+
+        # SGAI = (SGA_t/Sales_t) / (SGA_{t-1}/Sales_{t-1})
+        sga_t = t["sell_exp"].fillna(0) + t["admin_exp"].fillna(0)
+        sga_m = m["sell_exp"].fillna(0) + m["admin_exp"].fillna(0)
+        sgai = safe_div(safe_div(sga_t, t["revenue"]),
+                        safe_div(sga_m, m["revenue"]))
+
+        # TATA = (NI - CFO) / TA  [现金流间接法]
+        tata = safe_div(t["n_income_attr_p"] - t["n_cashflow_act"], t["total_assets"])
+
+        # LVGI = (TL_t/TA_t) / (TL_{t-1}/TA_{t-1})
+        lev_t = safe_div(t["total_liab"], t["total_assets"])
+        lev_m = safe_div(m["total_liab"], m["total_assets"])
+        lvgi = safe_div(lev_t, lev_m)
+
+        # M-Score (Beneish 1999)
+        mscore = (
+            -4.84
+            + 0.92 * dsri
+            + 0.528 * gmi
+            + 0.404 * aqi
+            + 0.892 * sgi
+            + 0.115 * depi
+            - 0.172 * sgai
+            + 4.679 * tata
+            - 0.327 * lvgi
+        )
+
+        components = pd.DataFrame({
+            "dsri": dsri,
+            "gmi": gmi,
+            "aqi": aqi,
+            "sgi": sgi,
+            "depi": depi,
+            "sgai": sgai,
+            "tata": tata,
+            "lvgi": lvgi,
+        }, index=common)
+
+        return components, mscore
+
+    def compute_zscore(self, df_t: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
+        """Altman Z'-Score (私有公司版, I5)"""
+        ta = df_t["total_assets"]
+        x1 = safe_div(df_t["total_cur_assets"] - df_t["total_cur_liab"], ta)
+        re = df_t["surplus_rese"].fillna(0) + df_t["undistr_porfit"].fillna(0)
+        x2 = safe_div(re, ta)
+        x3 = safe_div(df_t["ebit"], ta)
+        x4 = safe_div(df_t["total_hldr_eqy_inc_min_int"], df_t["total_liab"])
+        x5 = safe_div(df_t["revenue"], ta)
+
+        zscore = 0.717 * x1 + 0.847 * x2 + 3.107 * x3 + 0.420 * x4 + 0.998 * x5
+
+        components = pd.DataFrame({
+            "z_x1": x1, "z_x2": x2, "z_x3": x3, "z_x4": x4, "z_x5": x5,
+        }, index=df_t.index)
+
+        return components, zscore
+
+    def compute_ocf_to_ni(self, df_t: pd.DataFrame) -> pd.Series:
+        """OCF / NI, I6: |NI| < 1M → NaN"""
+        ni = df_t["n_income_attr_p"]
+        cfo = df_t["n_cashflow_act"]
+        # I6 mask
+        small_denom_mask = ni.abs() < OCF_NI_DENOM_THRESHOLD
+        result = safe_div(cfo, ni)
+        result.loc[small_denom_mask] = np.nan
+        return result
+
+    def compute_oth_recv_to_ta(self, df_t: pd.DataFrame) -> pd.Series:
+        """oth_receiv / total_assets"""
+        ta = df_t["total_assets"]
+        # total_assets <= 0 → NaN
+        ta_safe = ta.where(ta > 0, np.nan)
+        return safe_div(df_t["oth_receiv"], ta_safe)
+
+    # ============= I12: 行业 z-score =============
+
+    def compute_industry_zscore(self, df: pd.DataFrame, indicator_cols: list,
+                                 industry_map: pd.Series) -> pd.DataFrame:
+        """
+        对 indicator_cols 中每列在 (year, industry) 分组内计算 z-score。
+        分组内有效样本 < ZIND_MIN_SAMPLES 则该分组该列保 NaN。
+
+        Args:
+            df: DataFrame with columns [firm_id, year, ...indicator_cols]
+            indicator_cols: 要计算 z-score 的列名列表
+            industry_map: Series with index = firm_id, value = industry
+
+        Returns:
+            DataFrame with same index as df, columns = [c + '_zind' for c in indicator_cols]
+        """
+        # join industry
+        df_with_ind = df.copy()
+        df_with_ind["industry"] = df_with_ind["firm_id"].map(industry_map)
+
+        result_cols = {}
+        for col in indicator_cols:
+            # 按 (year, industry) 分组 z-score
+            def _zscore(g):
+                if len(g) < ZIND_MIN_SAMPLES or g.std() == 0:
+                    return pd.Series(np.nan, index=g.index)
+                return (g - g.mean()) / g.std()
+
+            zind = (df_with_ind.groupby(["year", "industry"], dropna=True)[col]
+                    .transform(_zscore))
+            result_cols[col + "_zind"] = zind
+
+        return pd.DataFrame(result_cols, index=df.index)
+
+    # ============= 主装配 =============
+
+    def assemble(self) -> tuple[pd.DataFrame, pd.DataFrame]:
+        """
+        装配主矩阵 + components 矩阵。
+
+        Returns:
+            (main_df, components_df), 两者 index 都是 [0, 51674]
+        """
+        logging.info("\n=== 装配派生指标矩阵 ===")
+
+        # 标签 (firm_id, year)
+        labels = self.df_labels[["firm_id", "year"]].copy()
+        labels["firm_id"] = labels["firm_id"].astype(str)
+
+        # 准备每个 year 的财务期间数据缓存
+        years_needed = sorted(set(labels["year"].tolist()) |
+                              set([y - 1 for y in labels["year"]]) |
+                              set([y - 2 for y in labels["year"]]))
+        logging.info(f"  需要的财务年份缓存: {min(years_needed)} - {max(years_needed)}")
+
+        period_cache = {}
+        for y in years_needed:
+            period_cache[y] = self.get_period_data(y)
+            n_firms = period_cache[y].shape[0]
+            logging.info(f"    year={y}: {n_firms} 家公司有财务数据")
+
+        # 派生指标主矩阵 + components 都按 (firm_id, year) 行级别累加
+        results_per_row = {}  # key=(firm_id, year), value=dict of indicators
+        components_per_row = {}  # key=(firm_id, year), value=dict of 13 components
+
+        for fid, yr in labels[["firm_id", "year"]].itertuples(index=False):
+            row_key = (fid, yr)
+
+            # 取 t0/t1/t2 期间数据
+            t0_data = period_cache.get(yr)
+            tm1_data = period_cache.get(yr - 1)
+            tm2_data = period_cache.get(yr - 2)
+
+            row_result = {}
+            row_components = {}
+
+            if t0_data is not None and fid in t0_data.index:
+                t0_row = t0_data.loc[[fid]]
+
+                # === t0 单期指标 ===
+                row_result["fin_oth_recv_to_ta_t0"] = self.compute_oth_recv_to_ta(t0_row).iloc[0]
+                row_result["fin_ocf_to_ni_t0"] = self.compute_ocf_to_ni(t0_row).iloc[0]
+
+                # Z'-Score (仅 t0)
+                z_components, z_score = self.compute_zscore(t0_row)
+                row_result["fin_zscore_t0"] = z_score.iloc[0]
+                for k in ["z_x1", "z_x2", "z_x3", "z_x4", "z_x5"]:
+                    row_components[k + "_t0"] = z_components.loc[fid, k]
+
+                # === t0 跨期指标 (需 t-1) ===
+                if tm1_data is not None and fid in tm1_data.index:
+                    tm1_row = tm1_data.loc[[fid]]
+
+                    dsri_val = self.compute_dsri(t0_row, tm1_row)
+                    row_result["fin_dsri_t0"] = (
+                        dsri_val.iloc[0] if len(dsri_val) > 0 else np.nan
+                    )
+
+                    m_components, m_score = self.compute_mscore_components(t0_row, tm1_row)
+                    row_result["fin_mscore_t0"] = (
+                        m_score.iloc[0] if len(m_score) > 0 else np.nan
+                    )
+                    if fid in m_components.index:
+                        for k in ["dsri", "gmi", "aqi", "sgi", "depi", "sgai", "tata", "lvgi"]:
+                            row_components[k + "_t0"] = m_components.loc[fid, k]
+
+            # === t1 单期指标（财务期 = year-1）===
+            if tm1_data is not None and fid in tm1_data.index:
+                tm1_row = tm1_data.loc[[fid]]
+                row_result["fin_oth_recv_to_ta_t1"] = self.compute_oth_recv_to_ta(tm1_row).iloc[0]
+                row_result["fin_ocf_to_ni_t1"] = self.compute_ocf_to_ni(tm1_row).iloc[0]
+
+                # === t1 跨期指标（需 t-2）===
+                if tm2_data is not None and fid in tm2_data.index:
+                    tm2_row = tm2_data.loc[[fid]]
+
+                    dsri_val = self.compute_dsri(tm1_row, tm2_row)
+                    row_result["fin_dsri_t1"] = (
+                        dsri_val.iloc[0] if len(dsri_val) > 0 else np.nan
+                    )
+
+                    m_components, m_score = self.compute_mscore_components(tm1_row, tm2_row)
+                    row_result["fin_mscore_t1"] = (
+                        m_score.iloc[0] if len(m_score) > 0 else np.nan
+                    )
+                    if fid in m_components.index:
+                        for k in ["dsri", "gmi", "aqi", "sgi", "depi", "sgai", "tata", "lvgi"]:
+                            row_components[k + "_t1"] = m_components.loc[fid, k]
+
+            results_per_row[row_key] = row_result
+            components_per_row[row_key] = row_components
+
+        # ===== 构造主矩阵 DataFrame =====
+        main_df = labels.copy()
+
+        # I12 industry from stock_basic.db
+        industry_map = self.df_basic.set_index("firm_id")["industry"]
+        main_df["industry"] = main_df["firm_id"].map(industry_map)
+        n_with_ind = main_df["industry"].notna().sum()
+        logging.info(
+            f"  industry 注入完成: {n_with_ind}/{len(main_df)} "
+            f"({n_with_ind/len(main_df)*100:.1f}%)"
+        )
+
+        # 5 个核心指标列
+        indicator_cols = [
+            "fin_dsri_t0", "fin_dsri_t1",
+            "fin_mscore_t0", "fin_mscore_t1",
+            "fin_ocf_to_ni_t0", "fin_ocf_to_ni_t1",
+            "fin_oth_recv_to_ta_t0", "fin_oth_recv_to_ta_t1",
+            "fin_zscore_t0",
+        ]
+        for col in indicator_cols:
+            main_df[col] = main_df.apply(
+                lambda r: results_per_row.get((r["firm_id"], r["year"]), {}).get(col, np.nan),
+                axis=1,
+            )
+
+        # ===== I12: 行业 z-score =====
+        logging.info("\n=== I12: 计算行业 z-score (group=(year, industry), min_samples=10) ===")
+        zind_df = self.compute_industry_zscore(
+            main_df, indicator_cols, industry_map
+        )
+        for col in zind_df.columns:
+            main_df[col] = zind_df[col]
+            n_valid = main_df[col].notna().sum()
+            logging.info(f"  {col}: {n_valid} 有效 ({n_valid/len(main_df)*100:.1f}%)")
+
+        # ===== 构造 components 矩阵 =====
+        components_df = labels.copy()
+        all_component_keys = set()
+        for d in components_per_row.values():
+            all_component_keys.update(d.keys())
+        for k in sorted(all_component_keys):
+            components_df["comp_" + k] = components_df.apply(
+                lambda r: components_per_row.get((r["firm_id"], r["year"]), {}).get(k, np.nan),
+                axis=1,
+            )
+
+        return main_df, components_df
+
+    # ============= 诊断 =============
+
+    def diagnose(self, main_df: pd.DataFrame):
+        """
+        生成诊断报告:
+          - 5 指标 NaN 率 + 中位数 vs 设计文档 §7 红线
+          - 单变量 AUC vs `fraud` (red line 0.85)
+          - 异常值统计
+
+        写入 logs/derived_financials_v0_diagnose.json + anomalies.csv
+        """
+        logging.info("\n=== 诊断 ===")
+
+        diag = {"timestamp": datetime.now().isoformat()}
+
+        # NaN 率 + 中位数 + 期望值对比
+        expected = {
+            "fin_dsri_t0": (1.0, 0.3),
+            "fin_dsri_t1": (1.0, 0.3),
+            "fin_mscore_t0": (-2.5, 1.0),
+            "fin_mscore_t1": (-2.5, 1.0),
+            "fin_ocf_to_ni_t0": (1.15, 1.0),
+            "fin_ocf_to_ni_t1": (1.15, 1.0),
+            "fin_oth_recv_to_ta_t0": (0.013, 0.005),
+            "fin_oth_recv_to_ta_t1": (0.013, 0.005),
+            "fin_zscore_t0": (2.5, 1.0),
+        }
+
+        diag["distributions"] = {}
+        for col, (exp_med, tol) in expected.items():
+            if col not in main_df.columns:
+                continue
+            s = main_df[col]
+            actual_med = float(s.median()) if s.notna().any() else None
+            n_nan = int(s.isna().sum())
+            pct_nan = n_nan / len(s) * 100
+
+            ok = (actual_med is not None) and (abs(actual_med - exp_med) <= tol)
+            marker = "✓" if ok else "⚠"
+            logging.info(
+                f"  {marker} {col}: median={actual_med:.4f} (期望 {exp_med:.2f}±{tol:.2f}) "
+                f"| NaN {n_nan}/{len(s)} ({pct_nan:.1f}%)"
+            )
+            diag["distributions"][col] = {
+                "median": actual_med,
+                "expected_median": exp_med,
+                "tolerance": tol,
+                "in_range": ok,
+                "n_nan": n_nan,
+                "pct_nan": pct_nan,
+            }
+
+        # M-Score > -1.78 比例
+        if "fin_mscore_t0" in main_df.columns:
+            ms = main_df["fin_mscore_t0"].dropna()
+            high_pct = (ms > -1.78).mean() * 100 if len(ms) > 0 else 0
+            ok = 5 <= high_pct <= 15
+            marker = "✓" if ok else "⚠"
+            logging.info(
+                f"  {marker} M-Score > -1.78 比例: {high_pct:.1f}% (期望 5-15%)"
+            )
+            diag["mscore_high_pct"] = high_pct
+
+        # 异常值
+        anomaly_count = {}
+        for col in expected.keys():
+            if col not in main_df.columns:
+                continue
+            for prefix, threshold in ANOMALY_THRESHOLDS.items():
+                if col.startswith(prefix):
+                    n = log_anomalies(main_df[col], col, main_df, threshold,
+                                       self.anomaly_records)
+                    if n > 0:
+                        anomaly_count[col] = n
+                    break
+
+        diag["anomaly_counts"] = anomaly_count
+        if anomaly_count:
+            logging.info(f"  异常值统计 (仅 log，未处理):")
+            for col, n in anomaly_count.items():
+                logging.info(f"    {col}: {n} 条")
+
+        # 单变量 AUC vs `fraud`
+        if "fraud" not in self.df_labels.columns:
+            logging.warning("  ⚠ insider_features_v0_full 中无 'fraud' 列，跳过单变量 AUC")
+        else:
+            logging.info("\n  单变量 AUC vs fraud (red line: > 0.85 立即停下查 leakage):")
+            y = self.df_labels["fraud"].values
+            diag["univariate_auc"] = {}
+            for col in expected.keys():
+                if col not in main_df.columns:
+                    continue
+                x = main_df[col].values
+                mask = ~np.isnan(x)
+                if mask.sum() < 100:
+                    continue
+                try:
+                    auc = roc_auc_score(y[mask], x[mask])
+                    # 取 max(auc, 1-auc) 表示绝对预测力
+                    abs_auc = max(auc, 1 - auc)
+                    marker = "❌🔴" if abs_auc > 0.85 else ("⚠" if abs_auc > 0.70 else "✓")
+                    logging.info(
+                        f"    {marker} {col}: AUC = {auc:.4f} (abs {abs_auc:.4f}) "
+                        f"on {mask.sum()} 行"
+                    )
+                    diag["univariate_auc"][col] = {
+                        "auc": float(auc),
+                        "abs_auc": float(abs_auc),
+                        "n_samples": int(mask.sum()),
+                    }
+                except Exception as e:
+                    logging.warning(f"    {col}: AUC 计算失败 - {e}")
+
+        # 写诊断 JSON
+        with open(DIAGNOSE_PATH, "w") as f:
+            json.dump(diag, f, indent=2, ensure_ascii=False)
+        logging.info(f"\n  诊断报告: {DIAGNOSE_PATH}")
+
+        # 写异常值 CSV
+        if self.anomaly_records:
+            df_anom = pd.DataFrame(self.anomaly_records)
+            df_anom.to_csv(ANOMALIES_PATH, index=False)
+            logging.info(f"  异常值清单: {ANOMALIES_PATH} ({len(df_anom)} 行)")
+
+        self.diagnose_data = diag
+
+
+# ===================== 主流程 =====================
+
+
+def main():
+    log_file = setup_logging()
+    logging.info("=" * 70)
+    logging.info("P4.5 派生财务指标计算 v0")
+    logging.info(f"日志文件: {log_file}")
+    logging.info("=" * 70)
+
+    calc = DerivedFinancialsCalculator()
+    try:
+        calc.open_connections()
+        calc.build_firm_id_mapping()
+        calc.load_labels()
+        calc.load_stock_basic()
+        calc.load_all_tables()
+
+        main_df, components_df = calc.assemble()
+
+        # 写出
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        main_df.to_parquet(MAIN_OUTPUT, index=False)
+        components_df.to_parquet(COMPONENTS_OUTPUT, index=False)
+        logging.info(f"\n=== 输出文件 ===")
+        logging.info(f"  主矩阵: {MAIN_OUTPUT} ({main_df.shape})")
+        logging.info(f"  分量:   {COMPONENTS_OUTPUT} ({components_df.shape})")
+
+        calc.diagnose(main_df)
+
+        logging.info("\n" + "=" * 70)
+        logging.info("✓ P4.5 派生财务指标计算完成")
+        logging.info("=" * 70)
+
+    finally:
+        calc.close_connections()
+
+
+if __name__ == "__main__":
+    main()
+PYEOF
+
+chmod +x "$TARGET_FILE"
+
+echo "✓ Created: $TARGET_FILE"
+echo ""
+echo "前置依赖检查:"
+echo "  1. P2 财务三表: $HOME/code/thesis_project/data/raw/financials/financials.db"
+echo "  2. stock_basic: $HOME/code/thesis_project/data/raw/stock_basic.db"
+echo "  3. 标签全集:    $HOME/code/thesis_project/data/processed/features/insider_features_v0_full.parquet"
+echo ""
+echo "运行:"
+echo "  uv run --project ~/code python ~/code/thesis_project/scripts/compute_derived_financials_v0.py"
+echo ""
+echo "预计耗时: 5-15 分钟（取决于服务器 CPU；51,675 行 × 多年财务数据 join + 计算）"

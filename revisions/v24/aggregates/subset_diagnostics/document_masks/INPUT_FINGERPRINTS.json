@@ -1,0 +1,58 @@
+[
+  {
+    "role": "fraud_labels_v1_0.parquet",
+    "basename": "fraud_labels_v1_0.parquet",
+    "sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+    "bytes": 226750,
+    "mtime_ns": 1789649327705829207,
+    "pinned_hash_match": true
+  },
+  {
+    "role": "stageF_manifest",
+    "basename": "manifest_v1_stageF.json",
+    "sha256": "ece6a36416c6715a0e36eda9e00624ec31cc4aca4eb015b603c4324b5c2d1b9e",
+    "bytes": 1004,
+    "mtime_ns": 1789649327716075623,
+    "pinned_hash_match": true
+  },
+  {
+    "role": "stageE_manifest",
+    "basename": "manifest_v1_stageE.json",
+    "sha256": "9eb0f14ed7de38a269410628b980a3fa6dfc9fcc249c56e89c96ed0467a1ae03",
+    "bytes": 613,
+    "mtime_ns": 1789649084459001415,
+    "pinned_hash_match": true
+  },
+  {
+    "role": "stageE_risksets",
+    "basename": "candidate_risksets_v1_stageE.parquet",
+    "sha256": "4836b756254f4a37eb08da6e1efb91e0b05294e187678722c3f678ffe886d02e",
+    "bytes": 721504,
+    "mtime_ns": 1789649084374225165,
+    "pinned_hash_match": true
+  },
+  {
+    "role": "stageE_pair_qualification",
+    "basename": "pair_qualification_v1_stageE.parquet",
+    "sha256": "bbd2ab5c8732ba2afdbe62097d4075c8aa43d435e4ee6f7e9a6d96b903b9c5eb",
+    "bytes": 2085331,
+    "mtime_ns": 1789649083678806998,
+    "pinned_hash_match": false
+  },
+  {
+    "role": "stageA_manifest",
+    "basename": "manifest_v1_stageA.json",
+    "sha256": "fbd4e0b7b2562baa38abab6ad2a136e30b94d8197346bbc73de8113e50320d91",
+    "bytes": 2550,
+    "mtime_ns": 1789603227750877748,
+    "pinned_hash_match": true
+  },
+  {
+    "role": "stageA_event_ledger",
+    "basename": "event_ledger_v1_stageA.parquet",
+    "sha256": "48217b207200bbf717b22e94ab5a128480d820c347ffd7b8292d24068c6c0d58",
+    "bytes": 1743104,
+    "mtime_ns": 1789603222834912831,
+    "pinned_hash_match": false
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "historical_source": "historical_reference/gnn_baseline_v1_1.py",
+  "source_sha256": "dd727de2efa3385f427aab7e9df4de2f0d3dd24597d0930ecc862aa1e76dca38",
+  "source_lines": 621,
+  "reverse_expansion_lines": [
+    183,
+    199
+  ],
+  "reconstruction": "All 621 consecutive numbered source lines from the retained source report; reconstructed bytes match its stated SHA-256.",
+  "public_repository": "https://github.com/otto2github/features-over-architectures-public",
+  "public_commit": "a6acbb2414a36cc987c6c0132c6df643f9dd519b",
+  "public_source_path": "scripts/training/gnn_baseline_v1_1.py",
+  "public_source_git_blob": "be7f0342727a7843b9431077662a811f1d7f230a",
+  "public_read_date": "2026-09-25",
+  "public_observation": "The training README identifies this runner with the main submitted tables; its annual graph builder appends src/dst and dst/src and repeats relation labels.",
+  "current_core": "code/formal_rerun_core.py",
+  "current_core_sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+  "scope": "Source-level difference and documented original-release association. This is not an immutable executable-to-every-v0-result binding. The historical program is not used to regenerate current estimates."
+}

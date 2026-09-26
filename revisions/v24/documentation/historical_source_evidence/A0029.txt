@@ -1,0 +1,328 @@
+SOURCE_ID: A0029
+SOURCE: <MOUNT>/Downloads/ch7_v1_integration_v1.tar.gz :: ch7_v1_integration/scripts/integrate_rpt_operation_features.py
+ORIGINAL_SHA256: b025113d3729cd64871af66508bc22b8555fe1fc087a8760f392f055ca3a5199
+ORIGINAL_BYTES: 12643
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | #!/usr/bin/env python3
+L00002 | # -*- coding: utf-8 -*-
+L00003 | """
+L00004 | integrate_rpt_operation_features.py
+L00005 | ===================================
+L00006 | RPT_Operation 关联交易明细 (3 分卷, 总 230MB+) → 7 维 firm-year 特征.
+L00007 | 
+L00008 | 输出 7 维 (firm-year 聚合, 默认 fillna 0):
+L00009 |   rpt_total_amount         : 公司年度关联交易总金额 (Isam sum, 单位元)
+L00010 |                              实际输出: log1p(Isam_sum) 防止数量级爆炸
+L00011 |   rpt_max_pannrsm          : 年度最高单笔交易金额比例 (Pannrsm max, %)
+L00012 |   rpt_n_high_pannrsm       : 年度 Pannrsm > 5% 事件数 (>5%需独董审议, 强信号)
+L00013 |   rpt_total_isgplo         : 年度期末余额总额 log1p (持续资金占用规模)
+L00014 |   rpt_n_loan               : 年度贷款类事件数 (Kind 含 "贷款"/"拆借")
+L00015 |   rpt_n_guarantee          : 年度担保类事件数 (Kind 含 "担保")
+L00016 |   rpt_affect_profit_ratio  : 影响利润事件比例 (Ifafcprf == 1.0 / 总事件)
+L00017 | 
+L00018 | 关键技术决策:
+L00019 |   1. ★ 3 分卷分别读取 → firm-year 聚合 → concat → 二次聚合, 防 OOM
+L00020 |      单卷读取 ~ 1-2 GB 内存峰值, 二次聚合后 firm-year DataFrame ~ 几十 MB
+L00021 |   2. ★ usecols 仅读 12 列 (28 列里的 12), 减少 50%+ 内存
+L00022 |   3. Stkcd 必须 normalize_stkcd (实测样本 dtype=int64=1, 不是字符串)
+L00023 |   4. Ifafcprf 实测是 float64 (1.0/NaN), 不是 inventory 说的 Y/N
+L00024 |   5. Pannrsm 早年大量为 NaN, fillna(0) 后再做 > 5 判定
+L00025 | 
+L00026 | [WITHHELD IN REVIEW COPY: illustrative record details; retain original locally]
+L00027 | [WITHHELD IN REVIEW COPY: illustrative record details; retain original locally]
+L00028 | [WITHHELD IN REVIEW COPY: illustrative record details; retain original locally]
+L00029 | 
+L00030 | KG 派生 (E7 边) 在另一脚本 build_kg_e7_trade.py 处理, 本脚本只产出特征.
+L00031 | """
+L00032 | 
+L00033 | from __future__ import annotations
+L00034 | 
+L00035 | import argparse
+L00036 | import gc
+L00037 | import sys
+L00038 | from pathlib import Path
+L00039 | 
+L00040 | import numpy as np
+L00041 | import pandas as pd
+L00042 | 
+L00043 | sys.path.insert(0, str(Path(__file__).resolve().parent))
+L00044 | from _v1_common import (
+L00045 |     extract_year,
+L00046 |     get_logger,
+L00047 |     get_paths,
+L00048 |     log_mem,
+L00049 |     normalize_stkcd,
+L00050 |     write_stats_json,
+L00051 | )
+L00052 | 
+L00053 | # ============================================================ 常量
+L00054 | USE_COLS = [
+L00055 |     "Stkcd", "Reptdt", "Repart", "RalatedPartyID", "Relation",
+L00056 |     "Direction", "Repat", "Kind",
+L00057 |     "Isam", "Pannrsm", "Isgplo", "Ifafcprf",
+L00058 | ]
+L00059 | 
+L00060 | LOAN_KEYWORDS = ["贷款", "拆借", "借款"]
+L00061 | GUARANTEE_KEYWORDS = ["担保", "保证"]
+L00062 | HIGH_PANNRSM_THRESHOLD = 5.0  # %
+L00063 | 
+L00064 | 
+L00065 | # ============================================================
+L00066 | def aggregate_one_volume(xlsx_path: Path, log) -> pd.DataFrame:
+L00067 |     """读 1 个分卷 → firm-year 部分聚合 (含计数和数值 sum/max).
+L00068 | 
+L00069 |     返回 firm-year 部分聚合 DataFrame, 含原始 sum/count 列, 二次聚合时合并.
+L00070 |     """
+L00071 |     if not xlsx_path.exists():
+L00072 |         log.warning(f"[skip] {xlsx_path} 不存在")
+L00073 |         return pd.DataFrame()
+L00074 | 
+L00075 |     log.info(f"  读取 {xlsx_path.name} ...")
+L00076 |     log_mem(log, f"before_{xlsx_path.name}")
+L00077 | 
+L00078 |     # 注意: usecols 在 pd.read_excel 是按 header 名字, skiprows 跳前 2 行
+L00079 |     df = pd.read_excel(
+L00080 |         xlsx_path,
+L00081 |         skiprows=[1, 2],
+L00082 |         usecols=lambda c: c in USE_COLS,
+L00083 |     )
+L00084 |     log.info(f"  原始行数: {len(df)}")
+L00085 |     log_mem(log, f"after_read_{xlsx_path.name}")
+L00086 | 
+L00087 |     # 规整 firm_id
+L00088 |     df["firm_id"] = normalize_stkcd(df["Stkcd"])
+L00089 |     df = df.loc[df["firm_id"].str.match(r"^\d{6}$", na=False)].copy()
+L00090 | 
+L00091 |     # 抽 year
+L00092 |     df["year"] = extract_year(df["Reptdt"]).astype("Int64")
+L00093 |     df = df.dropna(subset=["year"]).copy()
+L00094 |     df["year"] = df["year"].astype(int)
+L00095 | 
+L00096 |     # 数值字段
+L00097 |     df["Isam"] = pd.to_numeric(df.get("Isam"), errors="coerce").fillna(0)
+L00098 |     df["Pannrsm"] = pd.to_numeric(df.get("Pannrsm"), errors="coerce").fillna(0)
+L00099 |     df["Isgplo"] = pd.to_numeric(df.get("Isgplo"), errors="coerce").fillna(0)
+L00100 |     # Ifafcprf 实测是 float (1.0=Y, NaN/0=N)
+L00101 |     df["Ifafcprf"] = pd.to_numeric(df.get("Ifafcprf"), errors="coerce").fillna(0)
+L00102 | 
+L00103 |     # Kind 派生
+L00104 |     kind_str = df.get("Kind", pd.Series([""] * len(df))).astype(str)
+L00105 |     loan_pat = "|".join(LOAN_KEYWORDS)
+L00106 |     guar_pat = "|".join(GUARANTEE_KEYWORDS)
+L00107 |     df["_is_loan"] = kind_str.str.contains(loan_pat, regex=True, na=False).astype(int)
+L00108 |     df["_is_guarantee"] = kind_str.str.contains(guar_pat, regex=True, na=False).astype(int)
+L00109 |     df["_is_high_pannrsm"] = (df["Pannrsm"] > HIGH_PANNRSM_THRESHOLD).astype(int)
+L00110 |     df["_is_affect_profit"] = (df["Ifafcprf"] == 1.0).astype(int)
+L00111 | 
+L00112 |     log.info(f"  Kind 分类: loan={df['_is_loan'].sum()}, guarantee={df['_is_guarantee'].sum()}")
+L00113 | 
+L00114 |     # firm-year 部分聚合
+L00115 |     agg = df.groupby(["firm_id", "year"], as_index=False).agg(
+L00116 |         _isam_sum=("Isam", "sum"),
+L00117 |         _pannrsm_max=("Pannrsm", "max"),
+L00118 |         _isgplo_sum=("Isgplo", "sum"),
+L00119 |         _n_events=("Isam", "size"),
+L00120 |         _n_loan=("_is_loan", "sum"),
+L00121 |         _n_guarantee=("_is_guarantee", "sum"),
+L00122 |         _n_high_pannrsm=("_is_high_pannrsm", "sum"),
+L00123 |         _n_affect_profit=("_is_affect_profit", "sum"),
+L00124 |     )
+L00125 |     log.info(f"  分卷部分聚合后 firm-year: {len(agg)}")
+L00126 | 
+L00127 |     # 释放原始 df 内存
+L00128 |     del df
+L00129 |     gc.collect()
+L00130 |     log_mem(log, f"after_agg_{xlsx_path.name}")
+L00131 | 
+L00132 |     return agg
+L00133 | 
+L00134 | 
+L00135 | def merge_partial_aggregates(parts: list[pd.DataFrame], log) -> pd.DataFrame:
+L00136 |     """二次聚合: 多分卷部分聚合结果合并."""
+L00137 |     log.info("=" * 60)
+L00138 |     log.info("二次聚合 (跨分卷合并)")
+L00139 |     log.info("=" * 60)
+L00140 |     if not parts:
+L00141 |         log.error("没有任何分卷数据可聚合")
+L00142 |         sys.exit(1)
+L00143 | 
+L00144 |     full = pd.concat(parts, ignore_index=True)
+L00145 |     log.info(f"concat 后行数: {len(full)} (含同 firm-year 重复, 二次聚合中)")
+L00146 | 
+L00147 |     final = full.groupby(["firm_id", "year"], as_index=False).agg(
+L00148 |         _isam_sum=("_isam_sum", "sum"),
+L00149 |         _pannrsm_max=("_pannrsm_max", "max"),
+L00150 |         _isgplo_sum=("_isgplo_sum", "sum"),
+L00151 |         _n_events=("_n_events", "sum"),
+L00152 |         _n_loan=("_n_loan", "sum"),
+L00153 |         _n_guarantee=("_n_guarantee", "sum"),
+L00154 |         _n_high_pannrsm=("_n_high_pannrsm", "sum"),
+L00155 |         _n_affect_profit=("_n_affect_profit", "sum"),
+L00156 |     )
+L00157 |     log.info(f"二次聚合后 firm-year: {len(final)}")
+L00158 |     return final
+L00159 | 
+L00160 | 
+L00161 | def derive_features(agg: pd.DataFrame) -> pd.DataFrame:
+L00162 |     """从二次聚合派生 7 维终态特征."""
+L00163 |     out = agg.copy()
+L00164 |     out["rpt_total_amount"] = np.log1p(out["_isam_sum"]).astype("float32")
+L00165 |     out["rpt_max_pannrsm"] = out["_pannrsm_max"].astype("float32")
+L00166 |     out["rpt_n_high_pannrsm"] = out["_n_high_pannrsm"].astype("int32")
+L00167 |     out["rpt_total_isgplo"] = np.log1p(out["_isgplo_sum"]).astype("float32")
+L00168 |     out["rpt_n_loan"] = out["_n_loan"].astype("int32")
+L00169 |     out["rpt_n_guarantee"] = out["_n_guarantee"].astype("int32")
+L00170 |     # affect_profit_ratio: 防 0 除
+L00171 |     with np.errstate(divide="ignore", invalid="ignore"):
+L00172 |         ratio = np.where(out["_n_events"] > 0, out["_n_affect_profit"] / out["_n_events"], 0.0)
+L00173 |     out["rpt_affect_profit_ratio"] = ratio.astype("float32")
+L00174 |     feature_cols = [
+L00175 |         "rpt_total_amount",
+L00176 |         "rpt_max_pannrsm",
+L00177 |         "rpt_n_high_pannrsm",
+L00178 |         "rpt_total_isgplo",
+L00179 |         "rpt_n_loan",
+L00180 |         "rpt_n_guarantee",
+L00181 |         "rpt_affect_profit_ratio",
+L00182 |     ]
+L00183 |     return out[["firm_id", "year"] + feature_cols], feature_cols
+L00184 | 
+L00185 | 
+L00186 | # ============================================================
+L00187 | def main_pipeline(
+L00188 |     rpt_xlsx_paths: list[Path],
+L00189 |     base_firm_year_parquet: Path,
+L00190 |     out_parquet: Path,
+L00191 |     out_stats: Path,
+L00192 |     log,
+L00193 | ):
+L00194 |     log.info("=" * 60)
+L00195 |     log.info("Phase 1: 遍历 3 分卷, 各自 firm-year 部分聚合")
+L00196 |     log.info("=" * 60)
+L00197 | 
+L00198 |     parts = []
+L00199 |     for p in rpt_xlsx_paths:
+L00200 |         agg = aggregate_one_volume(p, log)
+L00201 |         if not agg.empty:
+L00202 |             parts.append(agg)
+L00203 | 
+L00204 |     log.info(f"成功读取分卷数: {len(parts)}/{len(rpt_xlsx_paths)}")
+L00205 | 
+L00206 |     log.info("=" * 60)
+L00207 |     log.info("Phase 2: 二次聚合")
+L00208 |     log.info("=" * 60)
+L00209 |     final_agg = merge_partial_aggregates(parts, log)
+L00210 | 
+L00211 |     # 释放部分聚合内存
+L00212 |     del parts
+L00213 |     gc.collect()
+L00214 | 
+L00215 |     log.info("=" * 60)
+L00216 |     log.info("Phase 3: 派生 7 维特征")
+L00217 |     log.info("=" * 60)
+L00218 |     out_df, feature_cols = derive_features(final_agg)
+L00219 |     log.info(f"特征 firm-year 行数: {len(out_df)}")
+L00220 | 
+L00221 |     # ---------- 与 v0.7 全集对齐 ----------
+L00222 |     log.info("=" * 60)
+L00223 |     log.info("Phase 4: 与 v0.7 全集对齐 (fillna 0)")
+L00224 |     log.info("=" * 60)
+L00225 | 
+L00226 |     if base_firm_year_parquet is not None and base_firm_year_parquet.exists():
+L00227 |         base = pd.read_parquet(base_firm_year_parquet, columns=["firm_id", "year"])
+L00228 |         base["firm_id"] = base["firm_id"].astype(str).str.zfill(6)
+L00229 |         base["year"] = base["year"].astype(int)
+L00230 |         base = base.drop_duplicates()
+L00231 |         log.info(f"v0.7 全集: {len(base)} firm-year")
+L00232 | 
+L00233 |         merged = base.merge(out_df, on=["firm_id", "year"], how="left")
+L00234 |         # 全部 fillna(0): 无关联交易记录 = 真实 0
+L00235 |         for c in feature_cols:
+L00236 |             merged[c] = pd.to_numeric(merged[c], errors="coerce").fillna(0)
+L00237 |         # dtype 整理
+L00238 |         for c in ["rpt_total_amount", "rpt_max_pannrsm", "rpt_total_isgplo", "rpt_affect_profit_ratio"]:
+L00239 |             merged[c] = merged[c].astype("float32")
+L00240 |         for c in ["rpt_n_high_pannrsm", "rpt_n_loan", "rpt_n_guarantee"]:
+L00241 |             merged[c] = merged[c].astype("int32")
+L00242 | 
+L00243 |         n_covered = int((merged["rpt_total_amount"] > 0).sum())
+L00244 |         log.info(f"v0.7 中有关联交易记录: {n_covered} firm-year ({n_covered/len(merged)*100:.1f}%)")
+L00245 |         out_df = merged
+L00246 | 
+L00247 |     # ---------- 持久化 ----------
+L00248 |     out_parquet.parent.mkdir(parents=True, exist_ok=True)
+L00249 |     out_df.to_parquet(out_parquet, index=False, compression="snappy")
+L00250 |     log.info(f"特征写入: {out_parquet}  ({len(out_df)} 行)")
+L00251 | 
+L00252 |     # ---------- 统计 ----------
+L00253 |     stats = {
+L00254 |         "feature_set": "rpt_operation (RPT_Operation 3 volumes)",
+L00255 |         "input_volumes": [str(p) for p in rpt_xlsx_paths if p.exists()],
+L00256 |         "output_parquet": str(out_parquet),
+L00257 |         "n_rows_output": int(len(out_df)),
+L00258 |         "feature_cols": feature_cols,
+L00259 |         "feature_distributions": {
+L00260 |             c: {
+L00261 |                 "mean": float(pd.to_numeric(out_df[c], errors="coerce").mean()),
+L00262 |                 "p50": float(pd.to_numeric(out_df[c], errors="coerce").median()),
+L00263 |                 "p90": float(pd.to_numeric(out_df[c], errors="coerce").quantile(0.9)),
+L00264 |                 "max": float(pd.to_numeric(out_df[c], errors="coerce").max()),
+L00265 |             }
+L00266 |             for c in feature_cols
+L00267 |         },
+L00268 |         "high_pannrsm_threshold_pct": HIGH_PANNRSM_THRESHOLD,
+L00269 |         "loan_keywords": LOAN_KEYWORDS,
+L00270 |         "guarantee_keywords": GUARANTEE_KEYWORDS,
+L00271 |         "notes": [
+L00272 |             "rpt_total_amount/rpt_total_isgplo 取 log1p 防数量级爆炸 (实测最大可达 4e10 元)",
+L00273 |             "Pannrsm > 5% 是中国 A 股关联交易独董审议门槛, 计数事件数是强欺诈代理",
+L00274 |             "Ifafcprf 实测为 float64 (1.0/NaN), 而非 inventory 描述的 Y/N",
+L00275 |             "rpt_total_isgplo 高 = 资金占用持续, 对应 CSMAR P2510 经典案例",
+L00276 |         ],
+L00277 |     }
+L00278 |     write_stats_json(stats, out_stats, log=log)
+L00279 | 
+L00280 | 
+L00281 | # ============================================================
+L00282 | def main():
+L00283 |     p = argparse.ArgumentParser(description="RPT_Operation 3 分卷 → 7 维特征")
+L00284 |     p.add_argument("--project-root", type=Path, default=None)
+L00285 |     p.add_argument("--rpt-xlsx-list", nargs="+", type=Path, default=None,
+L00286 |                    help="3 个 RPT_Operation 分卷路径 (默认按命名规则查找)")
+L00287 |     p.add_argument("--base-firm-year", type=Path, default=None)
+L00288 |     p.add_argument("--out-parquet", type=Path, default=None)
+L00289 |     p.add_argument("--out-stats", type=Path, default=None)
+L00290 |     args = p.parse_args()
+L00291 | 
+L00292 |     paths = get_paths(args.project_root)
+L00293 |     log = get_logger("integrate_rpt_operation_features", paths["stats"])
+L00294 | 
+L00295 |     if args.rpt_xlsx_list:
+L00296 |         rpt_paths = list(args.rpt_xlsx_list)
+L00297 |     else:
+L00298 |         # 默认 3 分卷命名约定
+L00299 |         rpt_paths = [
+L00300 |             paths["raw_csmar"] / "RPT_Operation.xlsx",
+L00301 |             paths["raw_csmar"] / "RPT_Operation1.xlsx",
+L00302 |             paths["raw_csmar"] / "RPT_Operation2.xlsx",
+L00303 |         ]
+L00304 | 
+L00305 |     base = args.base_firm_year or (paths["processed_features"] / "features_v0_7.parquet")
+L00306 |     out = args.out_parquet or (paths["processed_features"] / "rpt_operation_features_v1_1.parquet")
+L00307 |     out_stats = args.out_stats or (paths["stats"] / "integrate_rpt_operation_stats.json")
+L00308 | 
+L00309 |     log.info(f"3 分卷路径:")
+L00310 |     for p in rpt_paths:
+L00311 |         log.info(f"  {p} (exists={p.exists()})")
+L00312 |     log.info(f"v0.7 base: {base}")
+L00313 |     log.info(f"Out: {out}")
+L00314 | 
+L00315 |     main_pipeline(rpt_paths, base, out, out_stats, log)
+L00316 |     log.info("✓ integrate_rpt_operation_features 完成")
+L00317 | 
+L00318 | 
+L00319 | if __name__ == "__main__":
+L00320 |     main()

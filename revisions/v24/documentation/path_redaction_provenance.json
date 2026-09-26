@@ -1,0 +1,44 @@
+[
+  {
+    "source_file": "audit_server/24_bootstrap_design_and_diagnostics.json",
+    "source_sha256": "908c1c6b4c6201b913aa77a4a0155cf6e9d3cb9d92e95f4ea6a4ac7137d66934",
+    "distributed_file": "documentation/audit_server__24_bootstrap_design_and_diagnostics.json",
+    "path_literals_redacted": false
+  },
+  {
+    "source_file": "audit_server/34_graph_interpretation_limits.json",
+    "source_sha256": "d9ae0a5b4da5923d2ca1d3d0238d945bf023ebcd8feef0ac719930b9a19a78b3",
+    "distributed_file": "documentation/audit_server__34_graph_interpretation_limits.json",
+    "path_literals_redacted": false
+  },
+  {
+    "source_file": "audit_server/ENVIRONMENT.json",
+    "source_sha256": "e1ef491e3acf7c0c91839f9bad0d46a29086a5364de120d1cb811feebf6890d7",
+    "distributed_file": "documentation/audit_server__ENVIRONMENT.json",
+    "path_literals_redacted": false
+  },
+  {
+    "source_file": "fin_audit/15_financial_interpretation_limits.json",
+    "source_sha256": "c51891b6324c496d71d0cd33587d330112ef87f2fbc7cde35f0708bce7e5f76f",
+    "distributed_file": "documentation/fin_audit__15_financial_interpretation_limits.json",
+    "path_literals_redacted": false
+  },
+  {
+    "source_file": "asof_prep/asof_manifest.json",
+    "source_sha256": "1a2c268375a8b80e1fdbefce5f4a3029c7490f0c7706f2ecb1bc357e1aec8b05",
+    "distributed_file": "documentation/asof_prep__asof_manifest.json",
+    "path_literals_redacted": true
+  },
+  {
+    "source_file": "fixed_prep/fixed1095_manifest.json",
+    "source_sha256": "2921f8ff5bf216e29594d61f772dc6b632ede1cdd80d0928ca08c69b898432f2",
+    "distributed_file": "documentation/fixed_prep__fixed1095_manifest.json",
+    "path_literals_redacted": true
+  },
+  {
+    "source_file": "audit_mac/05_fixed_window_scope.json",
+    "source_sha256": "3eb285e1649370bc3e01d01c0b61f3be9e232681be2a4f0d4f1767dbd680ac34",
+    "distributed_file": "documentation/audit_mac__05_fixed_window_scope.json",
+    "path_literals_redacted": false
+  }
+]

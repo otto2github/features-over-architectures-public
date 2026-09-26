@@ -1,0 +1,168 @@
+[
+  {
+    "file": "code/label_construction/peerj_label_v1_stageA.py",
+    "original_source_sha256": "e5e3934bcf670f0d23964611ea397f78226d65c7b9c6741a057608b8b4a25313",
+    "distributed_sha256": "8c8819e73a3273d4cea9ccc3ffd40e0792a69129e64b11f418e3336d02b1a312",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 42,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\")"
+      },
+      {
+        "line": 43,
+        "environment_expression": "os.environ.get(\"PEERJ_VIOLATION_SOURCE_DIR\", \"private_inputs/csmar/violation\")"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB.py",
+    "original_source_sha256": "6758f3cc4fe744b21928606bbd2516cd49fdfd6d7fe947765527e03e73fa1319",
+    "distributed_sha256": "969877685c4a6faf5d315f0a3f4ea210098903ae8ad94d92342e5eccaf12e1a9",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 50,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\")"
+      },
+      {
+        "line": 51,
+        "environment_expression": "os.environ.get(\"PEERJ_CSMAR_ROOT\", \"private_inputs/csmar\")"
+      },
+      {
+        "scope": "source subdirectory literal only",
+        "environment_expression": "PEERJ_VIOLATION_SOURCE_DIR; fallback private_inputs/csmar/violation"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB1.py",
+    "original_source_sha256": "41f96fbf3023a9e59c5360a009c3c8c147856a17fdeb7eaf5b3652ad85c4f4c8",
+    "distributed_sha256": "661427e6cd135cc94ec25ac6129521cb95e383ff03dfde810316cf8d9c635879",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 26,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\") + '/data/processed/kg/node_features_v1_1.parquet'"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB2.py",
+    "original_source_sha256": "d7b4756e773a71f895d4433dc11251d60eac6f5af914a5b22033e1e729a08cce",
+    "distributed_sha256": "0e3ae3517f0405c1691e7285bc940651739c9d3971fc81c93728e11a4e58042f",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 20,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\")"
+      },
+      {
+        "line": 21,
+        "environment_expression": "os.environ.get(\"PEERJ_CSMAR_ROOT\", \"private_inputs/csmar\")"
+      },
+      {
+        "line": 24,
+        "environment_expression": "os.environ.get(\"PEERJ_AUDIT_SOURCE_XLSX\", \"private_inputs/csmar/audit/FIN_Audit.xlsx\")"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB3.py",
+    "original_source_sha256": "27c1a359b881986dc18d750cdda1c2c5f0234bff1e35ab980cffafc726825818",
+    "distributed_sha256": "cd03ac027ec285f86e6c51e4e75c06ba9cc0277d0be981ba46dde131d6df89a1",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 51,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\")"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB3b.py",
+    "original_source_sha256": "07718ef2b191f6efade77d1e63b594cd3959469f81ed320d8feb10cfd91a727a",
+    "distributed_sha256": "47cd9a213cf33fb56a87d6d87c7fe655dd37cd7bd6647a7cabd215946d6191da",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 22,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\")"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB3c.py",
+    "original_source_sha256": "64aad92d4684c976c47ff3d09d52f668ecd4759e76ea328d9a44130d63fe841d",
+    "distributed_sha256": "7425e523b1a7e85b41d6323aaab7d69fe5ce8b0844e05049075b2e92af40cccc",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 31,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\")"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB3d.py",
+    "original_source_sha256": "d4cfb6fd250c868a8eaad0ca3bb1c37d319a4946abafa3637250e5ee7f0a72ae",
+    "distributed_sha256": "c651e3d11b02e4b25a4d77022a110b6e25319756652d5a86355fdc7dfa1778bb",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 25,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\")"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageC.py",
+    "original_source_sha256": "1d7fb11495eb17eb1a436c869e3fc0cee6c9316301d1235a50ed6d28050ba491",
+    "distributed_sha256": "fa8ec2bc9c634a4ff9ac9965c9784581512aba0767a8c4a4b25e9114ef5657c3",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 55,
+        "environment_expression": "os.environ.get(\"PEERJ_VIOLATION_SOURCE_DIR\", \"private_inputs/csmar/violation\")"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageD.py",
+    "original_source_sha256": "f96b852dc7ccaafeea2af4ada0a68352ba078a82a60a23a9a025e78f9c68381e",
+    "distributed_sha256": "6a46670f9dec39b6a7d18899143d94b9089b632566cb46967da2253eb3f51e96",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 46,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\")"
+      }
+    ]
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageE.py",
+    "original_source_sha256": "74aa5269761020ed0d702acde3063f4b8b212fc765a919301467bf8cd0aaa94d",
+    "distributed_sha256": "74aa5269761020ed0d702acde3063f4b8b212fc765a919301467bf8cd0aaa94d",
+    "representation": "unchanged full source",
+    "changes": []
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageF.py",
+    "original_source_sha256": "fad1aec1ff8c441f31dbac99ac7a96f2d927cf2eda99b0e63cd609a035fd8b7e",
+    "distributed_sha256": "fad1aec1ff8c441f31dbac99ac7a96f2d927cf2eda99b0e63cd609a035fd8b7e",
+    "representation": "unchanged full source",
+    "changes": []
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageG4.py",
+    "original_source_sha256": "b1f87182c37a1d2590a457797acb3926c284ff91170781fbf07b93fb798c3a26",
+    "distributed_sha256": "3a97712a6e8fdb30bb6ca9ff66001ba795b93e24a4740ecbc27242d867fc6c9b",
+    "representation": "path-parameterized full source",
+    "changes": [
+      {
+        "line": 50,
+        "environment_expression": "os.environ.get(\"PEERJ_SOURCE_PROJECT_ROOT\", \"private_inputs/project\")"
+      }
+    ]
+  }
+]

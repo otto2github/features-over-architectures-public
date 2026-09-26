@@ -1,0 +1,77 @@
+{
+  "architectures": {
+    "GAT": "GATConv 4 heads then 1 head",
+    "GCN": "2-layer GCNConv",
+    "MLP": "2 hidden layers, ReLU, dropout 0.3",
+    "RGCN": "2-layer RGCNConv with 5 relations",
+    "SAGE": "2-layer full-neighborhood SAGEConv; no neighbor sampling"
+  },
+  "checkpoint_metric": "validation ROC-AUC",
+  "dropout": 0.3,
+  "early_stopping_patience": 10,
+  "expected_pos_weight": 93.90551181102362,
+  "expected_primary_train_counts": {
+    "negative": 23852,
+    "positive": 254
+  },
+  "f1_policy": "threshold selected on validation only, frozen on test",
+  "graph": "entity-level; per-year edges use edge.year == fiscal year; appended 4 unmapped companies are isolated",
+  "hidden_dim": 64,
+  "historical_results_canonical": false,
+  "label_version": "label_v1.0",
+  "lr": 0.0005,
+  "max_epochs": 100,
+  "metrics": [
+    "ROC-AUC",
+    "average precision",
+    "F1@validation-selected threshold",
+    "P@5%",
+    "R@10%FPR"
+  ],
+  "modalities": [
+    "M5",
+    "M10",
+    "M11"
+  ],
+  "models": [
+    "MLP",
+    "GCN",
+    "GAT",
+    "SAGE",
+    "RGCN"
+  ],
+  "optimizer": "Adam",
+  "positive_class_weight": "dynamic Nneg/Npos on eligible train risk set",
+  "primary_label_col": "label_v1_strict_ab_primary",
+  "pure_graph_G6": "1D current-year company indicator; supporting and other nodes are zero",
+  "right_censored_years": [
+    2023,
+    2024
+  ],
+  "scaler": "fit only on eligible 2010-2018 rows; missing values filled with 0 before mean/std",
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024
+  ],
+  "sensitivity_label_cols": [
+    "label_v1_strict_aonly_sensitivity",
+    "label_v1_loose_ab_sensitivity"
+  ],
+  "test_policy": "test scores computed only after best validation checkpoint is restored",
+  "test_years": [
+    2021,
+    2022
+  ],
+  "train_years": [
+    2010,
+    2018
+  ],
+  "validation_years": [
+    2019,
+    2020
+  ],
+  "version": "formal_rerun_v1"
+}

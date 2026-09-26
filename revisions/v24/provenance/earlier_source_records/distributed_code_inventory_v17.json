@@ -1,0 +1,217 @@
+[
+  {
+    "file": "code/aggregate_core.py",
+    "sha256": "78510e4ab68218002b74e0af99c5057624ee23be8777f63d8ff973c2d5d4d645",
+    "bytes": 1578
+  },
+  {
+    "file": "code/audit_ablation_runner.py",
+    "sha256": "c8e6bd090519c46c42ed9b8529d12bb34d2c101da7edd1293b58e186935e8c12",
+    "bytes": 3725
+  },
+  {
+    "file": "code/formal_rerun_core.py",
+    "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+    "bytes": 16439
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageA.py",
+    "sha256": "8c8819e73a3273d4cea9ccc3ffd40e0792a69129e64b11f418e3336d02b1a312",
+    "bytes": 30996
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB.py",
+    "sha256": "969877685c4a6faf5d315f0a3f4ea210098903ae8ad94d92342e5eccaf12e1a9",
+    "bytes": 45641
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB1.py",
+    "sha256": "661427e6cd135cc94ec25ac6129521cb95e383ff03dfde810316cf8d9c635879",
+    "bytes": 15665
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB2.py",
+    "sha256": "0e3ae3517f0405c1691e7285bc940651739c9d3971fc81c93728e11a4e58042f",
+    "bytes": 20945
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB3.py",
+    "sha256": "cd03ac027ec285f86e6c51e4e75c06ba9cc0277d0be981ba46dde131d6df89a1",
+    "bytes": 24182
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB3b.py",
+    "sha256": "47cd9a213cf33fb56a87d6d87c7fe655dd37cd7bd6647a7cabd215946d6191da",
+    "bytes": 19363
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB3c.py",
+    "sha256": "7425e523b1a7e85b41d6323aaab7d69fe5ce8b0844e05049075b2e92af40cccc",
+    "bytes": 17772
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageB3d.py",
+    "sha256": "c651e3d11b02e4b25a4d77022a110b6e25319756652d5a86355fdc7dfa1778bb",
+    "bytes": 19412
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageC.py",
+    "sha256": "fa8ec2bc9c634a4ff9ac9965c9784581512aba0767a8c4a4b25e9114ef5657c3",
+    "bytes": 20447
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageD.py",
+    "sha256": "6a46670f9dec39b6a7d18899143d94b9089b632566cb46967da2253eb3f51e96",
+    "bytes": 15430
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageE.py",
+    "sha256": "74aa5269761020ed0d702acde3063f4b8b212fc765a919301467bf8cd0aaa94d",
+    "bytes": 21940
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageF.py",
+    "sha256": "fad1aec1ff8c441f31dbac99ac7a96f2d927cf2eda99b0e63cd609a035fd8b7e",
+    "bytes": 17098
+  },
+  {
+    "file": "code/label_construction/peerj_label_v1_stageG4.py",
+    "sha256": "3a97712a6e8fdb30bb6ca9ff66001ba795b93e24a4740ecbc27242d867fc6c9b",
+    "bytes": 21997
+  },
+  {
+    "file": "code/peerj_calibration_mlp_m11_v1.py",
+    "sha256": "784c949e977a72566db6b537e3f41691b889c754be28bdd6cd58a30ab4eedd15",
+    "bytes": 22768
+  },
+  {
+    "file": "code/peerj_posthoc_comprehensive_bootstrap_v3.py",
+    "sha256": "9d55ce01ae2ad11c1ac8b1b2ed11fe4999bdc8e78234a9ef55da73a128f95d59",
+    "bytes": 23217
+  },
+  {
+    "file": "code/peerj_structural_baselines_v1.py",
+    "sha256": "81a79af853e823e612f86b080b62b0a12906b60c02a6bb437ec122abcec3dcfa",
+    "bytes": 22676
+  },
+  {
+    "file": "code/peerj_tabular_primary_v1.py",
+    "sha256": "62fb5dac496a6c8ec792a8f82da0bb93556b5fa7c05968086c9ec3902c1ac593",
+    "bytes": 11574
+  },
+  {
+    "file": "code/peerj_tabular_weighted_v1.py",
+    "sha256": "dcb7849ad23458ba8a6e25979b8637a3a20f50e226bf29d344c0d67ff7cc2605",
+    "bytes": 11601
+  },
+  {
+    "file": "code/primary_diagnostics/auditlib/__init__.py",
+    "sha256": "1aaf976258ad5072d9c38f0eedad7fb39962471e8bcc9be0997c0592f1301748",
+    "bytes": 59
+  },
+  {
+    "file": "code/primary_diagnostics/auditlib/common.py",
+    "sha256": "503ef822a705e37404845f628c49dfbef1448285835e2d629195db9914ca7c9c",
+    "bytes": 12350
+  },
+  {
+    "file": "code/primary_diagnostics/auditlib/endpoints.py",
+    "sha256": "02c29e8ae1bd22abb018152f47a4baf09a7d8aef8c55d34b1ab3a4b20a16a0be",
+    "bytes": 11333
+  },
+  {
+    "file": "code/primary_diagnostics/auditlib/financials.py",
+    "sha256": "06cfd87ea02fd8cc0f2f551fa59be10fe91f38fdb9ec3d21215542fc7f23f481",
+    "bytes": 17144
+  },
+  {
+    "file": "code/primary_diagnostics/auditlib/graphs.py",
+    "sha256": "02a7d384eb4fbc8549f2b0bc033bd318ee11b04ebf4dd18eda4972bccda03f2c",
+    "bytes": 6167
+  },
+  {
+    "file": "code/primary_diagnostics/auditlib/metrics.py",
+    "sha256": "b1a6ed3e1212debe39f97222dd3284acd1a6a69a29d492e1f1e7046168b78ed3",
+    "bytes": 3471
+  },
+  {
+    "file": "code/primary_diagnostics/auditlib/predictions.py",
+    "sha256": "2694235d6bb0009f21d7693b56230c5446dd4d8856f5cc21cbacd5c64b24cb1c",
+    "bytes": 14502
+  },
+  {
+    "file": "code/primary_diagnostics/peerj_final_check.py",
+    "sha256": "00b113a6f47171c1ac764541769b0022d5856f8c634d5b9f66bf91ba66b50bef",
+    "bytes": 3675
+  },
+  {
+    "file": "code/recovered_builders/A0004_integrate_audit_features.py",
+    "sha256": "f8070ccaf444e79ec8c2a34ab59a68498586666b504f8ac8733484faf5917a5b",
+    "bytes": 15325
+  },
+  {
+    "file": "code/recovered_builders/A0007_integrate_controller_features.py",
+    "sha256": "473b50f4754556dbf4e124c7979e592c39cfc8088b2f6bbd18b70503814decff",
+    "bytes": 11941
+  },
+  {
+    "file": "code/recovered_builders/A0009_integrate_audit_features.py",
+    "sha256": "4e23314d3ca61fc5c586437bceec4d096eaf6e5b315cedc0d5dbfcd1151a0619",
+    "bytes": 14772
+  },
+  {
+    "file": "code/recovered_builders/A0017_build_kg_nodes.py",
+    "sha256": "eefb45a2124383b86d36b4299752bc17024ae34da2bb775579fe26a4e5f16fe4",
+    "bytes": 14219
+  },
+  {
+    "file": "code/recovered_builders/A0020_build_kg_edges.py",
+    "sha256": "a06ff087e2fef159ca0754db089032501e322371d27b2ebe6085eb15bc548783",
+    "bytes": 14520
+  },
+  {
+    "file": "code/recovered_builders/A0032_integrate_controller_features.py",
+    "sha256": "84ca176fc7ecf2c4730b3ec3fc52cb21d833d3c5397919123b66d26120fbf905",
+    "bytes": 11265
+  },
+  {
+    "file": "code/recovered_builders/A0033_merge_features_v1_1.py",
+    "sha256": "c6d2f72c65ce6707a005674176c65f473b5277f89f9aefa0fb5a03453b6b89b7",
+    "bytes": 5166
+  },
+  {
+    "file": "code/recovered_builders/A0034_integrate_audit_features.py",
+    "sha256": "1c2be9cc52b3a9e8402cc00e829c6ecb7c01fb878d923c07c2fbb0a881354bd2",
+    "bytes": 13634
+  },
+  {
+    "file": "code/recovered_builders/A0036_merge_features_v1_0.py",
+    "sha256": "5850a69f8b2f50bbb67949dbb0f9b1df39229e481e9aa6c61997e586afd5bca9",
+    "bytes": 10995
+  },
+  {
+    "file": "code/run_matrix.py",
+    "sha256": "786e150849ba77b9c07d3bd2bc5aaac07a038b966e85ef8fdd35b457e22caa1c",
+    "bytes": 1550
+  },
+  {
+    "file": "code/sensitivity_experiment/code/build_asof_features.py",
+    "sha256": "18ef435f9b8a55911cacbc179cd33059d347210f419a2016520f0b48e7bd3409",
+    "bytes": 21664
+  },
+  {
+    "file": "code/sensitivity_experiment/code/build_fixed1095_labels.py",
+    "sha256": "fc55997483ba82b53b6a72031348620902193af6272358fb438269c4b8c0ec62",
+    "bytes": 6841
+  },
+  {
+    "file": "code/sensitivity_experiment/code/formal_rerun_core.py",
+    "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+    "bytes": 16439
+  },
+  {
+    "file": "code/sensitivity_experiment/code/run_sensitivities_4090.py",
+    "sha256": "8131f73e3b2307ea9fb78b18e26ae8e26a2e298bc53d8b46db64b2d7b183a5ed",
+    "bytes": 13015
+  }
+]

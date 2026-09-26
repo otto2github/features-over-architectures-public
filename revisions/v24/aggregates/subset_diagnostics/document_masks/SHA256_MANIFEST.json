@@ -1,0 +1,22 @@
+{
+  "INPUT_FINGERPRINTS.json": {
+    "sha256": "862fb9e44a5f9e4b828971ddacfc6b35a42badc8995cbe50a6a80a9fad8baaa2",
+    "bytes": 1830
+  },
+  "RUN_STATUS.json": {
+    "sha256": "9b84ac664339cc91d4ebaa8b5f6738d4fee6dd460e423ad931072b6d6d9e35b1",
+    "bytes": 920
+  },
+  "document_mask_counts.csv": {
+    "sha256": "60fbbe443a10d7a64a935dc30f9bc2997e052fd94f1ebe432dd63eaac03a10e7",
+    "bytes": 156
+  },
+  "late_only_training_document_recurrence.csv": {
+    "sha256": "9c5d0ebda68eeb191c434120b478d7437aa21501400c793c791ebb50ce72ca4f",
+    "bytes": 200
+  },
+  "summary.md": {
+    "sha256": "bc0880e0e1a21b9d6f64271c424348b02940b65e0d4dbf855421365d4972b3ba",
+    "bytes": 573
+  }
+}

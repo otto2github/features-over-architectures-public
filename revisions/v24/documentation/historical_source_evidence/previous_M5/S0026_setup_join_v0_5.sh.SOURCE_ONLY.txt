@@ -1,0 +1,325 @@
+#!/usr/bin/env bash
+# setup_join_v0_5.sh
+# 在 ~/code/thesis_project/scripts/ 创建 join_v0_5.py
+#
+# 功能: 把 insider_features_v0_full (51,675 × 56) 与 derived_financials_v0
+#       (51,675 × 20) join 成 features_v0_5.parquet (51,675 × 47)
+#
+# I3 决策: insider 仅保留 t0 (13 维) + 4 timing v2，删除所有 t1/t2 (32 列)
+# H7 决策: 删除 3 个 NA 特征 (block_trade/bidding/pct1)
+#
+# 注意: 4 个 timing v2 列从 P5.2 v2 训练时计算得到，本脚本会复用 P5.2 的逻辑
+#       从 reduce_dates.parquet 重新算（保证一致性）。
+#
+# 运行:
+#   bash setup_join_v0_5.sh
+#   uv run --project ~/code python ~/code/thesis_project/scripts/join_v0_5.py
+
+set -euo pipefail
+
+TARGET_DIR="$HOME/code/thesis_project/scripts"
+TARGET_FILE="$TARGET_DIR/join_v0_5.py"
+
+mkdir -p "$TARGET_DIR"
+
+cat > "$TARGET_FILE" << 'PYEOF'
+#!/usr/bin/env python3
+"""
+v0.5 矩阵装配: insider t0 + timing v2 + derived financials → features_v0_5.parquet
+
+输入:
+  - data/processed/features/insider_features_v0_full.parquet (51,675 × 56)
+  - data/processed/features/derived_financials_v0.parquet     (51,675 × 20)
+  - data/processed/features/reduce_dates.parquet              (用于 timing v2)
+
+输出:
+  - data/processed/features/features_v0_5.parquet             (51,675 × 47)
+
+矩阵 47 列结构:
+  元数据 (12):
+    firm_id, year, list_date, delist_date, industry, market, name,
+    fraud, industry (from financials), market_dup, name_dup, _merge_check
+  insider t0 (13):  剔除 NA 后的 13 个 t0 特征
+  insider timing v2 (4): mean_quarter_offset, std_quarter_offset, n_reduces, q4_offset_share
+  财务派生 (10): 4 跨期 t0+t1 + Z' t0 + 4 行业 z-score t0+t1 + Z' t0 z-score
+                 (等等，详细见 main 函数)
+  财务派生 zind (9)
+"""
+
+import logging
+import sys
+from datetime import datetime
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+# ===================== 路径与常量 =====================
+
+PROJECT_ROOT = Path.home() / "code" / "thesis_project"
+FEATURES_DIR = PROJECT_ROOT / "data" / "processed" / "features"
+LOG_DIR = PROJECT_ROOT / "logs"
+
+INSIDER_PATH = FEATURES_DIR / "insider_features_v0_full.parquet"
+FIN_PATH = FEATURES_DIR / "derived_financials_v0.parquet"
+REDUCE_PATH = FEATURES_DIR / "reduce_dates.parquet"
+
+OUTPUT_PATH = FEATURES_DIR / "features_v0_5.parquet"
+
+# I3 + H7: 保留的 insider t0 列（13 个，剔除 3 个 NA: block_trade/bidding/pct1）
+KEEP_INSIDER_T0 = [
+    "feat_t0_total_notices",
+    "feat_t0_reduce_notices",
+    "feat_t0_increase_notices",
+    "feat_t0_reduce_plan_notices",
+    "feat_t0_reduce_progress_notices",
+    "feat_t0_dj_notices",
+    "feat_t0_large_holder_notices",
+    "feat_t0_controller_notices",
+    "feat_t0_agreement_notices",
+    "feat_t0_pct5_notices",
+    "feat_t0_dj_ratio",
+    "feat_t0_q4_share",
+    "feat_t0_monthly_hhi",
+]
+
+# H7 删除的列 (block_trade / bidding / pct1)
+DROP_INSIDER_T0_NA = [
+    "feat_t0_block_trade_notices",
+    "feat_t0_bidding_notices",
+    "feat_t0_pct1_notices",
+]
+
+# I3 删除的所有 t1/t2 列
+DROP_LAGGED = [
+    f"feat_t{lag}_{name}"
+    for lag in [1, 2]
+    for name in [
+        "total_notices", "reduce_notices", "increase_notices",
+        "reduce_plan_notices", "reduce_progress_notices",
+        "dj_notices", "large_holder_notices", "controller_notices",
+        "block_trade_notices", "bidding_notices", "agreement_notices",
+        "pct5_notices", "pct1_notices", "dj_ratio", "q4_share", "monthly_hhi",
+    ]
+]
+
+
+def setup_logging():
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_file = LOG_DIR / f"join_v0_5_{timestamp}.log"
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(message)s",
+        datefmt="%H:%M:%S",
+        handlers=[logging.FileHandler(log_file), logging.StreamHandler(sys.stdout)],
+    )
+    return log_file
+
+
+# ===================== timing v2 计算 =====================
+
+
+def compute_timing_v2(reduce_df: pd.DataFrame, insider_keys: pd.DataFrame) -> pd.DataFrame:
+    """
+    复用 P5.2 v2 的 quarter_offset_timing 逻辑（H1 决策）:
+
+    timing = (reduce_date - 最近季末) 天数
+      季末 = 03-31 / 06-30 / 09-30 / 12-31
+      取最近的（前后都算，可以是负值）
+
+    每 (firm_id, year) 聚合为 4 个特征:
+      - feat_t0_mean_quarter_offset
+      - feat_t0_std_quarter_offset
+      - feat_t0_n_reduces (实际减持次数)
+      - feat_t0_q4_offset_share (timing 落在 [-30, +30] 即季末附近的比例)
+
+    Args:
+        reduce_df: 减持日期表（columns: firm_id, year, reduce_date）
+        insider_keys: (firm_id, year) 唯一对，作为 left join 基
+
+    Returns:
+        DataFrame with insider_keys + 4 timing v2 columns
+    """
+    df = reduce_df.copy()
+    if "reduce_date" not in df.columns:
+        # 字段名可能不同，看一下实际列
+        date_cols = [c for c in df.columns if "date" in c.lower()]
+        if not date_cols:
+            raise ValueError(f"reduce_dates.parquet 缺日期列。实际列: {df.columns.tolist()}")
+        df["reduce_date"] = df[date_cols[0]]
+
+    df["reduce_date"] = pd.to_datetime(df["reduce_date"], errors="coerce")
+    df = df.dropna(subset=["reduce_date"])
+
+    # 计算到最近季末的天数（带符号）
+    def _quarter_offset(dt):
+        y = dt.year
+        candidates = [
+            pd.Timestamp(y, 3, 31), pd.Timestamp(y, 6, 30),
+            pd.Timestamp(y, 9, 30), pd.Timestamp(y, 12, 31),
+            pd.Timestamp(y - 1, 12, 31),
+            pd.Timestamp(y + 1, 3, 31),
+        ]
+        deltas = [(dt - c).days for c in candidates]
+        # 取绝对值最小的
+        return min(deltas, key=abs)
+
+    df["quarter_offset"] = df["reduce_date"].apply(_quarter_offset)
+
+    # 取 reduce_date 的 year 作为 group year（与公告 year 对齐）
+    if "year" not in df.columns:
+        df["year"] = df["reduce_date"].dt.year
+
+    df["firm_id"] = df["firm_id"].astype(str)
+    insider_keys["firm_id"] = insider_keys["firm_id"].astype(str)
+
+    # 聚合
+    agg = df.groupby(["firm_id", "year"]).agg(
+        feat_t0_mean_quarter_offset=("quarter_offset", "mean"),
+        feat_t0_std_quarter_offset=("quarter_offset", "std"),
+        feat_t0_n_reduces=("quarter_offset", "count"),
+        feat_t0_q4_offset_share=(
+            "quarter_offset",
+            lambda s: ((s.abs() <= 30).sum() / len(s)) if len(s) > 0 else 0.0,
+        ),
+    ).reset_index()
+
+    # left join to insider_keys
+    result = insider_keys.merge(agg, on=["firm_id", "year"], how="left")
+    return result
+
+
+# ===================== 主流程 =====================
+
+
+def main():
+    log_file = setup_logging()
+    logging.info("=" * 70)
+    logging.info("v0.5 矩阵装配 (insider + timing v2 + derived financials)")
+    logging.info(f"日志文件: {log_file}")
+    logging.info("=" * 70)
+
+    # ============= 1. 加载 =============
+    logging.info("\n=== 1. 加载源数据 ===")
+
+    if not INSIDER_PATH.exists():
+        logging.error(f"✗ 不存在: {INSIDER_PATH}")
+        sys.exit(1)
+    df_insider = pd.read_parquet(INSIDER_PATH)
+    df_insider["firm_id"] = df_insider["firm_id"].astype(str)
+    logging.info(f"  insider: {df_insider.shape}")
+
+    if not FIN_PATH.exists():
+        logging.error(f"✗ 不存在: {FIN_PATH}")
+        logging.error(f"  先跑: uv run --project ~/code python ~/code/thesis_project/scripts/compute_derived_financials_v0.py")
+        sys.exit(1)
+    df_fin = pd.read_parquet(FIN_PATH)
+    df_fin["firm_id"] = df_fin["firm_id"].astype(str)
+    logging.info(f"  financials derived: {df_fin.shape}")
+
+    if not REDUCE_PATH.exists():
+        logging.warning(f"  ⚠ 不存在: {REDUCE_PATH}; timing v2 列将全 NaN")
+        df_reduce = None
+    else:
+        df_reduce = pd.read_parquet(REDUCE_PATH)
+        logging.info(f"  reduce dates: {df_reduce.shape}")
+
+    # ============= 2. 处理 insider: I3 删 t1/t2 + H7 删 NA =============
+    logging.info("\n=== 2. I3 删 t1/t2 + H7 删 NA 特征 ===")
+
+    drop_cols_t12 = [c for c in DROP_LAGGED if c in df_insider.columns]
+    drop_cols_na = [c for c in DROP_INSIDER_T0_NA if c in df_insider.columns]
+    drop_all = drop_cols_t12 + drop_cols_na
+
+    df_insider_clean = df_insider.drop(columns=drop_all)
+    logging.info(
+        f"  删除 {len(drop_cols_t12)} 个 t1/t2 列 + {len(drop_cols_na)} 个 NA 特征 = {len(drop_all)} 列"
+    )
+    logging.info(f"  insider 清理后: {df_insider_clean.shape}")
+
+    # ============= 3. 计算 timing v2 =============
+    logging.info("\n=== 3. 计算 timing v2 (H1: quarter offset) ===")
+
+    insider_keys = df_insider_clean[["firm_id", "year"]].drop_duplicates()
+    if df_reduce is not None:
+        try:
+            timing_df = compute_timing_v2(df_reduce, insider_keys)
+            logging.info(f"  timing v2: {timing_df.shape}")
+            for col in ["feat_t0_mean_quarter_offset", "feat_t0_std_quarter_offset",
+                        "feat_t0_n_reduces", "feat_t0_q4_offset_share"]:
+                if col in timing_df.columns:
+                    n_nan = timing_df[col].isna().sum()
+                    logging.info(f"    {col}: NaN {n_nan}/{len(timing_df)} ({n_nan/len(timing_df)*100:.1f}%)")
+        except Exception as e:
+            logging.error(f"  ✗ timing v2 计算失败: {e}")
+            logging.error("  fallback: timing 列全 NaN")
+            timing_df = insider_keys.copy()
+            for col in ["feat_t0_mean_quarter_offset", "feat_t0_std_quarter_offset",
+                        "feat_t0_n_reduces", "feat_t0_q4_offset_share"]:
+                timing_df[col] = np.nan
+    else:
+        timing_df = insider_keys.copy()
+        for col in ["feat_t0_mean_quarter_offset", "feat_t0_std_quarter_offset",
+                    "feat_t0_n_reduces", "feat_t0_q4_offset_share"]:
+            timing_df[col] = np.nan
+
+    df_with_timing = df_insider_clean.merge(timing_df, on=["firm_id", "year"], how="left")
+
+    # ============= 4. join 财务派生 =============
+    logging.info("\n=== 4. join derived financials ===")
+
+    # 避免列名冲突: df_fin 里有 industry，df_insider 里也有
+    fin_cols_to_keep = [c for c in df_fin.columns if c != "industry"]  # industry 用 insider 的（也可以用 fin 的，差不多）
+    df_fin_join = df_fin[fin_cols_to_keep]
+
+    df_v05 = df_with_timing.merge(
+        df_fin_join, on=["firm_id", "year"], how="left",
+        suffixes=("", "_fin"),
+    )
+
+    logging.info(f"  v0.5 矩阵: {df_v05.shape}")
+
+    # ============= 5. 校验 =============
+    logging.info("\n=== 5. 校验 ===")
+
+    # 行数应该 = insider 输入行数
+    if len(df_v05) != len(df_insider):
+        logging.warning(f"  ⚠ 行数变化: {len(df_insider)} → {len(df_v05)}")
+    else:
+        logging.info(f"  ✓ 行数保持 {len(df_v05)}")
+
+    # 列数报告
+    insider_t0_cols = [c for c in df_v05.columns if c.startswith("feat_t0_") and "quarter" not in c and "n_reduces" not in c]
+    timing_cols = [c for c in df_v05.columns if "quarter_offset" in c or c == "feat_t0_n_reduces"]
+    fin_main_cols = [c for c in df_v05.columns if c.startswith("fin_") and not c.endswith("_zind")]
+    fin_zind_cols = [c for c in df_v05.columns if c.endswith("_zind")]
+
+    logging.info(f"  insider t0: {len(insider_t0_cols)} 列")
+    logging.info(f"  timing v2:  {len(timing_cols)} 列")
+    logging.info(f"  fin 主:     {len(fin_main_cols)} 列")
+    logging.info(f"  fin zind:   {len(fin_zind_cols)} 列")
+    logging.info(f"  其他元/标签:{df_v05.shape[1] - len(insider_t0_cols) - len(timing_cols) - len(fin_main_cols) - len(fin_zind_cols)} 列")
+
+    # 写出
+    df_v05.to_parquet(OUTPUT_PATH, index=False)
+    logging.info(f"\n✓ 输出: {OUTPUT_PATH} ({df_v05.shape})")
+
+    logging.info("\n" + "=" * 70)
+    logging.info("✓ v0.5 矩阵装配完成")
+    logging.info("\n下一步: 跑 quick check 验证多模态 AUC 提升")
+    logging.info("  bash setup_quick_check_v0_5.sh")
+    logging.info("  uv run --project ~/code python ~/code/thesis_project/scripts/quick_check_v0_5.py")
+    logging.info("=" * 70)
+
+
+if __name__ == "__main__":
+    main()
+PYEOF
+
+chmod +x "$TARGET_FILE"
+
+echo "✓ Created: $TARGET_FILE"
+echo ""
+echo "运行:"
+echo "  uv run --project ~/code python ~/code/thesis_project/scripts/join_v0_5.py"

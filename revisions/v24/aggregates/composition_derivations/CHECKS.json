@@ -1,0 +1,16 @@
+{
+  "status": "V20_AGGREGATE_DERIVATIONS_PASS",
+  "overlap_complement_seed_records": 140,
+  "overlap_summary_records": 28,
+  "retrieval_summary_records": 70,
+  "source_fit_records": 350,
+  "full_budget_yield_records": 10,
+  "new_model_fits": 0,
+  "private_scores_used": false,
+  "new_subset_reference_distributions_computed": false,
+  "source_sha256": {
+    "aggregates/subset_diagnostics/subset_evaluation/04_subset_per_seed_metrics.csv": "3eb4fab6b4556c20242d7de8a2ddd09bd4d86850e5784d840c9a5304bd104d58",
+    "aggregates/subset_diagnostics/subset_evaluation/05_subset_summaries.csv": "ed8da6a35bc860ddf3afd3930b61d8d58f891fc724fae849ac3fbf1e4a9f547d",
+    "aggregates/subset_diagnostics/subset_evaluation/02_p5_tie_reconciliation.csv": "20519e3e41847467c71e61f6d7a4d5885c558c805bae69f1321d1d1437c4f5c1"
+  }
+}

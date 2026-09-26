@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "fits": 40,
+  "package_version": "v17prep-r7-strictdet-20260924",
+  "determinism": {
+    "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+    "torch_deterministic_algorithms": true,
+    "warn_only": false,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "strict_cublas_preflight": "PASS"
+  },
+  "protocol_sha256": "8e403129c47deb7a95dec6ec2312c5ac807f5aac616378f08fc33104bdb83359",
+  "runner_sha256": "8131f73e3b2307ea9fb78b18e26ae8e26a2e298bc53d8b46db64b2d7b183a5ed",
+  "original_data_hashes": {
+    "fraud_labels_v1_0.parquet": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+    "node_features_v1_1.parquet": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+    "global_edge_index.parquet": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09",
+    "node_id_index_label_v1_0_fiverel_derived.parquet": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770"
+  },
+  "asof_node_features_sha256": "9f15e48a1427111d6f66d017f49bddf18aa4b9d8bb6a73c1285e1f659575eaf0",
+  "fixed1095_labels_sha256": "97f0038ad4f97dbf9c31819b7907d291eed5c89f5aea10958db9bcd2ce93f3d1",
+  "core_sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+  "training_matrix": {
+    "asof": "MLP + RandomForest x M5/M11 x 5 seeds = 20 fits",
+    "fixed1095": "MLP + RandomForest + reverse-GCN + reverse-GraphSAGE x M11 x 5 seeds = 20 fits"
+  }
+}

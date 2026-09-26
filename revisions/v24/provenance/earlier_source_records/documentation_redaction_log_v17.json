@@ -1,0 +1,77 @@
+[
+  {
+    "file": "documentation/historical_source_evidence/A0001.txt",
+    "before_sha256": "24ec830e9bd5720596e33490a9bfecebf135f10ba40d3e91a74efa5a7ed891f9",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0004.txt",
+    "before_sha256": "c6767cb5c762657fb398e25cd49e599c50026c9b930acdaf705ac5e1396dde3c",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0006.txt",
+    "before_sha256": "e2a8fa9c8b3702aef65f86a04a9d5ba867e45a5f412f7e0a974f1f70f48d7e8b",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0007.txt",
+    "before_sha256": "409662c044ed25a20b56a892c670c27d4cc6d61239bc614159d1c688d56cc074",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0009.txt",
+    "before_sha256": "e2f9350701d11c70513fc66a6507f1f4dfee2cf7a30988110d3270650ef687d4",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0016.txt",
+    "before_sha256": "3ce0d39cc67e9b4ee25d62ef447f512c66147b35dc2b2b7c0a1b25f19cc30aa9",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0017.txt",
+    "before_sha256": "9e6e2f954e57663c57195236a3d08c19b257c698c70a91155b65c89ed90ab420",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0019.txt",
+    "before_sha256": "2fc1aa0b4083dd1f53b3d7dbb23ffa91ddd2e8c4f313b10657c85300429a7e5e",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0020.txt",
+    "before_sha256": "3da2a4711a0ac2e2b1a491b49bb247b63260dceb7fc9b081c6d67d242f865552",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0029.txt",
+    "before_sha256": "9a6503216a09ce2adfa79e724b73688d3f7703e4296b5f29a697cd43deaf08b9",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0031.txt",
+    "before_sha256": "4e2ed031444fa5752b60344e8f152c7c73af215047a1749b8530d0bc5c91ef93",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0032.txt",
+    "before_sha256": "a1454e1630cd0729a472b8a82d6de577ff64c5002acd6ecfb0fecced3f422344",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0033.txt",
+    "before_sha256": "346015abd89879579028d322333fd142a17ae2f39d6d8441da4d25a891bee400",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0034.txt",
+    "before_sha256": "7f15260cf1bf0f2f528357d016fd6ca17c4c888541fb78641e0dd90796aad444",
+    "reason": "private host/mount path literal redaction"
+  },
+  {
+    "file": "documentation/historical_source_evidence/A0036.txt",
+    "before_sha256": "0e4bccf83f4e4866371ec581c417b4866dc82ebc92cb1447545b1f433d810bad",
+    "reason": "private host/mount path literal redaction"
+  }
+]

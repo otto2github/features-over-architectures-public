@@ -1,0 +1,11 @@
+Method,Graph input,Replicates,ROC-AUC (± SD),95% CI,AP
+GCN (G6),"Annual, stored",5 fits,0.487 ± 0.064,"[0.465, 0.510]",0.0023
+GCN (G6),"Annual, reverse-added",5 fits,0.583 ± 0.006,"[0.444, 0.719]",0.0053
+GAT (G6),"Annual, stored",5 fits,0.483 ± 0.026,"[0.454, 0.515]",0.0025
+GAT (G6),"Annual, reverse-added",5 fits,0.609 ± 0.011,"[0.462, 0.735]",0.0039
+GraphSAGE (G6),"Annual, stored",5 fits,0.459 ± 0.056,"[0.388, 0.543]",0.0022
+GraphSAGE (G6),"Annual, reverse-added",5 fits,0.504 ± 0.087,"[0.470, 0.535]",0.0033
+RGCN (G6),"Annual, stored",5 fits,0.467 ± 0.049,"[0.413, 0.530]",0.0022
+RGCN (G6),"Annual, reverse-added",5 fits,0.537 ± 0.067,"[0.477, 0.596]",0.0038
+Node2Vec + L2 logistic,"2010–2018 union, undirected",5 embeddings,0.505 ± 0.084,"[0.397, 0.617]",0.0026
+Label propagation,"2010–2018 union, undirected",1 fit,0.598,"[0.481, 0.720]",0.0323
