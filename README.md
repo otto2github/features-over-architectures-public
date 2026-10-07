@@ -1,21 +1,46 @@
-# Graph neural networks versus feature-only learners for Chinese A-share sanction prediction: a holder–manager graph without transaction edges
+# Graph and feature-only learning in a retrospective Chinese A-share sanction benchmark: document overlap and financial-source sensitivity
 
-> **Supersession notice.** The original submission and its headline numerical conclusions have been superseded by a reconstructed endpoint and a narrower revised analysis. Historical releases remain available for provenance and should not be cited as the current results.
+Yi Qiu Cheng and Xiao Rong Cheng (equal first authors).
 
-## Current revision
+## R1 (first revision)
 
-Version DOI: https://doi.org/10.5281/zenodo.22958631
+The source and public numerical evidence for the first revision are under
+[revisions/r1/](revisions/r1/). The revision preserves the earlier numerical record and adds three separately
+specified analyses: a ten-fit matched 42-input GCN/GraphSAGE extension; a 20-fit conservative
+RPT-derived record-incidence sensitivity with the existing 129 inputs (not a verified global legal-entity
+transaction network; all 12 Full-population paired metric intervals include zero); and a 20-fit earlier
+evaluation window (W2; training 2010–2016, validation 2017–2018, test 2019–2020 with 40 positives; its test
+years were the primary validation years). A precision summary reports the approximate minimum detectable
+difference of every paired comparison.
 
-Version: `v24-20260925` · GitHub release tag: `v24-cs141707-20260925`
+The edition identifiers are recorded below and in `provenance/release.json`.
+Reserve the actual R1 version DOI in the existing Zenodo version family and
+bind the identifiers before producing the final named reader asset.
 
-Current source, aggregate evidence and tests are under [`revisions/v24/`](revisions/v24/). The exact `PeerJ_141707_v24_Reproducibility.zip` is the named release asset, not GitHub's automatically generated whole-repository source ZIP. The remaining legacy top-level scripts/data and older releases are historical materials.
+<!-- R1_RELEASE_BINDING_BEGIN -->
+Version DOI (registration requires Zenodo publication): 10.5281/zenodo.23181609
+Git tag: cs141707-r1
+Source commit binding: see provenance/release.json in the named reader asset.
+<!-- R1_RELEASE_BINDING_END -->
 
-The revised cohort has 39,850 eligible company-years, including 314 positives; the 2021–2022 test has 8,435 rows and 20 positives. It does not retain the original 0.7172 headline or the original descriptions of guarantee/director/supervisor edge types. Conclusions concern tested configurations and retrospective information limits, not validated anchor-time new-case detection.
+The canonical named reader asset is `PeerJ_141707_R1_Reproducibility.zip`.
+Its finalized copy records the already-existing tagged source commit by changing
+only `provenance/release.json` and `FILE_SHA256.json` relative to `revisions/r1/`.
+Its ZIP SHA-256 is stored outside the ZIP. GitHub's automatically generated
+whole-repository source ZIP has a different scope.
 
-## Reproduction
+## Historical records
 
-Read `revisions/v24/README.md`. Run public checks from that directory. Public aggregates support numerical regeneration; private-score evaluation and empirical reconstruction require authorized inputs. No licensed raw records, current private score vectors, masks or natural-person mappings are part of the v24 distribution.
+Existing revision trees, version DOIs, tags and release assets remain historical
+records. The established concept DOI is 10.5281/zenodo.20558032. The reconstructed v24
+predecessor has version DOI 10.5281/zenodo.22958631 and tag
+v24-cs141707-20260925. Those identifiers do not identify the R1 candidate.
+A previously reserved, unpublished draft DOI is not automatically the R1 release identifier.
 
-## Rights
+## Public verification and rights
 
-Existing author-owned code retains its applicable MIT notice. See the revised archive's `RIGHTS_AND_NOTICES.md` for scope, third-party rights and exclusions. No licence to private/vendor inputs is created by this release.
+Public checks verify distributed aggregate arithmetic and synthetic interfaces;
+private empirical reconstruction requires authorized vendor data and private
+inputs. See [RIGHTS_AND_NOTICES.md](revisions/r1/RIGHTS_AND_NOTICES.md) for code
+licensing and exclusions. Author working files and the manual-publication kit are
+not public release assets.

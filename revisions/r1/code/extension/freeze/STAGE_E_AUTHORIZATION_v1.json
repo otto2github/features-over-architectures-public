@@ -1,0 +1,20 @@
+{
+  "authorization_id": "V28_B0GNN_STAGE_E_AUTHORIZATION_v1",
+  "authorization_scope": "Test inference/evaluation only for the ten locked V28 B0GNN42 extension fits; no training, tuning, seed/model/window expansion, or result replacement.",
+  "binding_sha256": "c3087180c87a62dc1211fa9a42794d0e3c5a3338d9cae9999b1a1818bdbaf4b4",
+  "fit_count": 10,
+  "global_stage_t_lock_sha256": "c45ead04b1c1280930e56babb62441a0a43809e7e91d9261118478edab3406d6",
+  "interpretation_performed_before_authorization": false,
+  "protocol_sha256": "537cf3b88ee866a648df5255ae7f6c8f4a69b34035806f503e272fadf6ef2205",
+  "run_matrix_sha256": "0b0ae312e3a8af28ff8b50303fdedb3826b697c1bc82c0790bd3a73273ed211e",
+  "runner_sha256": "3e4ad39d85428780e74287918d2660d9c9d9027fb3a0167df681778b6377927a",
+  "stage_e_authorized": true,
+  "stage_t_review_basis": {
+    "qa_share_sha256": "eb8604b676870027813822e2178f5c439241750d3e8ce7aa5adfb2e4ee4e6d9e",
+    "qa_status": "PASS_STAGE_T_ALL_10_LOCKED",
+    "stage_e_files_present_at_gate": 0,
+    "stage_t_return_zip_sha256": "6845610d19bea245c4b41541df72f52eccb84c95d35f146cd87c2c21584d969c",
+    "training_failures_present": 0
+  },
+  "status": "AUTHORIZED"
+}

@@ -1,0 +1,282 @@
+SOURCE_ID: A0032
+SOURCE: <MOUNT>/Downloads/ch7_v1_integration_v1.tar.gz :: ch7_v1_integration/scripts/integrate_controller_features.py
+ORIGINAL_SHA256: 84ca176fc7ecf2c4730b3ec3fc52cb21d833d3c5397919123b66d26120fbf905
+ORIGINAL_BYTES: 11265
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | #!/usr/bin/env python3
+L00002 | # -*- coding: utf-8 -*-
+L00003 | """
+L00004 | integrate_controller_features.py
+L00005 | ================================
+L00006 | HLD_Contrshr 实控人 + 两权分离度 → 6 维实控人特征 + 1 维 missingness flag.
+L00007 | 
+L00008 | 输出 7 维 (firm-year 聚合):
+L00009 |   ctrl_separation              : 两权分离度 % (S0704c - S0704b 或字段 Seperation), 论文金牌特征
+L00010 |   ctrl_ownership               : 实控人现金流权 % (S0704b)
+L00011 |   ctrl_voting                  : 实控人控制权 % (S0704c)
+L00012 |   ctrl_separation_p90_flag     : 二值 (Seperation > 17.45% 极端分离)
+L00013 |   ctrl_no_controller_flag      : 二值 (S0701a == 0 / 实控人姓名 NULL → 无实控人, 治理混乱信号)
+L00014 |   ctrl_state_owned_flag        : 二值 (S0702b 含国资关键字)
+L00015 |   ctrl_data_missing_flag       : ★ bonus 维度 (本 firm-year 在 HLD_Contrshr 中无记录, 缺失即信号)
+L00016 | 
+L00017 | 学术依据:
+L00018 |   La Porta et al. (1999) "Corporate Ownership Around the World"
+L00019 |   Claessens, Djankov & Lang (2002) "Disentangling the Incentive and Entrenchment Effects"
+L00020 |   中国 A 股: 高分离度 → 隧道效应 (tunneling) → 财务造假, 显著正相关
+L00021 | 
+L00022 | 数据特性 (依据 inventory):
+L00023 |   171,933 行 → A 股清洁 108,738 行 / 4,105 公司
+L00024 |   Seperation 非空率 92.0%, P50=0.29% / P90=17.45% / P99=28.33%
+L00025 |   firm-year 聚合后 40,366 行, 与 v0.7 全集 78% 覆盖, 缺失 22% 默认 fillna(0)
+L00026 | 
+L00027 | 聚合策略:
+L00028 |   - 同一 firm × Reptdt-year 可能多条 (披露更新), 取该年最新一条 (按 Reptdt 取 max)
+L00029 |   - 极少数同年多条记录差异大: 取 ctrl_voting 最大者 (代表年末控制结构)
+L00030 | 
+L00031 | 输出:
+L00032 |   data/processed/features/controller_features_v1_0.parquet
+L00033 |   data/interim/v1_integration_stats/integrate_controller_stats.json
+L00034 | """
+L00035 | 
+L00036 | from __future__ import annotations
+L00037 | 
+L00038 | import argparse
+L00039 | import sys
+L00040 | from pathlib import Path
+L00041 | 
+L00042 | import numpy as np
+L00043 | import pandas as pd
+L00044 | 
+L00045 | sys.path.insert(0, str(Path(__file__).resolve().parent))
+L00046 | from _v1_common import (
+L00047 |     extract_year,
+L00048 |     get_logger,
+L00049 |     get_paths,
+L00050 |     log_mem,
+L00051 |     read_csmar_xlsx,
+L00052 |     write_stats_json,
+L00053 | )
+L00054 | 
+L00055 | # 国资关键字 (实控人性质 S0702b 文本)
+L00056 | STATE_OWNED_KEYWORDS = [
+L00057 |     "国有", "国资", "国务院", "中央", "政府", "财政部", "国务院国资委",
+L00058 |     "央企", "省国资委", "市国资委", "县国资委",
+L00059 |     "中央国家机关", "地方政府", "事业单位", "国有独资",
+L00060 | ]
+L00061 | 
+L00062 | P90_SEPERATION_THRESHOLD = 17.45  # inventory 给出的 P90 值 (%)
+L00063 | 
+L00064 | 
+L00065 | # ============================================================
+L00066 | def build_controller_features(
+L00067 |     hld_xlsx: Path,
+L00068 |     base_firm_year_parquet: Path,
+L00069 |     out_parquet: Path,
+L00070 |     out_stats: Path,
+L00071 |     log,
+L00072 | ):
+L00073 |     # ---------- step 1: 读 HLD_Contrshr ----------
+L00074 |     log.info("=" * 60)
+L00075 |     log.info("Step 1: 读 HLD_Contrshr")
+L00076 |     log.info("=" * 60)
+L00077 | 
+L00078 |     df = read_csmar_xlsx(hld_xlsx, code_col="Stkcd", log=log)
+L00079 |     log.info(f"清洁后行数: {len(df)}")
+L00080 |     log.info(f"列: {df.columns.tolist()}")
+L00081 |     log_mem(log, "after_read_hld")
+L00082 | 
+L00083 |     # 识别字段名 (CSMAR 字段命名偶有变体)
+L00084 |     seperation_col = None
+L00085 |     for c in ["Seperation", "Separation", "separation"]:
+L00086 |         if c in df.columns:
+L00087 |             seperation_col = c
+L00088 |             break
+L00089 | 
+L00090 |     # ---------- step 2: 提取 year ----------
+L00091 |     df["year"] = extract_year(df["Reptdt"]).astype("Int64")
+L00092 |     df = df.dropna(subset=["year"]).copy()
+L00093 |     df["year"] = df["year"].astype(int)
+L00094 |     log.info(f"提取 year 后: {len(df)} 行, year 范围 {df['year'].min()}-{df['year'].max()}")
+L00095 | 
+L00096 |     # ---------- step 3: 数值字段转换 ----------
+L00097 |     for col in ["S0704a", "S0704b", "S0704c"]:
+L00098 |         if col in df.columns:
+L00099 |             df[col] = pd.to_numeric(df[col], errors="coerce")
+L00100 |     if seperation_col is not None:
+L00101 |         df[seperation_col] = pd.to_numeric(df[seperation_col], errors="coerce")
+L00102 | 
+L00103 |     # 若缺 Seperation 列, 用 S0704c - S0704b 估算
+L00104 |     if seperation_col is None and "S0704c" in df.columns and "S0704b" in df.columns:
+L00105 |         df["_separation_calc"] = df["S0704c"] - df["S0704b"]
+L00106 |         seperation_col = "_separation_calc"
+L00107 |         log.info("Seperation 字段缺失, 用 S0704c - S0704b 估算")
+L00108 | 
+L00109 |     # ---------- step 4: 同 firm-year 多条记录: 取年末最新且控制权最大者 ----------
+L00110 |     log.info("=" * 60)
+L00111 |     log.info("Step 4: firm-year 聚合 (取年末最新)")
+L00112 |     log.info("=" * 60)
+L00113 | 
+L00114 |     df["_reptdt_dt"] = pd.to_datetime(df["Reptdt"], errors="coerce")
+L00115 |     df = df.sort_values(["Stkcd", "year", "_reptdt_dt", "S0704c"], ascending=[True, True, False, False])
+L00116 |     fy = df.drop_duplicates(["Stkcd", "year"], keep="first").copy()
+L00117 |     log.info(f"firm-year 去重后: {len(fy)} 行 / {fy['Stkcd'].nunique()} 公司")
+L00118 | 
+L00119 |     # ---------- step 5: 6 维 + 1 维 特征 ----------
+L00120 |     log.info("=" * 60)
+L00121 |     log.info("Step 5: 构造特征列")
+L00122 |     log.info("=" * 60)
+L00123 | 
+L00124 |     fy = fy.rename(columns={"Stkcd": "firm_id"})
+L00125 | 
+L00126 |     # ctrl_separation
+L00127 |     if seperation_col in fy.columns:
+L00128 |         fy["ctrl_separation"] = fy[seperation_col]
+L00129 |     else:
+L00130 |         fy["ctrl_separation"] = np.nan
+L00131 | 
+L00132 |     # ctrl_ownership / ctrl_voting
+L00133 |     fy["ctrl_ownership"] = fy.get("S0704b", np.nan)
+L00134 |     fy["ctrl_voting"] = fy.get("S0704c", np.nan)
+L00135 | 
+L00136 |     # ctrl_separation_p90_flag
+L00137 |     fy["ctrl_separation_p90_flag"] = (
+L00138 |         (fy["ctrl_separation"] > P90_SEPERATION_THRESHOLD).fillna(False).astype("int8")
+L00139 |     )
+L00140 | 
+L00141 |     # ctrl_no_controller_flag: S0701a == 0 (无判定标准) 或 S0701b (实控人姓名) 为空
+L00142 |     no_ctrl = pd.Series(False, index=fy.index)
+L00143 |     if "S0701a" in fy.columns:
+L00144 |         s0701a = pd.to_numeric(fy["S0701a"], errors="coerce")
+L00145 |         no_ctrl = no_ctrl | (s0701a == 0)
+L00146 |     if "S0701b" in fy.columns:
+L00147 |         no_ctrl = no_ctrl | fy["S0701b"].isna() | (fy["S0701b"].astype(str).str.strip() == "")
+L00148 |     fy["ctrl_no_controller_flag"] = no_ctrl.astype("int8")
+L00149 | 
+L00150 |     # ctrl_state_owned_flag: S0702b 文本含国资关键字
+L00151 |     if "S0702b" in fy.columns:
+L00152 |         s0702b_str = fy["S0702b"].astype(str)
+L00153 |         state_pat = "|".join(STATE_OWNED_KEYWORDS)
+L00154 |         fy["ctrl_state_owned_flag"] = s0702b_str.str.contains(
+L00155 |             state_pat, regex=True, na=False
+L00156 |         ).astype("int8")
+L00157 |     else:
+L00158 |         log.warning("HLD_Contrshr 缺 S0702b 字段, ctrl_state_owned_flag 全置 0")
+L00159 |         fy["ctrl_state_owned_flag"] = 0
+L00160 | 
+L00161 |     feature_cols = [
+L00162 |         "ctrl_separation",
+L00163 |         "ctrl_ownership",
+L00164 |         "ctrl_voting",
+L00165 |         "ctrl_separation_p90_flag",
+L00166 |         "ctrl_no_controller_flag",
+L00167 |         "ctrl_state_owned_flag",
+L00168 |     ]
+L00169 | 
+L00170 |     out_df = fy[["firm_id", "year"] + feature_cols].copy()
+L00171 |     log.info(f"聚合后 firm-year 行: {len(out_df)}")
+L00172 | 
+L00173 |     # ---------- step 6: 与 v0.7 firm-year 对齐, 添加 missingness flag ----------
+L00174 |     log.info("=" * 60)
+L00175 |     log.info("Step 6: 与 v0.7 全集对齐, 添加 missingness flag")
+L00176 |     log.info("=" * 60)
+L00177 | 
+L00178 |     if base_firm_year_parquet is not None and base_firm_year_parquet.exists():
+L00179 |         base = pd.read_parquet(base_firm_year_parquet, columns=["firm_id", "year"])
+L00180 |         base["firm_id"] = base["firm_id"].astype(str).str.zfill(6)
+L00181 |         base["year"] = base["year"].astype(int)
+L00182 |         base = base.drop_duplicates()
+L00183 |         log.info(f"v0.7 全集: {len(base)} firm-year")
+L00184 | 
+L00185 |         merged = base.merge(out_df, on=["firm_id", "year"], how="left")
+L00186 | 
+L00187 |         # missingness flag (v0.7 全集中 HLD_Contrshr 没记录)
+L00188 |         merged["ctrl_data_missing_flag"] = merged["ctrl_separation"].isna().astype("int8")
+L00189 | 
+L00190 |         # 连续值 fillna(0)
+L00191 |         for c in ["ctrl_separation", "ctrl_ownership", "ctrl_voting"]:
+L00192 |             merged[c] = merged[c].fillna(0).astype("float32")
+L00193 | 
+L00194 |         # 二值 flag 缺失即未触发 → fillna 0
+L00195 |         for c in ["ctrl_separation_p90_flag", "ctrl_no_controller_flag", "ctrl_state_owned_flag"]:
+L00196 |             merged[c] = merged[c].fillna(0).astype("int8")
+L00197 | 
+L00198 |         n_miss = int(merged["ctrl_data_missing_flag"].sum())
+L00199 |         log.info(f"v0.7 中 HLD_Contrshr 缺失: {n_miss} firm-year ({n_miss/len(merged)*100:.1f}%)")
+L00200 |         out_df = merged
+L00201 |     else:
+L00202 |         log.warning(f"v0.7 firm-year 全集 {base_firm_year_parquet} 不存在, 跳过对齐. 输出仅 HLD 自身覆盖范围")
+L00203 |         out_df["ctrl_data_missing_flag"] = 0
+L00204 |         for c in ["ctrl_separation", "ctrl_ownership", "ctrl_voting"]:
+L00205 |             out_df[c] = out_df[c].astype("float32")
+L00206 | 
+L00207 |     # ---------- step 7: 持久化 ----------
+L00208 |     log.info("=" * 60)
+L00209 |     log.info("Step 7: 输出")
+L00210 |     log.info("=" * 60)
+L00211 |     out_parquet.parent.mkdir(parents=True, exist_ok=True)
+L00212 |     final_cols = ["firm_id", "year"] + feature_cols + ["ctrl_data_missing_flag"]
+L00213 |     out_df[final_cols].to_parquet(out_parquet, index=False, compression="snappy")
+L00214 |     log.info(f"特征写入: {out_parquet}  ({len(out_df)} 行 × {len(final_cols)} 列)")
+L00215 | 
+L00216 |     # ---------- step 8: 统计 ----------
+L00217 |     stats = {
+L00218 |         "feature_set": "controller (HLD_Contrshr)",
+L00219 |         "input": str(hld_xlsx),
+L00220 |         "output_parquet": str(out_parquet),
+L00221 |         "n_rows_output": int(len(out_df)),
+L00222 |         "n_features": 7,
+L00223 |         "feature_cols": final_cols[2:],
+L00224 |         "feature_distributions": {
+L00225 |             c: {
+L00226 |                 "mean": float(out_df[c].mean()),
+L00227 |                 "std": float(out_df[c].std()),
+L00228 |                 "p50": float(out_df[c].median()),
+L00229 |                 "p90": float(out_df[c].quantile(0.9)),
+L00230 |                 "max": float(out_df[c].max()),
+L00231 |             }
+L00232 |             for c in feature_cols if c in out_df.columns
+L00233 |         },
+L00234 |         "n_data_missing": int(out_df["ctrl_data_missing_flag"].sum()) if "ctrl_data_missing_flag" in out_df.columns else 0,
+L00235 |         "p90_separation_threshold": P90_SEPERATION_THRESHOLD,
+L00236 |         "state_owned_keywords": STATE_OWNED_KEYWORDS,
+L00237 |         "notes": [
+L00238 |             "ctrl_separation 是论文金牌特征 (La Porta 1999 / Claessens 2002 学术理论支撑)",
+L00239 |             "缺失值已 fillna(0), 同时 ctrl_data_missing_flag 单列保留 missingness 信号",
+L00240 |             "ctrl_state_owned_flag 通过 S0702b 文本含国资关键字判定 (启发式)",
+L00241 |         ],
+L00242 |     }
+L00243 |     write_stats_json(stats, out_stats, log=log)
+L00244 | 
+L00245 | 
+L00246 | # ============================================================
+L00247 | def main():
+L00248 |     p = argparse.ArgumentParser(description="HLD_Contrshr → 6 维 + 1 维实控人特征")
+L00249 |     p.add_argument("--project-root", type=Path, default=None)
+L00250 |     p.add_argument("--hld-xlsx", type=Path, default=None)
+L00251 |     p.add_argument("--base-firm-year", type=Path, default=None,
+L00252 |                    help="v0.7 features parquet (用于 firm-year 全集对齐)")
+L00253 |     p.add_argument("--out-parquet", type=Path, default=None)
+L00254 |     p.add_argument("--out-stats", type=Path, default=None)
+L00255 |     args = p.parse_args()
+L00256 | 
+L00257 |     paths = get_paths(args.project_root)
+L00258 |     log = get_logger("integrate_controller_features", paths["stats"])
+L00259 | 
+L00260 |     hld_xlsx = args.hld_xlsx or (paths["raw_csmar"] / "HLD_Contrshr.xlsx")
+L00261 |     base = args.base_firm_year or (paths["processed_features"] / "features_v0_7.parquet")
+L00262 |     out_parquet = args.out_parquet or (paths["processed_features"] / "controller_features_v1_0.parquet")
+L00263 |     out_stats = args.out_stats or (paths["stats"] / "integrate_controller_stats.json")
+L00264 | 
+L00265 |     log.info(f"HLD xlsx: {hld_xlsx}")
+L00266 |     log.info(f"v0.7 base: {base}")
+L00267 |     log.info(f"Out: {out_parquet}")
+L00268 | 
+L00269 |     build_controller_features(hld_xlsx, base, out_parquet, out_stats, log)
+L00270 |     log.info("✓ integrate_controller_features 完成")
+L00271 | 
+L00272 | 
+L00273 | if __name__ == "__main__":
+L00274 |     main()

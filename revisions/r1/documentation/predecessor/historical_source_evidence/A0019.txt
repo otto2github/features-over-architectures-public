@@ -1,0 +1,235 @@
+SOURCE_ID: A0019
+SOURCE: <MOUNT>/Downloads/ch7_prep_v1.tar.gz :: ch7_prep/scripts/_kg_common.py
+ORIGINAL_SHA256: de6193a73ada8f38e4ec210a95e43002d107864de9e288d33db12e6802d632c3
+ORIGINAL_BYTES: 7793
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | """
+L00002 | _kg_common.py
+L00003 | =============
+L00004 | 
+L00005 | Chapter 7 关联网络构建流水线的共享工具。
+L00006 | 
+L00007 | 设计原则:
+L00008 |   - 节点 ID 编码: ts_code 直用 (公司); 自然人 / 机构用 SHA-1 hash 前 12 位
+L00009 |   - holder_name 规范化: 去空白 / 去全角空格 / 统一大小写 / 剥离常见后缀
+L00010 |   - 自然人 vs 机构判别: 启发式 (机构后缀关键词) + 长度阈值, 边界情形输出至 review queue
+L00011 |   - 时间维度: 节点和边都带 (start_year, end_year), 后续按 firm-year 切片用
+L00012 | 
+L00013 | 环境约定:
+L00014 |   PROJECT_ROOT = ~/code/thesis_project (可由 THESIS_PROJECT_ROOT 覆盖)
+L00015 |   RAW_DIR      = $PROJECT_ROOT/data/raw/tushare
+L00016 |   KG_DIR       = $PROJECT_ROOT/data/processed/kg          ← 本流水线输出
+L00017 |   STATS_DIR    = $PROJECT_ROOT/data/interim/kg_stats      ← 统计 JSON
+L00018 | 
+L00019 | 使用方式:
+L00020 |   from _kg_common import canonicalize_holder, classify_entity, get_paths
+L00021 | """
+L00022 | from __future__ import annotations
+L00023 | 
+L00024 | import hashlib
+L00025 | import json
+L00026 | import os
+L00027 | import re
+L00028 | import sys
+L00029 | from datetime import datetime, timezone
+L00030 | from pathlib import Path
+L00031 | from typing import Optional
+L00032 | 
+L00033 | # ============================================================================
+L00034 | # 路径
+L00035 | # ============================================================================
+L00036 | 
+L00037 | PROJECT_ROOT = Path(os.environ.get("THESIS_PROJECT_ROOT",
+L00038 |                                    str(Path.home() / "code" / "thesis_project")))
+L00039 | RAW_DIR = PROJECT_ROOT / "data" / "raw" / "tushare"
+L00040 | KG_DIR = PROJECT_ROOT / "data" / "processed" / "kg"
+L00041 | STATS_DIR = PROJECT_ROOT / "data" / "interim" / "kg_stats"
+L00042 | LOG_DIR = PROJECT_ROOT / "data" / "interim" / "kg_stats" / "logs"
+L00043 | 
+L00044 | KG_DIR.mkdir(parents=True, exist_ok=True)
+L00045 | STATS_DIR.mkdir(parents=True, exist_ok=True)
+L00046 | LOG_DIR.mkdir(parents=True, exist_ok=True)
+L00047 | 
+L00048 | 
+L00049 | def get_paths() -> dict:
+L00050 |     return {
+L00051 |         "PROJECT_ROOT": PROJECT_ROOT,
+L00052 |         "RAW_DIR": RAW_DIR,
+L00053 |         "KG_DIR": KG_DIR,
+L00054 |         "STATS_DIR": STATS_DIR,
+L00055 |         "TOP10_HOLDERS_DIR": RAW_DIR / "top10_holders",
+L00056 |         "TOP10_FLOAT_DIR":   RAW_DIR / "top10_floatholders",
+L00057 |         "STK_MANAGERS_DIR":  RAW_DIR / "stk_managers",
+L00058 |         "DAILY_BASIC_DIR":   RAW_DIR / "daily_basic_yearend",
+L00059 |     }
+L00060 | 
+L00061 | 
+L00062 | # ============================================================================
+L00063 | # holder_name / 高管姓名 规范化
+L00064 | # ============================================================================
+L00065 | 
+L00066 | # 全角空格、零宽空格等
+L00067 | _WS_RE = re.compile(r"[\s\u3000\u200b\u200c\u200d\ufeff]+")
+L00068 | 
+L00069 | # 机构后缀关键词 (任一出现即判机构)
+L00070 | _INST_SUFFIX_KEYWORDS = {
+L00071 |     # 公司类
+L00072 |     "有限公司", "股份公司", "股份有限公司", "公司", "集团", "控股",
+L00073 |     "投资公司", "投资有限公司", "投资中心", "管理公司",
+L00074 |     # 基金 / 资管
+L00075 |     "基金", "证券投资基金", "证券", "资管", "资产管理", "资产投资",
+L00076 |     "信托", "保险", "银行",
+L00077 |     "公募", "私募",
+L00078 |     # 中央汇金 / 国企
+L00079 |     "中央汇金", "汇金", "国资委", "国资", "财政厅", "国有资产监督管理委员会",
+L00080 |     # 合伙
+L00081 |     "合伙", "合伙企业", "有限合伙", "合伙(有限合伙)",
+L00082 |     # 协会 / 公会
+L00083 |     "协会", "公会",
+L00084 |     # 海外
+L00085 |     "Limited", "LIMITED", "Ltd", "LTD", "L.L.C", "LLC", "Inc",
+L00086 |     "Co.,Ltd", "INVESTMENT", "FUND", "GROUP",
+L00087 |     "Hong Kong", "HONGKONG",
+L00088 |     # 香港中央结算 / 沪股通深股通常见名
+L00089 |     "中央结算", "结算", "Connect",
+L00090 | }
+L00091 | 
+L00092 | # 单纯连接符 (机构子公司或法人代表)
+L00093 | _SHORT_INSTITUTION_HINTS = ("有限", "股份", "投资")
+L00094 | 
+L00095 | 
+L00096 | def canonicalize_holder(name: Optional[str]) -> str:
+L00097 |     """
+L00098 |     规范化 holder_name 用作节点匹配键.
+L00099 |       - None/空 → ''
+L00100 |       - 去除全部空白
+L00101 |       - 去除括号内的英文别名 (E.G. "中央汇金 (HK)" → "中央汇金")
+L00102 |       - 大小写归一: 中文不变, 英文小写
+L00103 |     """
+L00104 |     if name is None:
+L00105 |         return ""
+L00106 |     s = str(name).strip()
+L00107 |     if not s:
+L00108 |         return ""
+L00109 |     s = _WS_RE.sub("", s)
+L00110 |     # 去括号 (中英) 内字符
+L00111 |     s = re.sub(r"[\(（][^\)）]*[\)）]", "", s)
+L00112 |     # 英文转小写 (中文 unicode 范围不变)
+L00113 |     s = "".join(ch.lower() if ord(ch) < 128 else ch for ch in s)
+L00114 |     return s
+L00115 | 
+L00116 | 
+L00117 | def classify_entity(name: str, raw_name: Optional[str] = None) -> str:
+L00118 |     """
+L00119 |     简单启发式区分自然人 vs 机构.
+L00120 |     返回 'person' 或 'institution'.
+L00121 | 
+L00122 |     规则 (任一命中即机构):
+L00123 |       1. 含机构后缀关键词 (有限公司, 基金, 信托, 银行, ...)
+L00124 |       2. 长度 > 6 个字符
+L00125 |       3. 含 ASCII 字母 (中央汇金 香港版例外, 已在 canonicalize 去括号阶段处理)
+L00126 |       4. 含数字 / 特殊符号
+L00127 |     其余视作自然人.
+L00128 |     """
+L00129 |     src = raw_name or name
+L00130 |     if not src:
+L00131 |         return "person"
+L00132 |     s = src.strip()
+L00133 |     # 含机构关键词
+L00134 |     for kw in _INST_SUFFIX_KEYWORDS:
+L00135 |         if kw in s:
+L00136 |             return "institution"
+L00137 |     # 长度判定 (中文姓名通常 2-4 字, 偶有 5-6 字, > 6 大概率机构)
+L00138 |     if len(s) > 6:
+L00139 |         return "institution"
+L00140 |     # 含 ASCII 字母 / 数字
+L00141 |     if re.search(r"[A-Za-z0-9]", s):
+L00142 |         return "institution"
+L00143 |     return "person"
+L00144 | 
+L00145 | 
+L00146 | # ============================================================================
+L00147 | # 节点 ID 编码
+L00148 | # ============================================================================
+L00149 | 
+L00150 | def make_company_id(ts_code: str) -> str:
+L00151 | [WITHHELD: IDENTIFIER_LITERAL]
+L00152 |     return f"C:{ts_code.strip()}"
+L00153 | 
+L00154 | 
+L00155 | def make_person_id(canonical_name: str) -> str:
+L00156 |     """自然人 id = 'P:' + sha1(canonical)[:12]."""
+L00157 |     h = hashlib.sha1(canonical_name.encode("utf-8")).hexdigest()[:12]
+L00158 |     return f"P:{h}"
+L00159 | 
+L00160 | 
+L00161 | def make_institution_id(canonical_name: str) -> str:
+L00162 |     """机构 id = 'I:' + sha1(canonical)[:12]."""
+L00163 |     h = hashlib.sha1(canonical_name.encode("utf-8")).hexdigest()[:12]
+L00164 |     return f"I:{h}"
+L00165 | 
+L00166 | 
+L00167 | # ============================================================================
+L00168 | # Logging
+L00169 | # ============================================================================
+L00170 | 
+L00171 | def setup_logger(task: str):
+L00172 |     import logging
+L00173 |     logger = logging.getLogger(task)
+L00174 |     if logger.handlers:
+L00175 |         return logger
+L00176 |     logger.setLevel(logging.INFO)
+L00177 |     fmt = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s",
+L00178 |                             datefmt="%Y-%m-%d %H:%M:%S")
+L00179 |     ch = logging.StreamHandler(sys.stdout)
+L00180 |     ch.setFormatter(fmt)
+L00181 |     logger.addHandler(ch)
+L00182 |     fh = logging.FileHandler(LOG_DIR / f"{task}.log", encoding="utf-8")
+L00183 |     fh.setFormatter(fmt)
+L00184 |     logger.addHandler(fh)
+L00185 |     logger.propagate = False
+L00186 |     return logger
+L00187 | 
+L00188 | 
+L00189 | def write_stats_json(task: str, payload: dict) -> Path:
+L00190 |     payload["_task"] = task
+L00191 |     payload["_timestamp"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+L00192 |     out = STATS_DIR / f"{task}.json"
+L00193 |     tmp = out.with_suffix(".json.tmp")
+L00194 |     tmp.write_text(json.dumps(payload, ensure_ascii=False, indent=2),
+L00195 |                    encoding="utf-8")
+L00196 |     tmp.replace(out)
+L00197 |     return out
+L00198 | 
+L00199 | 
+L00200 | # ============================================================================
+L00201 | # 自检
+L00202 | # ============================================================================
+L00203 | 
+L00204 | if __name__ == "__main__":
+L00205 |     p = get_paths()
+L00206 |     print("路径:")
+L00207 |     for k, v in p.items():
+L00208 |         exists = "✓" if Path(v).exists() else "✗"
+L00209 |         print(f"  {exists} {k:25s} {v}")
+L00210 | 
+L00211 |     print("\n规范化测试:")
+L00212 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00213 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00214 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00215 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00216 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00217 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00218 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00219 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00220 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00221 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00222 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00223 | [WITHHELD IN REVIEW COPY: sample-name test literals; retain original locally]
+L00224 |     for s in samples:
+L00225 |         c = canonicalize_holder(s)
+L00226 |         e = classify_entity(c, raw_name=s) if c else "(empty)"
+L00227 |         print(f"  {str(s)!r:50s} → canonical={c!r:30s} type={e}")

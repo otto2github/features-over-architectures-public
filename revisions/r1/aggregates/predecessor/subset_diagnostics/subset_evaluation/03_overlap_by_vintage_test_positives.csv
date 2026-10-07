@@ -1,0 +1,9 @@
+﻿doc_overlap_earlier_partition,fin_any_matched_dated_post_anchor,asof_any_source_missing,fin_any_unverified_feature,test_positive_firm_years
+False,False,False,False,1
+False,False,False,True,1
+False,True,False,False,1
+False,True,False,True,1
+False,True,True,False,3
+True,False,False,False,4
+True,True,True,False,7
+True,True,True,True,2

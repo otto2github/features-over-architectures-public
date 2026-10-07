@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "baseline": "Frozen label/feature protocol; fixed-prediction diagnostic analysis used in v19 and retained in v20",
+  "role": "document_masks",
+  "state": "COMPLETE",
+  "started": "2026-09-25T10:31:50.678351+08:00",
+  "finished": "2026-09-25T10:31:51.555100+08:00",
+  "training_executed": false,
+  "paper_files_modified": false,
+  "network_requests": false,
+  "source_writes_requested": false,
+  "checks": [
+    {
+      "module": "document_mask_export",
+      "state": "PASS",
+      "scope": "issuing-authority/document-number rule; no claim of independently verified new cases"
+    },
+    {
+      "module": "input_stability",
+      "state": "PASS",
+      "method": "size_and_mtime_after_full_sha256_at_first_read",
+      "scope": "no concurrent writer proven only to recorded checks"
+    }
+  ],
+  "publication_version": "v20",
+  "execution_metadata_preserved_except_publication_labels": true
+}

@@ -1,0 +1,27 @@
+{
+  "all_D_O_auc_identities": "PASS",
+  "all_full_budget_attribution_identities": "PASS",
+  "all_metrics_independently_recomputed": "PASS",
+  "all_population_counts": "PASS",
+  "all_prediction_scores_finite_and_in_unit_interval": "PASS",
+  "all_test_prediction_key_label_identity": "PASS",
+  "component": "V27_STAGE_E_QA_DETAIL",
+  "errors": [],
+  "family_counts": {
+    "A": 20,
+    "B": 60,
+    "B0": 20,
+    "C": 5
+  },
+  "fit_count_checked": 105,
+  "interpretation_performed": false,
+  "model_counts": {
+    "GCN_reverse": 5,
+    "GraphSAGE_reverse": 5,
+    "MLP": 45,
+    "RandomForest_unweighted": 50
+  },
+  "selection_performed": false,
+  "stage_e_failure_dirs_present": 0,
+  "status": "PASS_STAGE_E_QA_AND_RESULTS_FROZEN"
+}

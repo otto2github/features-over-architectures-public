@@ -1,0 +1,64 @@
+{
+  "authorized_write_root": "/path/to/private_workspace/peerj_141707_v28_b0gnn_extension/fixedscore_completion_v1",
+  "completed_at_utc": "2026-09-28T01:51:43.476426+00:00",
+  "error": null,
+  "input_hash_recheck_status": "PASS",
+  "metrics_per_comparison": 6,
+  "modules": [
+    {
+      "detail": null,
+      "name": "synthetic_numeric_and_real_parquet_interfaces",
+      "status": "COMPLETE"
+    },
+    {
+      "detail": {
+        "matched_fits": 20
+      },
+      "name": "frozen_input_and_reference_identity",
+      "status": "COMPLETE"
+    },
+    {
+      "detail": null,
+      "name": "all_population_points",
+      "status": "COMPLETE"
+    },
+    {
+      "detail": {
+        "valid_replicates": 2000
+      },
+      "name": "company_x_matched_seed",
+      "status": "COMPLETE"
+    },
+    {
+      "detail": {
+        "valid_replicates": 2000
+      },
+      "name": "company_document_x_matched_seed",
+      "status": "COMPLETE"
+    },
+    {
+      "detail": null,
+      "name": "D_leave_one_positive_out",
+      "status": "COMPLETE"
+    },
+    {
+      "detail": null,
+      "name": "legacy_A_GCN_unique_D_hit_flags",
+      "status": "COMPLETE"
+    },
+    {
+      "detail": null,
+      "name": "frozen_inputs_unchanged_after_readonly_postprocess",
+      "status": "COMPLETE"
+    }
+  ],
+  "new_fits": 0,
+  "new_inference": 0,
+  "new_thresholds": 0,
+  "next_gate": "INDEPENDENT_REVIEW_AND_V28_FINALIZATION",
+  "planned_replicates_each": 2000,
+  "planned_schemes": 2,
+  "primary_comparisons": 4,
+  "source_mutation_operations_performed": false,
+  "status": "COMPLETE_V28_FIXED_SCORE_FOR_FINAL_REVIEW"
+}

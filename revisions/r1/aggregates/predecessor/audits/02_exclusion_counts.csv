@@ -1,0 +1,9 @@
+﻿partition,exclusion_reason,rows
+outside_primary,right_censored_primary_null,10027
+test,insufficient_followup_primary_null,4
+test,missing_public_anchor_primary_null,893
+test,unresolved_evidence_primary_null,25
+train,missing_public_anchor_primary_null,293
+train,unresolved_evidence_primary_null,128
+validation,missing_public_anchor_primary_null,408
+validation,unresolved_evidence_primary_null,47

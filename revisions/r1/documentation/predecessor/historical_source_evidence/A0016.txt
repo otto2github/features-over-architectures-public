@@ -1,0 +1,320 @@
+SOURCE_ID: A0016
+SOURCE: <MOUNT>/Downloads/ch7_prep_v1.tar.gz :: ch7_prep/scripts/subgraph_sampler.py
+ORIGINAL_SHA256: 849d7d7dbe4e3ee48201a6d075ef1472d735e1448cb414c270861288539c7190
+ORIGINAL_BYTES: 11891
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | """
+L00002 | subgraph_sampler.py
+L00003 | ====================
+L00004 | 
+L00005 | 按 (公司, 年份) 抽 K-hop 子图, 用于 Chapter 7 GNN 实验.
+L00006 | 
+L00007 | 原理:
+L00008 |   - 对 features_v0_7 中每个 (ts_code, year) 行, 抽取以该公司为中心、半径 K-hop 的子图
+L00009 |   - 子图含: 中心公司节点 + K-hop 邻居节点 (公司 / 自然人 / 机构) + 它们之间的全部边
+L00010 |   - 子图用于 PyG / DGL 训练时的 mini-batch 采样
+L00011 | 
+L00012 | 由于全图样本量为 51,675 firm-year, 全部物化子图体积过大,
+L00013 | 本脚本提供两种模式:
+L00014 |   1. eager   : 全部物化为单个 .pkl 文件 (~ 数百 MB - 几 GB)
+L00015 |   2. sampler : 输出图结构 + 一个 sample(ts_code, year) 函数, 训练时按需调用
+L00016 | 本脚本默认 sampler 模式, 仅输出 1) 全图边索引 2) 图采样器类 (Python 模块).
+L00017 | 
+L00018 | 输出:
+L00019 |   data/processed/kg/global_edge_index.parquet      全图边索引 (src_idx, dst_idx, edge_type, year)
+L00020 |   data/processed/kg/sample_demo.json               若干 sample 调用示例
+L00021 |   data/processed/kg/SubgraphSampler.py             可 import 的采样器类
+L00022 | 
+L00023 | 用法 (生成):
+L00024 |   uv run --project ~/code python scripts/data_collect/kg/subgraph_sampler.py
+L00025 |   --k-hop 2 --eager-sample-n 10
+L00026 | 
+L00027 | 用法 (Python 中调用):
+L00028 |   >>> from kg.SubgraphSampler import SubgraphSampler
+L00029 |   >>> sampler = SubgraphSampler.load(KG_DIR)
+L00030 | [WITHHELD: IDENTIFIER_LITERAL]
+L00031 |   >>> # sg = {'nodes': [...], 'edges': [...], 'center_idx': N}
+L00032 | """
+L00033 | from __future__ import annotations
+L00034 | 
+L00035 | import argparse
+L00036 | import json
+L00037 | import sys
+L00038 | from pathlib import Path
+L00039 | 
+L00040 | import numpy as np
+L00041 | import pandas as pd
+L00042 | 
+L00043 | sys.path.insert(0, str(Path(__file__).parent))
+L00044 | from _kg_common import (  # noqa: E402
+L00045 |     KG_DIR,
+L00046 |     get_paths,
+L00047 |     make_company_id,
+L00048 |     setup_logger,
+L00049 |     write_stats_json,
+L00050 | )
+L00051 | 
+L00052 | TASK = "subgraph_sampler"
+L00053 | 
+L00054 | 
+L00055 | SAMPLER_CLASS_SOURCE = '''"""
+L00056 | SubgraphSampler.py
+L00057 | ==================
+L00058 | 
+L00059 | K-hop 子图采样器 (Chapter 7 GNN).
+L00060 | 
+L00061 | 加载方式:
+L00062 |   >>> from kg.SubgraphSampler import SubgraphSampler
+L00063 |   >>> sampler = SubgraphSampler.load("/path/to/kg_dir")
+L00064 | [WITHHELD: IDENTIFIER_LITERAL]
+L00065 |   >>> # sg["nodes"] : list[(node_idx, node_type, name)]
+L00066 |   >>> # sg["edges"] : list[(src_idx, dst_idx, edge_type)]
+L00067 |   >>> # sg["center_idx"] : int (中心公司节点的 node_idx)
+L00068 | """
+L00069 | from __future__ import annotations
+L00070 | from collections import defaultdict
+L00071 | from pathlib import Path
+L00072 | import pandas as pd
+L00073 | 
+L00074 | 
+L00075 | class SubgraphSampler:
+L00076 |     def __init__(self, edge_index_df: pd.DataFrame,
+L00077 |                  node_index_df: pd.DataFrame):
+L00078 |         self.edge_index = edge_index_df  # (src_idx, dst_idx, edge_type, year)
+L00079 |         self.node_index = node_index_df  # (node_idx, node_id, node_type, ts_code)
+L00080 |         # 索引
+L00081 |         self.id2idx = dict(zip(node_index_df["node_id"],
+L00082 |                                node_index_df["node_idx"]))
+L00083 |         self.idx2id = dict(zip(node_index_df["node_idx"],
+L00084 |                                node_index_df["node_id"]))
+L00085 |         self.idx2type = dict(zip(node_index_df["node_idx"],
+L00086 |                                   node_index_df["node_type"]))
+L00087 |         self.tscode2idx = dict(zip(
+L00088 |             node_index_df.loc[node_index_df["node_type"] == "company",
+L00089 |                               "ts_code"],
+L00090 |             node_index_df.loc[node_index_df["node_type"] == "company",
+L00091 |                               "node_idx"],
+L00092 |         ))
+L00093 |         # 邻接预构 (按 year 切片)
+L00094 |         self._adj_by_year = {}
+L00095 | 
+L00096 |     @classmethod
+L00097 |     def load(cls, kg_dir):
+L00098 |         kg_dir = Path(kg_dir)
+L00099 |         edges = pd.read_parquet(kg_dir / "global_edge_index.parquet")
+L00100 |         nodes = pd.read_parquet(kg_dir / "node_id_index.parquet")
+L00101 |         return cls(edges, nodes)
+L00102 | 
+L00103 |     def _adj_for_year(self, year):
+L00104 |         if year in self._adj_by_year:
+L00105 |             return self._adj_by_year[year]
+L00106 |         sub = self.edge_index[self.edge_index["year"] == year]
+L00107 |         adj = defaultdict(list)
+L00108 |         for _, r in sub.iterrows():
+L00109 |             adj[r["src_idx"]].append((r["dst_idx"], r["edge_type"]))
+L00110 |             adj[r["dst_idx"]].append((r["src_idx"], r["edge_type"]))
+L00111 |         self._adj_by_year[year] = adj
+L00112 |         return adj
+L00113 | 
+L00114 |     def sample(self, ts_code: str, year: int, k_hop: int = 2,
+L00115 |                max_neighbors_per_hop: int = 50) -> dict:
+L00116 |         """
+L00117 |         对 (ts_code, year) 抽 k-hop 子图.
+L00118 | 
+L00119 |         参数:
+L00120 |           max_neighbors_per_hop: 每跳每节点最多展开邻居数 (防爆炸).
+L00121 |         """
+L00122 |         if ts_code not in self.tscode2idx:
+L00123 |             raise ValueError(f"ts_code={ts_code} 不在节点表")
+L00124 |         center = self.tscode2idx[ts_code]
+L00125 |         adj = self._adj_for_year(year)
+L00126 | 
+L00127 |         visited = {center}
+L00128 |         frontier = [center]
+L00129 |         sub_edges = []
+L00130 |         for hop in range(k_hop):
+L00131 |             next_frontier = []
+L00132 |             for node in frontier:
+L00133 |                 nbrs = adj.get(node, [])
+L00134 |                 if len(nbrs) > max_neighbors_per_hop:
+L00135 |                     nbrs = nbrs[:max_neighbors_per_hop]
+L00136 |                 for (nbr, et) in nbrs:
+L00137 |                     if (node, nbr, et) not in sub_edges and (nbr, node, et) not in sub_edges:
+L00138 |                         sub_edges.append((node, nbr, et))
+L00139 |                     if nbr not in visited:
+L00140 |                         visited.add(nbr)
+L00141 |                         next_frontier.append(nbr)
+L00142 |             frontier = next_frontier
+L00143 |             if not frontier:
+L00144 |                 break
+L00145 |         # 输出
+L00146 |         nodes_out = []
+L00147 |         for idx in visited:
+L00148 |             nodes_out.append((idx, self.idx2type.get(idx, "?"),
+L00149 |                               self.idx2id.get(idx, "?")))
+L00150 |         return {
+L00151 |             "nodes": nodes_out,
+L00152 |             "edges": sub_edges,
+L00153 |             "center_idx": center,
+L00154 |             "ts_code": ts_code,
+L00155 |             "year": year,
+L00156 |             "k_hop": k_hop,
+L00157 |             "n_nodes": len(visited),
+L00158 |             "n_edges": len(sub_edges),
+L00159 |         }
+L00160 | '''
+L00161 | 
+L00162 | 
+L00163 | def main() -> int:
+L00164 |     p = argparse.ArgumentParser()
+L00165 |     p.add_argument("--k-hop", type=int, default=2)
+L00166 |     p.add_argument("--eager-sample-n", type=int, default=10,
+L00167 |                    help="对前 N 个 firm-year 实测一次采样并写 demo")
+L00168 |     p.add_argument("--max-neighbors", type=int, default=50)
+L00169 |     args = p.parse_args()
+L00170 | 
+L00171 |     logger = setup_logger(TASK)
+L00172 |     paths = get_paths()
+L00173 | 
+L00174 |     # ---- 1. 读 node_id_index ----
+L00175 |     nodes_idx = pd.read_parquet(KG_DIR / "node_id_index.parquet")
+L00176 |     n2i = dict(zip(nodes_idx["node_id"], nodes_idx["node_idx"]))
+L00177 |     logger.info("node_index: %d", len(nodes_idx))
+L00178 | 
+L00179 |     # ---- 2. 合并所有 edges, 转为整数索引 ----
+L00180 |     logger.info("合并所有 5 类边并映射为 node_idx ...")
+L00181 |     edge_files = [
+L00182 |         ("E1_HOLDS_BY",        KG_DIR / "edges_company_holder.parquet"),
+L00183 |         ("E2_FLOAT_HELD_BY",   KG_DIR / "edges_company_float_holder.parquet"),
+L00184 |         ("E3_HAS_MANAGER",     KG_DIR / "edges_company_manager.parquet"),
+L00185 |         ("E4_CO_HELD",         KG_DIR / "edges_company_company_co_held.parquet"),
+L00186 |         ("E5_CO_MGR",          KG_DIR / "edges_company_company_co_mgr.parquet"),
+L00187 |     ]
+L00188 |     parts = []
+L00189 |     for et, fp in edge_files:
+L00190 |         if not fp.exists():
+L00191 |             logger.warning("缺失 %s: %s", et, fp)
+L00192 |             continue
+L00193 |         df = pd.read_parquet(fp)
+L00194 |         if df.empty:
+L00195 |             continue
+L00196 |         df = df[["src", "dst", "year"]].copy()
+L00197 |         df["src_idx"] = df["src"].map(n2i)
+L00198 |         df["dst_idx"] = df["dst"].map(n2i)
+L00199 |         df["edge_type"] = et
+L00200 |         # 任一端不在 index 内 → 丢
+L00201 |         before = len(df)
+L00202 |         df = df.dropna(subset=["src_idx", "dst_idx"]).reset_index(drop=True)
+L00203 |         df["src_idx"] = df["src_idx"].astype(int)
+L00204 |         df["dst_idx"] = df["dst_idx"].astype(int)
+L00205 |         df["year"] = df["year"].astype(int)
+L00206 |         df = df[["src_idx", "dst_idx", "edge_type", "year"]]
+L00207 |         logger.info("  %s: %d 边 (丢弃 %d 个未索引端点)",
+L00208 |                     et, len(df), before - len(df))
+L00209 |         parts.append(df)
+L00210 |     if not parts:
+L00211 |         logger.error("无有效边数据")
+L00212 |         return 1
+L00213 |     edges = pd.concat(parts, ignore_index=True)
+L00214 |     logger.info("全图边: %d", len(edges))
+L00215 | 
+L00216 |     # ---- 3. 写 global_edge_index ----
+L00217 |     edges.to_parquet(KG_DIR / "global_edge_index.parquet",
+L00218 |                      index=False, compression="snappy")
+L00219 |     logger.info("  → %s", KG_DIR / "global_edge_index.parquet")
+L00220 | 
+L00221 |     # ---- 4. 写 SubgraphSampler.py 模块 ----
+L00222 |     src_path = KG_DIR / "SubgraphSampler.py"
+L00223 |     src_path.write_text(SAMPLER_CLASS_SOURCE, encoding="utf-8")
+L00224 |     logger.info("采样器源代码 → %s", src_path)
+L00225 | 
+L00226 |     # ---- 5. demo 采样 ----
+L00227 |     logger.info("Demo 采样 %d 个 firm-year ...", args.eager_sample_n)
+L00228 |     # 直接在本脚本里用同样逻辑做一次 demo (避免 import path 麻烦)
+L00229 |     from collections import defaultdict
+L00230 |     adj_by_year = {}
+L00231 |     company_codes = nodes_idx[nodes_idx["node_type"] == "company"]["ts_code"].tolist()
+L00232 |     rng = np.random.default_rng(42)
+L00233 |     samples = rng.choice(company_codes, size=min(args.eager_sample_n,
+L00234 |                                                   len(company_codes)),
+L00235 |                           replace=False).tolist()
+L00236 |     target_year = int(edges["year"].max())  # 最近一年
+L00237 |     demo_results = []
+L00238 |     for ts in samples:
+L00239 |         if ts not in dict(zip(nodes_idx["ts_code"], nodes_idx["node_idx"])):
+L00240 |             continue
+L00241 |         center = dict(zip(nodes_idx["ts_code"], nodes_idx["node_idx"]))[ts]
+L00242 |         if target_year not in adj_by_year:
+L00243 |             sub = edges[edges["year"] == target_year]
+L00244 |             adj = defaultdict(list)
+L00245 |             for _, r in sub.iterrows():
+L00246 |                 adj[r["src_idx"]].append((r["dst_idx"], r["edge_type"]))
+L00247 |                 adj[r["dst_idx"]].append((r["src_idx"], r["edge_type"]))
+L00248 |             adj_by_year[target_year] = adj
+L00249 |         adj = adj_by_year[target_year]
+L00250 |         visited = {center}
+L00251 |         frontier = [center]
+L00252 |         sub_edges = []
+L00253 |         for hop in range(args.k_hop):
+L00254 |             nf = []
+L00255 |             for n in frontier:
+L00256 |                 nbrs = adj.get(n, [])[:args.max_neighbors]
+L00257 |                 for (nbr, et) in nbrs:
+L00258 |                     sub_edges.append((n, nbr, et))
+L00259 |                     if nbr not in visited:
+L00260 |                         visited.add(nbr)
+L00261 |                         nf.append(nbr)
+L00262 |             frontier = nf
+L00263 |             if not frontier:
+L00264 |                 break
+L00265 |         demo_results.append({
+L00266 |             "ts_code": ts,
+L00267 |             "year": target_year,
+L00268 |             "n_nodes": len(visited),
+L00269 |             "n_edges": len(sub_edges),
+L00270 |         })
+L00271 |     demo_path = KG_DIR / "sample_demo.json"
+L00272 |     demo_path.write_text(
+L00273 |         json.dumps({"k_hop": args.k_hop, "max_neighbors": args.max_neighbors,
+L00274 |                     "samples": demo_results},
+L00275 |                    ensure_ascii=False, indent=2),
+L00276 |         encoding="utf-8",
+L00277 |     )
+L00278 |     logger.info("  Demo → %s", demo_path)
+L00279 | 
+L00280 |     # ---- 6. 统计 ----
+L00281 |     sizes = [d["n_nodes"] for d in demo_results]
+L00282 |     edges_n = [d["n_edges"] for d in demo_results]
+L00283 |     stats = {
+L00284 |         "params": {"k_hop": args.k_hop, "max_neighbors": args.max_neighbors,
+L00285 |                    "demo_n": args.eager_sample_n,
+L00286 |                    "target_year": target_year},
+L00287 |         "global_edges": int(len(edges)),
+L00288 |         "demo_subgraph_size": {
+L00289 |             "n_nodes_p50": int(np.median(sizes)) if sizes else 0,
+L00290 |             "n_nodes_max": int(max(sizes)) if sizes else 0,
+L00291 |             "n_edges_p50": int(np.median(edges_n)) if edges_n else 0,
+L00292 |             "n_edges_max": int(max(edges_n)) if edges_n else 0,
+L00293 |         },
+L00294 |         "outputs": [
+L00295 |             str(KG_DIR / "global_edge_index.parquet"),
+L00296 |             str(KG_DIR / "SubgraphSampler.py"),
+L00297 |             str(KG_DIR / "sample_demo.json"),
+L00298 |         ],
+L00299 |     }
+L00300 |     write_stats_json(TASK, stats)
+L00301 |     logger.info("=" * 60)
+L00302 |     logger.info("subgraph_sampler 完成")
+L00303 |     logger.info("  全图边: %d, demo 子图中位数大小: %d 节点 / %d 边",
+L00304 |                 len(edges),
+L00305 |                 stats["demo_subgraph_size"]["n_nodes_p50"],
+L00306 |                 stats["demo_subgraph_size"]["n_edges_p50"])
+L00307 |     logger.info("=" * 60)
+L00308 |     return 0
+L00309 | 
+L00310 | 
+L00311 | if __name__ == "__main__":
+L00312 |     sys.exit(main())

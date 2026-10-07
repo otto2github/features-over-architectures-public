@@ -1,0 +1,12 @@
+{
+  "aggregates": "aggregates/e7/",
+  "execution_records": "run_records/e7/",
+  "training_source": "code/e7/training/",
+  "construction_source": "code/e7/construction/",
+  "training_protocol": "protocol/reader/e7_training_protocol.md",
+  "graph_protocol": "protocol/reader/e7_graph_protocol.md",
+  "run_matrix": "protocol/matrices/e7_run_matrix.json",
+  "M11_column_order": "config/e7/M11_COLUMN_ORDER.json",
+  "scope": "documentation/e7_scope.md",
+  "public_checker": "tools/verify_e7.py"
+}

@@ -1,0 +1,114 @@
+{
+  "checks": [
+    {
+      "detail": {
+        "cases": 400,
+        "max_abs_error": 3.3306690738754696e-16
+      },
+      "name": "weighted_kernel_vs_explicit_duplicated_samples",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "N": 8435,
+        "cases": 10,
+        "max_abs_error": 4.336808689942018e-19,
+        "positive": 20
+      },
+      "name": "rare_event_actual_population_size",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "rejected": true
+      },
+      "name": "nonfinite_score_rejection",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "rejected": true
+      },
+      "name": "noninteger_multiplicity_rejection",
+      "pass_": true
+    },
+    {
+      "detail": null,
+      "name": "single_class_returns_NA",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "duplicates_missing_and_fractional_year_rejected": true,
+        "shuffled_join": true
+      },
+      "name": "key_and_binary_domain_guards",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "rejected": true
+      },
+      "name": "runtime_dataframe_cannot_enter_json",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "b": true,
+        "f": 0.3,
+        "i": 1
+      },
+      "name": "numpy_json_scalars",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "matched_rng": true,
+        "maximum_attempts": true
+      },
+      "name": "bootstrap_rng_and_rejection",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "LOPO_range_rows": 168,
+        "conditions": 4,
+        "matched_contrasts": 4,
+        "metrics": 6,
+        "populations": 5,
+        "synthetic_fits": 20,
+        "worker_arrays_exact": true
+      },
+      "name": "twenty_fit_numeric_pipeline_integration",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "mutation_detected": true
+      },
+      "name": "before_after_source_hash_audit",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "json_csv_zip_roundtrip": true,
+        "local_only_file_excluded": true,
+        "manifest_parity": true
+      },
+      "name": "closed_loop_return_manifest_and_private_exclusion",
+      "pass_": true
+    },
+    {
+      "detail": {
+        "pyarrow": "25.0.1",
+        "real_parquet_roundtrip": true
+      },
+      "name": "real_parquet_roundtrip_and_shuffled_key_parity",
+      "pass_": true
+    }
+  ],
+  "new_fits": 0,
+  "new_inference": 0,
+  "skipped": [],
+  "status": "PASS"
+}

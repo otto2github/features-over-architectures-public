@@ -1,0 +1,48 @@
+[
+  {
+    "detail": null,
+    "name": "synthetic_numeric_and_real_parquet_interfaces",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "matched_fits": 20
+    },
+    "name": "frozen_input_and_reference_identity",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": null,
+    "name": "all_population_points",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "valid_replicates": 2000
+    },
+    "name": "company_x_matched_seed",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "valid_replicates": 2000
+    },
+    "name": "company_document_x_matched_seed",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": null,
+    "name": "D_leave_one_positive_out",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": null,
+    "name": "legacy_A_GCN_unique_D_hit_flags",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": null,
+    "name": "frozen_inputs_unchanged_after_readonly_postprocess",
+    "status": "COMPLETE"
+  }
+]

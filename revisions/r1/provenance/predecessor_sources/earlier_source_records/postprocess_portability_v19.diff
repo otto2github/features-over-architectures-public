@@ -1,0 +1,20 @@
+# Distribution diff; removed personal literal is redacted. Original bytes identified by manifest hash.
+--- executed/postprocess.py
++++ distributed/postprocess.py
+@@ -290,7 +290,7 @@
+     ap=argparse.ArgumentParser();ap.add_argument('role',choices=['mac','tencent','server','selftest'])
+     ap.add_argument('--project-root');ap.add_argument('--audit-root',default=str(Path.home()/'peerj_141707_audit'));ap.add_argument('--output-root');ap.add_argument('--transfer',default=str(Path.home()/'peerj_141707_reviewkc_transfer'))
+     ap.add_argument('--financial-db');ap.add_argument('--asof-file');ap.add_argument('--financial-mask');ap.add_argument('--document-mask')
+-    ap.add_argument('--strict-run',default='<PERSONAL_RUN_DIRECTORY_REMOVED>')
++    ap.add_argument('--strict-run',default=None)
+     ap.add_argument('--bootstrap',type=int,default=2000);ap.add_argument('--workers',type=int,default=4)
+     args=ap.parse_args()
+     manifest_path=HERE/'TOOL_SHA256.json'
+@@ -299,6 +299,7 @@
+         require((HERE/rel).is_file() and sha256(HERE/rel)==expected,'TOOL_HASH_MISMATCH:'+rel)
+     if args.role=='selftest':test_logic();return
+     require(args.project_root is not None,'PROJECT_ROOT_REQUIRED');args.reverse_root=None
++    if args.role=='server':require(args.strict_run is not None,'STRICT_RUN_ROOT_REQUIRED')
+     if not args.output_root:args.output_root=str(Path(args.audit_root)/'reviewkc_v18'/args.role)
+     ctx=Context(args,P,BASE);ctx.role=args.role
+     fn={'mac':case_masks,'tencent':financial_masks,'server':evaluate}[args.role]

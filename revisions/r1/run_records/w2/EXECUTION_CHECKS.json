@@ -1,0 +1,58 @@
+{
+  "M11_dimensions": 129,
+  "all_fits": 20,
+  "context": {
+    "binding_file_sha256": "c0d57ff203f018bdf0e1b28a094fdfd4242e29b78cea43544df5fcb28afc74f1",
+    "matrix_sha256": "724c635c794a484f631b2ad2be51a9ef30031c201cc121402d4a42cc5fe33025",
+    "package_manifest_sha256": "06dc2b3cc73401b22b937985bda33187c395c140daeafa35ad4168139e5fd6a2",
+    "protocol_sha256": "2d19e1eb5de801c77a0f6bf8f412410a2fe4fa9b188453ca0796410c433b4462",
+    "scaler_mean_sha256": "231809d7393102f60fb51de5b312204ceceaa7c328fa8381bf601db062acfbe6",
+    "scaler_std_sha256": "c400b53950c5507b2194f9a33dab0aba21df57c388be97759ac98a16e5cee498",
+    "source_ledger": [
+      {
+        "path": "private_inputs/node_features_v1_1.parquet",
+        "sha256": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+        "size_bytes": 23261997
+      },
+      {
+        "path": "private_inputs/fraud_labels_v1_0.parquet",
+        "sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+        "size_bytes": 226750
+      },
+      {
+        "path": "private_inputs/global_edge_index.parquet",
+        "sha256": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09",
+        "size_bytes": 9520370
+      },
+      {
+        "path": "private_inputs/node_id_index_label_v1_0_fiverel_derived.parquet",
+        "sha256": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770",
+        "size_bytes": 2585531
+      },
+      {
+        "path": "private_inputs/formal_rerun_core.py",
+        "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+        "size_bytes": 16439
+      }
+    ]
+  },
+  "global_checkpoint_lock_before_any_test_performance": true,
+  "graph": "reverse-message reference, original 303,775 nodes",
+  "raw_keys_labels_scores_checkpoints_in_return": false,
+  "source_rechecked_after_runs": true,
+  "stage_t_read_fiscal_years": [
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "status": "PASS",
+  "strict_determinism": true,
+  "validation_only_checkpoint_and_threshold_selection": true,
+  "warn_only": false
+}

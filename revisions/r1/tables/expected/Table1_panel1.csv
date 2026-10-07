@@ -1,0 +1,6 @@
+Analysis / partition,Years,Rows,Positive,Negative
+Original / B / B0 / extension train,2010–2018,"24,106",254,"23,852"
+Original / B / B0 / extension validation,2019–2020,"7,309",40,"7,269"
+All reported full tests,2021–2022,"8,435",20,"8,415"
+A: retained train supervision,2010–2018,"24,066",214,"23,852"
+A: retained validation supervision,2019–2020,"7,293",24,"7,269"

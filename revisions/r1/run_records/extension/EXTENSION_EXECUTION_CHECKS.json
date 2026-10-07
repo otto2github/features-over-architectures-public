@@ -1,0 +1,22 @@
+{
+  "all_D_O_auc_identities": "PASS",
+  "all_full_budget_attribution_identities": "PASS",
+  "all_metrics_independently_recomputed": "PASS",
+  "all_test_prediction_key_label_identity": "PASS",
+  "binding_sha256": "c3087180c87a62dc1211fa9a42794d0e3c5a3338d9cae9999b1a1818bdbaf4b4",
+  "fit_count_checked": 10,
+  "global_stage_e_lock_path": "/path/to/private_workspace/peerj_141707_v28_b0gnn_extension/stage_e/ALL_10_STAGE_E_LOCKED.json",
+  "global_stage_e_lock_sha256": "c76c8722c8dd23dfa1265f23e86c433dc4140ec18f216fac01ccc0de4371a096",
+  "interpretation_performed": false,
+  "next_gate": "READY_FOR_RESULT_INTERPRETATION",
+  "protocol_sha256": "537cf3b88ee866a648df5255ae7f6c8f4a69b34035806f503e272fadf6ef2205",
+  "results_for_analysis_sha256": "93e7174d4b261a4213b9193b9f0d71460b1226987f6190b5dfcb53c89c596b73",
+  "row_level_predictions_in_return_zip": false,
+  "run_matrix_sha256": "0b0ae312e3a8af28ff8b50303fdedb3826b697c1bc82c0790bd3a73273ed211e",
+  "runner_sha256": "3e4ad39d85428780e74287918d2660d9c9d9027fb3a0167df681778b6377927a",
+  "selection_performed": false,
+  "stage_e_failure_dirs_present": 0,
+  "stage_t_global_lock_sha256": "c45ead04b1c1280930e56babb62441a0a43809e7e91d9261118478edab3406d6",
+  "status": "PASS_STAGE_E_ALL_10_FROZEN",
+  "strict_seed_explicit_before_inference_all_10": "PASS"
+}

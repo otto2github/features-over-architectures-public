@@ -1,0 +1,4 @@
+﻿partition,positive_firm_years,positive_companies,positive_rows_company_positive_in_earlier_partitions,positive_companies_positive_in_earlier_partitions,earlier_partition_positive_rows,interpretation
+test,20,17,12,10,294,retrospective label recurrence; not by itself information leakage
+train,254,129,0,0,0,retrospective label recurrence; not by itself information leakage
+validation,40,30,24,19,254,retrospective label recurrence; not by itself information leakage

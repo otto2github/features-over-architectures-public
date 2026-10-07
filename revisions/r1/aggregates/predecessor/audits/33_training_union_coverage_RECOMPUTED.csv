@@ -1,0 +1,4 @@
+﻿partition,eligible_rows,covered_rows,uncovered_rows,coverage_fraction,positive_rows,covered_positive_rows,source
+test,8435,8160,275,0.967397747480735,20,20,recomputed from frozen graph and mapping; not transcribed terminal output
+train,24106,24106,0,1.0,254,254,recomputed from frozen graph and mapping; not transcribed terminal output
+validation,7309,7295,14,0.9980845532904639,40,40,recomputed from frozen graph and mapping; not transcribed terminal output

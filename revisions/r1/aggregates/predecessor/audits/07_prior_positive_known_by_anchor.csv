@@ -1,0 +1,3 @@
+﻿partition,positive_rows,positive_rows_any_earlier_fiscal_year_positive,positive_rows_earlier_fiscal_positive_public_by_anchor,scope
+validation,40,29,1,"observed qualifying outcomes from this panel, not all historical sanctions"
+test,20,13,0,"observed qualifying outcomes from this panel, not all historical sanctions"

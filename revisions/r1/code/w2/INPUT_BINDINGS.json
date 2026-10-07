@@ -1,0 +1,131 @@
+{
+  "authorization_basis": "Author approved a second, earlier evaluation window (W2) on 2026-10-07; scope fixed to the 20 fits in RUN_MATRIX.json",
+  "base_annual_edges": {
+    "2010": 80061,
+    "2011": 90080,
+    "2012": 91581,
+    "2013": 102469,
+    "2014": 123903,
+    "2015": 165173,
+    "2016": 197718,
+    "2017": 252720,
+    "2018": 287609,
+    "2019": 335522,
+    "2020": 459493
+  },
+  "baseline_inputs": [
+    {
+      "path": "private_inputs/node_features_v1_1.parquet",
+      "sha256": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+      "size_bytes": 23261997
+    },
+    {
+      "path": "private_inputs/fraud_labels_v1_0.parquet",
+      "sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+      "size_bytes": 226750
+    },
+    {
+      "path": "private_inputs/global_edge_index.parquet",
+      "sha256": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09",
+      "size_bytes": 9520370
+    },
+    {
+      "path": "private_inputs/node_id_index_label_v1_0_fiverel_derived.parquet",
+      "sha256": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770",
+      "size_bytes": 2585531
+    },
+    {
+      "path": "private_inputs/formal_rerun_core.py",
+      "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+      "size_bytes": 16439
+    }
+  ],
+  "baseline_root": "private_inputs",
+  "bootstrap": {
+    "ci": "two-sided linear percentile 95%",
+    "min_valid_fraction": 0.95,
+    "population": "W2 full test (2019-2020)",
+    "replicates": 2000,
+    "rng_seed": 241707,
+    "same_draw_all_models_and_contrasts": true,
+    "unit": "company and matched seed label",
+    "workers": 8
+  },
+  "contrasts": [
+    [
+      "MLP",
+      "GCN"
+    ],
+    [
+      "MLP",
+      "SAGE"
+    ],
+    [
+      "RF",
+      "GCN"
+    ],
+    [
+      "RF",
+      "SAGE"
+    ]
+  ],
+  "expected_n_original": 303775,
+  "expected_supervision": {
+    "test": {
+      "positive": 40,
+      "rows": 7309
+    },
+    "train": {
+      "negative": 17290,
+      "positive": 158,
+      "rows": 17448
+    },
+    "validation": {
+      "positive": 96,
+      "rows": 6658
+    }
+  },
+  "expected_supervision_source": "Supplement Table S1c (eligible primary-label counts by fiscal year)",
+  "label_column": "label_v1_strict_ab_primary",
+  "neural_settings": {
+    "dropout": 0.3,
+    "epochs": 100,
+    "hidden_dim": 64,
+    "lr": 0.0005,
+    "optimizer": "Adam",
+    "patience": 10
+  },
+  "rf_settings": {
+    "bootstrap": true,
+    "class_weight": null,
+    "criterion": "gini",
+    "inputs": "M11 raw values, missing->0",
+    "max_depth": null,
+    "max_features": "sqrt",
+    "min_samples_leaf": 1,
+    "min_samples_split": 2,
+    "n_estimators": 500,
+    "n_jobs": 8
+  },
+  "training_authorized": true,
+  "training_protocol_id": "W2_M11_20_FITS_EARLIER_WINDOW_v1",
+  "window": {
+    "test_years": [
+      2019,
+      2020
+    ],
+    "train_years": [
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016
+    ],
+    "validation_years": [
+      2017,
+      2018
+    ]
+  }
+}

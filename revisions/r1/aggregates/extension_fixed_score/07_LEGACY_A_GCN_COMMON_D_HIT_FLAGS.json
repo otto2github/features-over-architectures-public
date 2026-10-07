@@ -1,0 +1,14 @@
+{
+  "company_codes_exported": false,
+  "document_keys_exported": false,
+  "interpretation": "co-occurrence only; does not establish what caused the GCN prediction",
+  "n_seeds": 5,
+  "n_shared_positive_rows": 1,
+  "rankings_agree": true,
+  "source_flags": {
+    "asof_any_final_financial_nonfinite": false,
+    "asof_any_source_missing": false,
+    "fin_any_no_prior_candidate": false
+  },
+  "status": "COMPLETE"
+}

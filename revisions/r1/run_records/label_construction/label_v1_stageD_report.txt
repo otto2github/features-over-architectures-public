@@ -1,0 +1,44 @@
+PeerJ 141707 | Label v1 Stage D legacy-source decomposition + temporal audit
+NO FINAL LABELS; NO TRAINING
+Local time: 2026-09-17T20:38:21.294231+08:00
+Stage C: <AUTHOR_LOCAL_ROOT>/peerj_141707_audit/label_v1_stageC/stageC_20260917_203624_f5e13855
+Stage B3d: <AUTHOR_LOCAL_ROOT>/peerj_141707_audit/label_v1_stageB3d/stageB3d_20260917_194758_910014de
+Output: <AUTHOR_LOCAL_ROOT>/peerj_141707_audit/label_v1_stageD/stageD_20260917_203820_7b47ab47
+
+A. LEGACY LABEL SOURCE DECOMPOSITION
+v07_positive_n=2274
+strict_positive_n=2621
+loose_positive_n=3428
+v07_subset_of_strict=True
+strict_subset_of_loose=True
+strict_added_over_v07_n=347
+loose_added_over_strict_n=807
+
+B. V0 SCHEMA / NOTICE-DATE PROVENANCE
+v0_columns=["firm_id", "year", "label_strength", "fraud_label_strict", "fraud_label_medium", "fraud_label_loose", "n_announcements", "keywords", "first_notice_date", "last_notice_date", "stock_name", "v0_build_timestamp"]
+v0_first_notice_col=first_notice_date
+v0_last_notice_col=last_notice_date
+v0_medium_col=fraud_label_medium
+v07_notice_year_relation={"first_notice_calendar_year_equals_label_year": 2274}
+v07_notice_vs_CNINFO_anchor={"first_notice_before_annual_report_anchor": 2124, "missing_CNINFO_anchor": 150}
+
+C. STAGE-C EVIDENCE STATE BY LEGACY SOURCE
+all_legacy_strict={"A_postfiling_public_and_document_supported": 49, "B_postfiling_raw_year_only_public_and_document_supported": 16, "missing_stageC_row": 31, "no_machine_support_not_negative": 2460, "public_sanction_on_or_before_annual_report_anchor": 3, "unresolved_preanchor_evidence": 62}
+v07_component={"A_postfiling_public_and_document_supported": 36, "B_postfiling_raw_year_only_public_and_document_supported": 11, "no_machine_support_not_negative": 2169, "public_sanction_on_or_before_annual_report_anchor": 3, "unresolved_preanchor_evidence": 55}
+strict_added_over_v07={"A_postfiling_public_and_document_supported": 13, "B_postfiling_raw_year_only_public_and_document_supported": 5, "missing_stageC_row": 31, "no_machine_support_not_negative": 291, "unresolved_preanchor_evidence": 7}
+
+D. MATURITY DIAGNOSTIC (NOT YET FINAL RULE)
+overall={"anchor_present": 49337, "ge_1y": 49336, "ge_2y": 44625, "ge_3y": 40049, "ge_4y": 35718, "missing_anchor": 2338}
+by_year={"2010": {"anchor_present": 2030, "ge_1y": 2030, "ge_2y": 2030, "ge_3y": 2030, "ge_4y": 2030, "missing_anchor": 7}, "2011": {"anchor_present": 2312, "ge_1y": 2312, "ge_2y": 2312, "ge_3y": 2312, "ge_4y": 2312, "missing_anchor": 9}, "2012": {"anchor_present": 2445, "ge_1y": 2445, "ge_2y": 2445, "ge_3y": 2445, "ge_4y": 2445, "missing_anchor": 16}, "2013": {"anchor_present": 2450, "ge_1y": 2450, "ge_2y": 2450, "ge_3y": 2450, "ge_4y": 2450, "missing_anchor": 9}, "2014": {"anchor_present": 2562, "ge_1y": 2562, "ge_2y": 2562, "ge_3y": 2562, "ge_4y": 2562, "missing_anchor": 5}, "2015": {"anchor_present": 2761, "ge_1y": 2761, "ge_2y": 2761, "ge_3y": 2761, "ge_4y": 2761, "missing_anchor": 16}, "2016": {"anchor_present": 2976, "ge_1y": 2976, "ge_2y": 2976, "ge_3y": 2976, "ge_4y": 2976, "missing_anchor": 11}, "2017": {"anchor_present": 3296, "ge_1y": 3296, "ge_2y": 3296, "ge_3y": 3296, "ge_4y": 3296, "missing_anchor": 119}, "2018": {"anchor_present": 3402, "ge_1y": 3402, "ge_2y": 3402, "ge_3y": 3402, "ge_4y": 3402, "missing_anchor": 101}, "2019": {"anchor_present": 3554, "ge_1y": 3554, "ge_2y": 3554, "ge_3y": 3554, "ge_4y": 3554, "missing_anchor": 131}, "2020": {"anchor_present": 3802, "ge_1y": 3802, "ge_2y": 3802, "ge_3y": 3802, "ge_4y": 3802, "missing_anchor": 277}, "2021": {"anchor_present": 4135, "ge_1y": 4135, "ge_2y": 4135, "ge_3y": 4135, "ge_4y": 4128, "missing_anchor": 405}, "2022": {"anchor_present": 4329, "ge_1y": 4329, "ge_2y": 4329, "ge_3y": 4324, "missing_anchor": 488}, "2023": {"anchor_present": 4575, "ge_1y": 4575, "ge_2y": 4571, "missing_anchor": 427}, "2024": {"anchor_present": 4708, "ge_1y": 4707, "missing_anchor": 317}}
+
+E. DECISION GATE
+Do NOT interpret Stage-C legacy1__no_machine_support as label errors before separating the v0.7 component.
+If v0.7 notice dates overwhelmingly equal the label calendar year and precede the CNINFO annual-report anchor, the historical v0.7 component is temporally incompatible with the current post-filing year-t target and cannot be unioned into Label v1.0 without remapping.
+Strict-added CSMAR cases are evaluated separately because they follow a different provenance path.
+Next: choose/remap the endpoint using these exact counts, then freeze maturity and generate Label v1.0.
+
+source_files_modified=false
+training_or_prediction_run=false
+final_nonnull_labels_written=0
+STATUS: LABEL_V1_STAGE_D_COMPLETE_READY_FOR_ENDPOINT_DECISION
+Upload only label_v1_stageD_report.txt.

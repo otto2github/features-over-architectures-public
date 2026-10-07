@@ -1,0 +1,112 @@
+[
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GCN_reverse",
+    "model_seed": 42,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GCN_reverse__M11_no_FIN87__seed42",
+    "supervision": "original"
+  },
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GCN_reverse",
+    "model_seed": 123,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GCN_reverse__M11_no_FIN87__seed123",
+    "supervision": "original"
+  },
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GCN_reverse",
+    "model_seed": 456,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GCN_reverse__M11_no_FIN87__seed456",
+    "supervision": "original"
+  },
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GCN_reverse",
+    "model_seed": 789,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GCN_reverse__M11_no_FIN87__seed789",
+    "supervision": "original"
+  },
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GCN_reverse",
+    "model_seed": 1024,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GCN_reverse__M11_no_FIN87__seed1024",
+    "supervision": "original"
+  },
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GraphSAGE_reverse",
+    "model_seed": 42,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GraphSAGE_reverse__M11_no_FIN87__seed42",
+    "supervision": "original"
+  },
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GraphSAGE_reverse",
+    "model_seed": 123,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GraphSAGE_reverse__M11_no_FIN87__seed123",
+    "supervision": "original"
+  },
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GraphSAGE_reverse",
+    "model_seed": 456,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GraphSAGE_reverse__M11_no_FIN87__seed456",
+    "supervision": "original"
+  },
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GraphSAGE_reverse",
+    "model_seed": 789,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GraphSAGE_reverse__M11_no_FIN87__seed789",
+    "supervision": "original"
+  },
+  {
+    "extension_family": "B0GNN42",
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "modality": "M11_no_FIN87",
+    "model": "GraphSAGE_reverse",
+    "model_seed": 1024,
+    "result_awareness": "post_V27_results_extension",
+    "run_id": "V28_B0GNN42__GraphSAGE_reverse__M11_no_FIN87__seed1024",
+    "supervision": "original"
+  }
+]

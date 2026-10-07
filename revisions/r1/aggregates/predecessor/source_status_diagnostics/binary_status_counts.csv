@@ -1,0 +1,10 @@
+partition,flag,source_table,positives,negatives,flagged_positives,flagged_negatives,positive_flag_fraction,negative_flag_fraction
+train,post_anchor_fin,S9a,254,23852,100,1108,0.3937007874015748,0.0464531276203253
+train,post_anchor_fin_no_prior,S9a,254,23852,90,1015,0.3543307086614173,0.0425540835150092
+train,asof_source_missing,S9c,254,23852,129,7768,0.5078740157480315,0.3256749958074794
+validation,post_anchor_fin,S9a,40,7269,24,368,0.6,0.050625945797221
+validation,post_anchor_fin_no_prior,S9a,40,7269,22,315,0.55,0.0433347090383821
+validation,asof_source_missing,S9c,40,7269,22,565,0.55,0.0777273352593204
+test,post_anchor_fin,S9a,20,8415,14,403,0.7,0.0478906714200831
+test,post_anchor_fin_no_prior,S9a,20,8415,12,266,0.6,0.0316102198455139
+test,asof_source_missing,S9c,20,8415,12,527,0.6,0.0626262626262626

@@ -1,0 +1,15 @@
+{
+  "all_thread_pools_requested_single_thread": true,
+  "cuda_visible_devices": "",
+  "executable": "/path/to/private_workspace/peerj_141707_rerun_v1/.venv/bin/python",
+  "no_dependency_installation": true,
+  "platform": "Linux-6.8.0-124-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "requested_workers": 2,
+  "versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.1",
+    "scikit-learn": "1.9.1"
+  }
+}

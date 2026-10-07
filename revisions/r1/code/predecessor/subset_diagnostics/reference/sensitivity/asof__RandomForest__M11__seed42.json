@@ -1,0 +1,43 @@
+{
+  "best_val_auc": 0.9012587701196864,
+  "config": {
+    "class_weight": null,
+    "max_features": "sqrt",
+    "n_estimators": 500,
+    "n_jobs": 8
+  },
+  "label_counts": {
+    "test": {
+      "n": 8435,
+      "positive": 20
+    },
+    "train": {
+      "n": 24106,
+      "positive": 254
+    },
+    "validation": {
+      "n": 7309,
+      "positive": 40
+    }
+  },
+  "metrics": {
+    "ap": 0.03550713299406608,
+    "f1_val_threshold": 0.11235955056179775,
+    "n": 8435,
+    "n_neg": 8415,
+    "n_pos": 20,
+    "p_at_5pct": 0.023696682464454975,
+    "r_at_10fpr": 0.7,
+    "roc_auc": 0.9041681521093287
+  },
+  "modal": "M11",
+  "model": "RandomForest",
+  "model_display": "RandomForest",
+  "runtime_seconds": 7.758578062057495,
+  "scenario": "asof",
+  "seed": 42,
+  "test_evaluated": true,
+  "train_neg": 23852,
+  "train_pos": 254,
+  "val_threshold": 0.186
+}

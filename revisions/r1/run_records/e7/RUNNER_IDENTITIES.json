@@ -1,0 +1,106 @@
+{
+  "ACTUAL_AI_USE_E7_TRAIN_CN.md": {
+    "sha256": "24537f898e2b3a08f80fa8d63625f3a6a15834ce1801b8a296c53ab2f3727c8e",
+    "size_bytes": 1242
+  },
+  "DEVELOPMENT_VALIDATION.json": {
+    "sha256": "f9bad9aa99afc56c211c9d1cfef77ceeb1c9a0bc15281646e33938125aa30ff0",
+    "size_bytes": 1586
+  },
+  "E7_TRAINING_PROTOCOL_v1.md": {
+    "sha256": "d9d7248cb5acfac5b30f0b3a86ebcbfecb42d765ad05ce0000d397b7fb9489f2",
+    "size_bytes": 10267
+  },
+  "ENVIRONMENT_REFERENCE.json": {
+    "sha256": "3fc0efb9185b036541c6af36e998d346f2e965a15964cf197ce42d97d5da9e5f",
+    "size_bytes": 851
+  },
+  "INPUT_BINDINGS.json": {
+    "sha256": "5f36a7bdb6fa0429bf2930bbffeb5110d24bb3714e73b4407cad1428b3f8341d",
+    "size_bytes": 4057
+  },
+  "M11_COLUMN_ORDER.json": {
+    "sha256": "9d28219a5b447694aaa4fba4096d2448cba45e9a08dbe0c59dbcb323640a7715",
+    "size_bytes": 3554
+  },
+  "OPERATOR_CHECKS_REFERENCE.json": {
+    "sha256": "e982d26d78ea6b906a53411207c838fc189db98cb4738b3558581d122ab3ae7b",
+    "size_bytes": 7450
+  },
+  "PACKAGE_SHA256.json": {
+    "sha256": "ed66c1ff36e9902ff5fe527b79087e892e121be211cb6a3ab85134882d3115e2",
+    "size_bytes": 2492
+  },
+  "PREP_ASSESSMENT_REFERENCE.json": {
+    "sha256": "47c58e3d6e5e9fa2929a18c3ed1d683217b87fb42c8d63586f5799e7fd31ddca",
+    "size_bytes": 25862
+  },
+  "README_RUN_CN.md": {
+    "sha256": "cbd3ffc5cee40de0f7a2305ada3aaf5b60c16571f22bed5b1a2e16272b32b335",
+    "size_bytes": 4988
+  },
+  "RUN_MATRIX.json": {
+    "sha256": "9b818649041fb670112c26a412631f28d404a87ab982b1a8563e4c80c93fdf91",
+    "size_bytes": 2263
+  },
+  "VALIDATION_INSTALL_DOWNLOAD.txt": {
+    "sha256": "a47e4898315842ddcfcc783ab9c1677d9ad91a95d5924665bdd77a89850e5465",
+    "size_bytes": 1421
+  },
+  "VALIDATION_TRAINING.txt": {
+    "sha256": "d96fc048be90fc7a9a053185fce07964e10ca2f9de5f8a567be5b1252f4749ea",
+    "size_bytes": 2849
+  },
+  "WEIGHTED_METRICS_REFERENCE.py": {
+    "sha256": "b1a6ed3e1212debe39f97222dd3284acd1a6a69a29d492e1f1e7046168b78ed3",
+    "size_bytes": 3471
+  },
+  "e7_cache_adapter.py": {
+    "sha256": "46645c11ba2e540ae4c22385da6ab1c8fc8945aedcabc8dcf268c8a41811767c",
+    "size_bytes": 5623
+  },
+  "e7_runtime_common.py": {
+    "sha256": "115d943e3f54e77faab4468c9b63cdc73769333344bbab10df711b81fb0097b5",
+    "size_bytes": 3344
+  },
+  "e7_statistics.py": {
+    "sha256": "3a8b7717ef86d63300ed61a7a532243b136205614a62936c2e9799f5050b6f74",
+    "size_bytes": 8402
+  },
+  "e7_weighted_metrics.py": {
+    "sha256": "4ed3a8b7aa26b2bb4feae31fc853a9b7947384b3d98de9a2d015cd38d5cba707",
+    "size_bytes": 3481
+  },
+  "e7_worker.py": {
+    "sha256": "91a4e112c8c54b9ea6c3ca88bf0fe7d2221cf035016263ab2bdcf0481f7b984c",
+    "size_bytes": 25890
+  },
+  "formal_rerun_core_REFERENCE.py": {
+    "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+    "size_bytes": 16439
+  },
+  "launch_job.py": {
+    "sha256": "33e4878f4f36360ce199c068a7f61cc738179a2c3d6fcf62cf277b1a6d34c51e",
+    "size_bytes": 3766
+  },
+  "mac_download_results.sh": {
+    "sha256": "db4c7762d03a5acf0bd61e1a367c16441c4d82c8e9fed4cdcae834b2eb2a89ad",
+    "size_bytes": 2144
+  },
+  "mac_start_20_fits.sh": {
+    "sha256": "3b0889ffd174d984e13f2c64f747975d31c76f60d6d386a47fd2eace6a367265",
+    "size_bytes": 3386
+  },
+  "start_20_fits.sh": {
+    "sha256": "af29a9f3228b18eb262f6557358b6e6aace15dc3f7999ce7e8695ce85f6371e1",
+    "size_bytes": 188
+  },
+  "test_install_download_synthetic.py": {
+    "sha256": "86d62b0bfd5d4d67ce5dc19f603828eba584c313fef856989b6224ea000a95bf",
+    "size_bytes": 6757
+  },
+  "test_training_synthetic.py": {
+    "sha256": "a3a418d5e3e9f5b3ff9f298329023706d06eeb38dcd17233f96a8be62119b092",
+    "size_bytes": 16072
+  }
+}

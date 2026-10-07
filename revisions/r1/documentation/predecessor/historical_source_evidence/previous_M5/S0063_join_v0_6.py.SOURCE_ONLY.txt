@@ -1,0 +1,66 @@
+"""
+P4.5.1 Step 3: join_v0_6.py
+============================
+
+把 v0.5 (43 列) + fina_indicator_v0 (78 fini_ 列) 合并成 v0.6 矩阵.
+
+join key: (firm_id, year)
+join type: left (以 v0.5 为准, fina 缺失保 NaN)
+"""
+
+from pathlib import Path
+import pandas as pd
+
+PROJECT_ROOT = Path.home() / "code" / "thesis_project"
+V0_5 = PROJECT_ROOT / "data" / "processed" / "features" / "features_v0_5.parquet"
+FINA = PROJECT_ROOT / "data" / "processed" / "features" / "fina_indicator_v0.parquet"
+OUT = PROJECT_ROOT / "data" / "processed" / "features" / "features_v0_6.parquet"
+
+
+def main():
+    print(f"读 v0.5: {V0_5}")
+    v0_5 = pd.read_parquet(V0_5)
+    print(f"  shape: {v0_5.shape}")
+
+    print(f"读 fina_indicator_v0: {FINA}")
+    fina = pd.read_parquet(FINA)
+    print(f"  shape: {fina.shape}")
+
+    # 检查 join key 一致性
+    for key in ["firm_id", "year"]:
+        if key not in v0_5.columns:
+            raise ValueError(f"v0.5 缺少 join key: {key}; 列: {list(v0_5.columns)[:30]}")
+        if key not in fina.columns:
+            raise ValueError(f"fina 缺少 join key: {key}; 列: {list(fina.columns)[:30]}")
+
+    # fina 子集: 只取 fini_ 列 + join key (避免 ts_code/industry 重复)
+    fini_cols = [c for c in fina.columns if c.startswith("fini_")]
+    print(f"  fini_ 列: {len(fini_cols)}")
+    fina_subset = fina[["firm_id", "year"] + fini_cols]
+
+    # left join
+    n_before = len(v0_5)
+    v0_6 = v0_5.merge(fina_subset, on=["firm_id", "year"], how="left")
+    print(f"\nv0.6 shape: {v0_6.shape}")
+    if len(v0_6) != n_before:
+        print(f"  [WARN] join 后行数变化: {n_before} → {len(v0_6)}")
+
+    # 检查 fini_ 覆盖率
+    n_no_fini = v0_6[fini_cols].isna().all(axis=1).sum()
+    print(f"  fini_ 完全缺失行: {n_no_fini:,} / {len(v0_6):,} ({n_no_fini/len(v0_6):.1%})")
+
+    # 列分类统计
+    feat_cols = [c for c in v0_6.columns if c.startswith("feat_")]
+    fin_cols = [c for c in v0_6.columns if c.startswith("fin_")]
+    print(f"\n[模态分布]")
+    print(f"  feat_ (insider): {len(feat_cols)}")
+    print(f"  fin_  (派生财务): {len(fin_cols)}")
+    print(f"  fini_ (fina_indicator): {len(fini_cols)}")
+    print(f"  其他 (元数据/标签): {len(v0_6.columns) - len(feat_cols) - len(fin_cols) - len(fini_cols)}")
+
+    v0_6.to_parquet(OUT, index=False)
+    print(f"\n[OK] 已写入: {OUT}")
+
+
+if __name__ == "__main__":
+    main()

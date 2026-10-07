@@ -1,0 +1,9 @@
+{
+  "note": "Copied existing audited rules; added export of in-memory boolean masks and v18 naming. No scientific original rewritten. See original package for original source identity. r2 fixes only null/NA key canonicalization in marginal self-checks.",
+  "files": {
+    "postprocess.py": "bd5bcfa2766be17869eee8a093f368f6c5653effcc4b23b92314e6af344e39a6",
+    "asof_rules.py": "18ef435f9b8a55911cacbc179cd33059d347210f419a2016520f0b48e7bd3409",
+    "baseline_audit/auditlib/common.py": "819574e9341a12472ec58b74d1d13943a04b726d67b6e4165bfa7ffade822d3b",
+    "baseline_audit/auditlib/financials.py": "0daed34f5b709a007baecdd74d38bcf03892fc45bfaa93daa5b546bc74c2e41c"
+  }
+}

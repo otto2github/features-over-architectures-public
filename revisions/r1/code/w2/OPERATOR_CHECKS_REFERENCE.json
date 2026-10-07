@@ -1,0 +1,293 @@
+{
+  "checks": [
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2010
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2011
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2012
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2013
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2014
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2015
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2016
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2017
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2018
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2019
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2020
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2021
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "GCN",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2022
+    },
+    {
+      "check": "strict_full_graph_forward_backward_repeat",
+      "condition": "control",
+      "gradient_sha256": "041acd98dcced3c2e31d465fdf08c560308720a80b3c70532d12228122e307a1",
+      "labels_used": false,
+      "model": "GCN",
+      "optimizer_steps": 0,
+      "pass": true,
+      "year": 2018
+    },
+    {
+      "check": "strict_full_graph_forward_backward_repeat",
+      "condition": "E7",
+      "gradient_sha256": "2fcc84e0df9c4aa9872b41f41d162a892657d91c8594307a086704e5403bef9c",
+      "labels_used": false,
+      "model": "GCN",
+      "optimizer_steps": 0,
+      "pass": true,
+      "year": 2018
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2010
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2011
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2012
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2013
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2014
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2015
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2016
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2017
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2018
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2019
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2020
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2021
+    },
+    {
+      "atol": 1e-06,
+      "check": "isolated_extension_eval_parity",
+      "max_abs_original_node_logit_difference": 0.0,
+      "model": "SAGE",
+      "pass": true,
+      "rtol": 1e-06,
+      "year": 2022
+    },
+    {
+      "check": "strict_full_graph_forward_backward_repeat",
+      "condition": "control",
+      "gradient_sha256": "942508deb307dddfcfd5236f6cbfd6badabd2c25a404979e6d3ed13b4eb6ebe9",
+      "labels_used": false,
+      "model": "SAGE",
+      "optimizer_steps": 0,
+      "pass": true,
+      "year": 2018
+    },
+    {
+      "check": "strict_full_graph_forward_backward_repeat",
+      "condition": "E7",
+      "gradient_sha256": "aa9910a74fae35974f990d491005b38458d6b70cec7cb96cd13e939279530648",
+      "labels_used": false,
+      "model": "SAGE",
+      "optimizer_steps": 0,
+      "pass": true,
+      "year": 2018
+    }
+  ],
+  "formal_models_fitted": 0,
+  "operator_source_identities": {
+    "GCNConv": {
+      "sha256": "036b464769ad1d98501c9fc18ff3132b507890b2c5cb41b3e6f9e1f22d4f57f6",
+      "source_basename": "gcn_conv.py"
+    },
+    "SAGEConv": {
+      "sha256": "db5a4998387eb0ae2ee1cb3d957699938e6c0fd1b0a1c8b6135c691dfe5af7c7",
+      "source_basename": "sage_conv.py"
+    }
+  },
+  "parameters_optimized": false,
+  "status": "PASS",
+  "test_labels_used_for_operator_checks": false,
+  "test_performance_evaluated": false
+}

@@ -1,0 +1,5 @@
+﻿usable_document,late_positive_document_recurs_validation,late_positive_document_recurs_test,training_positive_firm_years
+False,False,False,1
+True,False,False,99
+True,True,False,27
+True,True,True,8

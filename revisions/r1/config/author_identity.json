@@ -1,0 +1,18 @@
+{
+  "manuscript": "CS-2026:06:141707",
+  "authors": [
+    {
+      "name": "Yi Qiu Cheng",
+      "orcid": "0009-0006-9094-3951",
+      "equal_first": true,
+      "corresponding": true
+    },
+    {
+      "name": "Xiao Rong Cheng",
+      "orcid": "0009-0002-5328-0686",
+      "equal_first": true,
+      "corresponding": false
+    }
+  ],
+  "basis": "author confirmation; not a new online identity verification"
+}

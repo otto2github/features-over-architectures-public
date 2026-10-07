@@ -1,0 +1,117 @@
+{
+  "context": {
+    "binding_file_sha256": "5f36a7bdb6fa0429bf2930bbffeb5110d24bb3714e73b4407cad1428b3f8341d",
+    "matrix_sha256": "9b818649041fb670112c26a412631f28d404a87ab982b1a8563e4c80c93fdf91",
+    "package_manifest_sha256": "ed66c1ff36e9902ff5fe527b79087e892e121be211cb6a3ab85134882d3115e2",
+    "protocol_sha256": "d9d7248cb5acfac5b30f0b3a86ebcbfecb42d765ad05ce0000d397b7fb9489f2",
+    "scaler_mean_sha256": "e0f10b14e388f0989cd6f45f1c8573c3827160488a210d3f2d5017b80bb95ebe",
+    "scaler_std_sha256": "e74801fbce9e90140ef3660280b739a8152743769067c6bb0edaae3614c253b7",
+    "source_ledger": [
+      {
+        "path": "private_inputs/node_features_v1_1.parquet",
+        "sha256": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+        "size_bytes": 23261997
+      },
+      {
+        "path": "private_inputs/fraud_labels_v1_0.parquet",
+        "sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+        "size_bytes": 226750
+      },
+      {
+        "path": "private_inputs/global_edge_index.parquet",
+        "sha256": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09",
+        "size_bytes": 9520370
+      },
+      {
+        "path": "private_inputs/node_id_index_label_v1_0_fiverel_derived.parquet",
+        "sha256": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770",
+        "size_bytes": 2585531
+      },
+      {
+        "path": "private_inputs/formal_rerun_core.py",
+        "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+        "size_bytes": 16439
+      },
+      {
+        "path": "private_inputs/evaluation_masks_v27.parquet",
+        "sha256": "f53fa5b7f0ee845f6075bc2329d5ef6ee9d9429d38a942a71aa228f550009810",
+        "size_bytes": 105354
+      },
+      {
+        "path": "private_inputs/PRIVATE_e7_forward_edges.parquet",
+        "sha256": "a464045c4bb3b163431d7c4c975c55abf792a970d7af17f046463b756bbb6602",
+        "size_bytes": 985106
+      },
+      {
+        "path": "private_inputs/PRIVATE_e7_support_index.parquet",
+        "sha256": "6f57b553a65c38db38cb8790883b8bb3db8c0910557f39dde08fc1dcf05598cb",
+        "size_bytes": 4264744
+      }
+    ]
+  },
+  "fit_count": 20,
+  "runs": {
+    "GCN__M11__E7__seed1024": {
+      "complete_sha256": "630be4c275ce802fbc6da2b7bfc436799f47f90210c6da55d103f83976c9f2ef"
+    },
+    "GCN__M11__E7__seed123": {
+      "complete_sha256": "af97cff23ac2a491b009300da17aacfdaa83230a44d3b50332d6cc6d34d76a0e"
+    },
+    "GCN__M11__E7__seed42": {
+      "complete_sha256": "4ed814d42e8da5a5fd4759fe41585d048842fe8957dc8b76754585164a9fa014"
+    },
+    "GCN__M11__E7__seed456": {
+      "complete_sha256": "b7ae489f4a40089336f3bba3be4e3a0f82b9b973090c93542edcce9a5584d46f"
+    },
+    "GCN__M11__E7__seed789": {
+      "complete_sha256": "28e32bb41c45fd569ec7ce634da5025c35575ddf40d0217035298b58723dedf8"
+    },
+    "GCN__M11__control__seed1024": {
+      "complete_sha256": "a9d32ffd5e922d0df57a30482e542062a01f4bab25d76a7f8a418f88e5701515"
+    },
+    "GCN__M11__control__seed123": {
+      "complete_sha256": "c2dae5b1a71823bd0418ff190a655299229a80703be5b13831d96feaf8d94b3b"
+    },
+    "GCN__M11__control__seed42": {
+      "complete_sha256": "cf4d9c7822e0adf9040446635690c62875c2a800667378b675c1b1a917c621b5"
+    },
+    "GCN__M11__control__seed456": {
+      "complete_sha256": "857a32e197f129c16f3ee564cc7609292d78c5fcbac99bdc95dbcb8cae697b5f"
+    },
+    "GCN__M11__control__seed789": {
+      "complete_sha256": "673bbed318bbe8148b13888ef869db8ea988011ad425b4314d893b8659bae1da"
+    },
+    "SAGE__M11__E7__seed1024": {
+      "complete_sha256": "d18ebfd48b95d294f6a052f013226f221e92636799c76d3e1c37ebc08be2adec"
+    },
+    "SAGE__M11__E7__seed123": {
+      "complete_sha256": "868c70847a2b3d81d3e1810b6dbfde5601e88caa2bf082c0aaec2c7ac6e4b0c3"
+    },
+    "SAGE__M11__E7__seed42": {
+      "complete_sha256": "22116cb047539736b9cb8a2d2b3f7e830bd6e977d4b9ad5a6404b410f35cf4d9"
+    },
+    "SAGE__M11__E7__seed456": {
+      "complete_sha256": "d42fe307442602821b23eca62a9dbef0619913a1944be59317de823c634b8c7d"
+    },
+    "SAGE__M11__E7__seed789": {
+      "complete_sha256": "6adc7a97aac760dd2d010a0c9a6fd38139f9754749e78adb18eeab9dbd0b5314"
+    },
+    "SAGE__M11__control__seed1024": {
+      "complete_sha256": "70e724bb9a3830cf10a88b509cb1866798ab8c4876b64bd01e11ef84315188a2"
+    },
+    "SAGE__M11__control__seed123": {
+      "complete_sha256": "2a2f74a1bcd320139185a89f9121930bbc0176b3ab9adc5a0af7e408f194d0ab"
+    },
+    "SAGE__M11__control__seed42": {
+      "complete_sha256": "e5ed635d90474051517e23a5c41e43abbeb6b21a699bec83140b563a7e7bf126"
+    },
+    "SAGE__M11__control__seed456": {
+      "complete_sha256": "a698e5158b74e3eebe0391163bbbc990c80c2bd5908aeb1931441378e1552b3f"
+    },
+    "SAGE__M11__control__seed789": {
+      "complete_sha256": "982400c1d506d6b2e753ce51f1eff7b7edd95aafa1bef17a31c9e4c90a5572fe"
+    }
+  },
+  "status": "ALL_20_LOCKED",
+  "test_performance_evaluated_before_lock": false
+}

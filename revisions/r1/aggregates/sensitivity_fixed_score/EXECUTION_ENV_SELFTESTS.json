@@ -1,0 +1,160 @@
+{
+  "failed": [],
+  "parquet_io_tested": true,
+  "skipped": [],
+  "status": "PASS",
+  "synthetic_only": true,
+  "test_count": 20,
+  "tests": [
+    {
+      "detail": {
+        "actual_random_tie_zero_weight_cases": 400,
+        "max_absolute_error": 2.220446049250313e-16
+      },
+      "pass": true,
+      "test": "weighted_metrics_vs_explicit_duplicate_sklearn"
+    },
+    {
+      "detail": {
+        "cases": 200,
+        "max_absolute_error": 0,
+        "reference_file_modified": false
+      },
+      "pass": true,
+      "test": "exact_frozen_V26_plan_parity"
+    },
+    {
+      "detail": {
+        "cases": 20,
+        "max_absolute_error": 1.1102230246251565e-16,
+        "positives": 20,
+        "rows": 8435
+      },
+      "pass": true,
+      "test": "rare_event_real_test_size_numerical_parity"
+    },
+    {
+      "detail": null,
+      "pass": true,
+      "test": "single_class_is_NA_not_half"
+    },
+    {
+      "detail": true,
+      "pass": true,
+      "test": "bad_weights_fail_closed"
+    },
+    {
+      "detail": true,
+      "pass": true,
+      "test": "nan_scores_rejected"
+    },
+    {
+      "detail": true,
+      "pass": true,
+      "test": "json_runtime_dataframe_not_leaked"
+    },
+    {
+      "detail": {
+        "b": true,
+        "f": 0.4,
+        "n": 4
+      },
+      "pass": true,
+      "test": "json_numpy_finite_serialization"
+    },
+    {
+      "detail": true,
+      "pass": true,
+      "test": "json_nonfinite_rejected"
+    },
+    {
+      "detail": {
+        "duplicates_rejected": true,
+        "missing_join_rejected": true,
+        "row_order_invariant": true
+      },
+      "pass": true,
+      "test": "one_to_one_key_alignment_guards"
+    },
+    {
+      "detail": true,
+      "pass": true,
+      "test": "fractional_year_rejected"
+    },
+    {
+      "detail": true,
+      "pass": true,
+      "test": "invalid_binary_label_rejected"
+    },
+    {
+      "detail": true,
+      "pass": true,
+      "test": "missing_boolean_not_filled_false"
+    },
+    {
+      "detail": {
+        "company_year_rows_stay_together": true,
+        "isolated_companies_retained": true,
+        "transitive_test_document_links": true
+      },
+      "pass": true,
+      "test": "group_definition_permutation_and_attachment"
+    },
+    {
+      "detail": {
+        "base_plus_10b": true,
+        "bounded_rejection": true,
+        "five_matched_seed_labels": true
+      },
+      "pass": true,
+      "test": "bootstrap_rng_and_attempt_limit"
+    },
+    {
+      "detail": {
+        "labels_do_not_reorder_ties": true,
+        "tie_bounds_exact": true
+      },
+      "pass": true,
+      "test": "budget_ties_and_stable_base_order"
+    },
+    {
+      "detail": {
+        "modified_input_detected": true,
+        "write_escape_rejected": true
+      },
+      "pass": true,
+      "test": "write_scope_and_source_mutation_guards"
+    },
+    {
+      "detail": {
+        "artifacts": 13,
+        "conditions": 29,
+        "contrasts": 46,
+        "fits": 145,
+        "full_computation_modules_exercised": true,
+        "new_configuration_identities": 105,
+        "no_empirical_data_used": true,
+        "one_vs_two_worker_draw_parity": true
+      },
+      "pass": true,
+      "test": "synthetic_analysis_and_serialization_integration"
+    },
+    {
+      "detail": {
+        "json_serialization_exercised": true,
+        "private_member_excluded": true,
+        "return_zip_written_and_crc_checked": true
+      },
+      "pass": true,
+      "test": "complete_return_writer_and_privacy"
+    },
+    {
+      "detail": {
+        "pyarrow": "25.0.1",
+        "real_parquet_roundtrip": true
+      },
+      "pass": true,
+      "test": "real_parquet_roundtrip"
+    }
+  ]
+}

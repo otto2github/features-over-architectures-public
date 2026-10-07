@@ -1,0 +1,15 @@
+{
+  "test": {
+    "positive": 40,
+    "rows": 7309
+  },
+  "test_companies": 3908,
+  "train": {
+    "positive": 158,
+    "rows": 17448
+  },
+  "validation": {
+    "positive": 96,
+    "rows": 6658
+  }
+}

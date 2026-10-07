@@ -1,0 +1,49 @@
+{
+ "manuscript": "CS-2026:06:141707",
+ "stages": [
+  {
+   "stage": "predecessor_benchmark",
+   "path": "aggregates/predecessor",
+   "scope": "Reconstructed endpoint, baseline learners, direction, financial and label diagnostics."
+  },
+  {
+   "stage": "sensitivity_programme",
+   "fits": 105,
+   "path": "aggregates/sensitivity_fixed_score",
+   "scope": "A supervision purge, B donor completion, B0 financial-block deletion and C source flags. Fixed after predecessor results, before these fits."
+  },
+  {
+   "stage": "strict_replay",
+   "path": "aggregates/strict_replay",
+   "scope": "Disclosed original inference-setting deviation and isolated replay; original scores remain reporting basis."
+  },
+  {
+   "stage": "matched_42_input_extension",
+   "new_fits": 10,
+   "path": "aggregates/extension_fixed_score",
+   "scope": "Separately specified after sensitivity results; original supervision and ten frozen feature-only reference fits."
+  },
+  {
+   "stage": "conservative_RPT_record_incidence_extension",
+   "new_fits": 20,
+   "path": "aggregates/e7",
+   "scope": "Separate 129-input, contemporaneous paired control/E7 GCN and GraphSAGE extension, specified after the preceding results were known, before these fits."
+  },
+  {
+   "stage": "earlier_evaluation_window_W2",
+   "new_fits": 20,
+   "path": "aggregates/w2",
+   "scope": "Separate 129-input MLP, unweighted RF, GCN and GraphSAGE refits with training 2010-2016, validation 2017-2018 and test 2019-2020 (40 positives), specified after all other results were known, before these fits. The W2 test years were the primary validation partition."
+  },
+  {
+   "stage": "precision_summary",
+   "new_fits": 0,
+   "path": "aggregates/precision",
+   "scope": "Bootstrap SE and approximate minimum detectable differences (MDD80) from the distributed bootstrap arrays; no new resampling."
+  }
+ ],
+ "no_combined_preregistration": true,
+ "source_file_map": "provenance/source_hashes.json",
+ "archived_condition_identifiers": "Original strings inside CSV/NPZ, such as V26|MLP|M11, remain unchanged join keys. They identify the predecessor reporting condition, not additional fits or current manuscript versions.",
+ "package_layout": "The previous nested baseline was unpacked; its necessary aggregates, construction/evaluation code, schemas, source records and tests are available directly under semantic paths. No historical download is needed for the documented public checks."
+}

@@ -1,0 +1,102 @@
+{
+  "context": {
+    "binding_file_sha256": "c0d57ff203f018bdf0e1b28a094fdfd4242e29b78cea43544df5fcb28afc74f1",
+    "matrix_sha256": "724c635c794a484f631b2ad2be51a9ef30031c201cc121402d4a42cc5fe33025",
+    "package_manifest_sha256": "06dc2b3cc73401b22b937985bda33187c395c140daeafa35ad4168139e5fd6a2",
+    "protocol_sha256": "2d19e1eb5de801c77a0f6bf8f412410a2fe4fa9b188453ca0796410c433b4462",
+    "scaler_mean_sha256": "231809d7393102f60fb51de5b312204ceceaa7c328fa8381bf601db062acfbe6",
+    "scaler_std_sha256": "c400b53950c5507b2194f9a33dab0aba21df57c388be97759ac98a16e5cee498",
+    "source_ledger": [
+      {
+        "path": "private_inputs/node_features_v1_1.parquet",
+        "sha256": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+        "size_bytes": 23261997
+      },
+      {
+        "path": "private_inputs/fraud_labels_v1_0.parquet",
+        "sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+        "size_bytes": 226750
+      },
+      {
+        "path": "private_inputs/global_edge_index.parquet",
+        "sha256": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09",
+        "size_bytes": 9520370
+      },
+      {
+        "path": "private_inputs/node_id_index_label_v1_0_fiverel_derived.parquet",
+        "sha256": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770",
+        "size_bytes": 2585531
+      },
+      {
+        "path": "private_inputs/formal_rerun_core.py",
+        "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+        "size_bytes": 16439
+      }
+    ]
+  },
+  "fit_count": 20,
+  "runs": {
+    "GCN__M11__W2__seed1024": {
+      "complete_sha256": "cfb745c7e444625879834af827017fe0f9af9dcf564ad9e55fe85bb9284b32e9"
+    },
+    "GCN__M11__W2__seed123": {
+      "complete_sha256": "5f352e31c655a7488b59c95d8aa1686d61d5062bef168f9aed884436bef88144"
+    },
+    "GCN__M11__W2__seed42": {
+      "complete_sha256": "56235851eee9b73630921c0aca203a357903a6bd3d1d0ed5f42b1321992bba40"
+    },
+    "GCN__M11__W2__seed456": {
+      "complete_sha256": "e3c8a4e8886e999b0fdd10111acc22e6818023a8e17ebc32f4d71803a2a7bccc"
+    },
+    "GCN__M11__W2__seed789": {
+      "complete_sha256": "db7f4898b5110673f34ede3ec34c9fddaf7079997b5c69834df22c4c5024b988"
+    },
+    "MLP__M11__W2__seed1024": {
+      "complete_sha256": "cd5e6c1012e91932bb8d0fac1ae068e2eec5e14ac9e41c393912fedafcc7d5b1"
+    },
+    "MLP__M11__W2__seed123": {
+      "complete_sha256": "e7d285f17d029fadf686283dbda3de07faaac9d73444318a4de49b4829efbb10"
+    },
+    "MLP__M11__W2__seed42": {
+      "complete_sha256": "593f541cf92d258816790722b81ca783927414f3d7c18eb8119c1a730bc77295"
+    },
+    "MLP__M11__W2__seed456": {
+      "complete_sha256": "f733a0356801f886084e22d8514dbc47af491857a34a69f39e9314b9c392ac01"
+    },
+    "MLP__M11__W2__seed789": {
+      "complete_sha256": "611ea77d281f98a9c5536e3584e1b611184d29d7cd89bfeeb750b254c49b6fbd"
+    },
+    "RF__M11__W2__seed1024": {
+      "complete_sha256": "a79bedf42614070e94d3d9acb9e3792cbcb80abc6774d88fe1f55400e2406590"
+    },
+    "RF__M11__W2__seed123": {
+      "complete_sha256": "6ba8bc0b8048ce60117de0d12d2cfb5925b25f4b5b4a65042a8f9eb67e63d18c"
+    },
+    "RF__M11__W2__seed42": {
+      "complete_sha256": "5b2ba0bda10ddfd8d4ff6a48d5b8b3b0ef14b26d520144c2d201414916da34e5"
+    },
+    "RF__M11__W2__seed456": {
+      "complete_sha256": "0db4a2cfecb2570551508df7e2be10848eb352143258d6b3290ace15ea846720"
+    },
+    "RF__M11__W2__seed789": {
+      "complete_sha256": "bbea3e3681eabe87c5a5ea6656397ac46e3ac9f5d401d0a32679b3111e746b1c"
+    },
+    "SAGE__M11__W2__seed1024": {
+      "complete_sha256": "a2e3333abc1dee9d9753a3a1d7e96e636799fc4b89fa5edf511431755e46171b"
+    },
+    "SAGE__M11__W2__seed123": {
+      "complete_sha256": "415de106bf29240cdc94c76bdc8e1a44982c2b95dfffdbe5b771c9dad45c2d60"
+    },
+    "SAGE__M11__W2__seed42": {
+      "complete_sha256": "e3e69bfdc3e4da7f0401c152fc5154c58b4ed683c0281dd24ed02d93584894f5"
+    },
+    "SAGE__M11__W2__seed456": {
+      "complete_sha256": "ff8841d0b086197d859eefd05deb763e03930a4fc4508daf981662cc300425ad"
+    },
+    "SAGE__M11__W2__seed789": {
+      "complete_sha256": "0322630beed416caf25ec7abcd7578e6225eb33a2d6d5ec9800110a80c390661"
+    }
+  },
+  "status": "ALL_20_LOCKED",
+  "test_performance_evaluated_before_lock": false
+}

@@ -1,0 +1,1014 @@
+{
+  "E7_support_node_count": 62920,
+  "M11_dimensions": 129,
+  "aligned_forward_edges": 265383,
+  "annual_alignment": [
+    {
+      "aligned_forward_edges": 8640,
+      "base_forward_edges": 80061,
+      "candidate_edges_before_alignment": 8986,
+      "companies_with_shared_party": 534,
+      "control_message_edges": 160122,
+      "degree_one_party_keys": 7022,
+      "dropped_absent_feature_year_edges": 346,
+      "dropped_absent_feature_year_issuers": 62,
+      "eligible_companies": 2026,
+      "eligible_companies_with_e7": 1692,
+      "feature_panel_companies": 2037,
+      "feature_panel_companies_with_e7": 1697,
+      "maximum_party_issuer_degree": 8,
+      "retained_party_keys": 7746,
+      "rpt_only_issuer_component_count": 1320,
+      "rpt_only_largest_issuer_component": 30,
+      "shared_party_keys": 724,
+      "treatment_message_edges": 177402,
+      "year": 2010
+    },
+    {
+      "aligned_forward_edges": 10140,
+      "base_forward_edges": 90080,
+      "candidate_edges_before_alignment": 10368,
+      "companies_with_shared_party": 607,
+      "control_message_edges": 180160,
+      "degree_one_party_keys": 8151,
+      "dropped_absent_feature_year_edges": 228,
+      "dropped_absent_feature_year_issuers": 37,
+      "eligible_companies": 2304,
+      "eligible_companies_with_e7": 1878,
+      "feature_panel_companies": 2321,
+      "feature_panel_companies_with_e7": 1887,
+      "maximum_party_issuer_degree": 9,
+      "retained_party_keys": 9045,
+      "rpt_only_issuer_component_count": 1456,
+      "rpt_only_largest_issuer_component": 31,
+      "shared_party_keys": 894,
+      "treatment_message_edges": 200440,
+      "year": 2011
+    },
+    {
+      "aligned_forward_edges": 12054,
+      "base_forward_edges": 91581,
+      "candidate_edges_before_alignment": 12299,
+      "companies_with_shared_party": 666,
+      "control_message_edges": 183162,
+      "degree_one_party_keys": 9746,
+      "dropped_absent_feature_year_edges": 245,
+      "dropped_absent_feature_year_issuers": 34,
+      "eligible_companies": 2437,
+      "eligible_companies_with_e7": 2042,
+      "feature_panel_companies": 2461,
+      "feature_panel_companies_with_e7": 2054,
+      "maximum_party_issuer_degree": 14,
+      "retained_party_keys": 10776,
+      "rpt_only_issuer_component_count": 1562,
+      "rpt_only_largest_issuer_component": 51,
+      "shared_party_keys": 1030,
+      "treatment_message_edges": 207270,
+      "year": 2012
+    },
+    {
+      "aligned_forward_edges": 13230,
+      "base_forward_edges": 102469,
+      "candidate_edges_before_alignment": 13533,
+      "companies_with_shared_party": 713,
+      "control_message_edges": 204938,
+      "degree_one_party_keys": 10601,
+      "dropped_absent_feature_year_edges": 303,
+      "dropped_absent_feature_year_issuers": 52,
+      "eligible_companies": 2436,
+      "eligible_companies_with_e7": 2082,
+      "feature_panel_companies": 2459,
+      "feature_panel_companies_with_e7": 2093,
+      "maximum_party_issuer_degree": 17,
+      "retained_party_keys": 11750,
+      "rpt_only_issuer_component_count": 1563,
+      "rpt_only_largest_issuer_component": 66,
+      "shared_party_keys": 1149,
+      "treatment_message_edges": 231398,
+      "year": 2013
+    },
+    {
+      "aligned_forward_edges": 15291,
+      "base_forward_edges": 123903,
+      "candidate_edges_before_alignment": 15724,
+      "companies_with_shared_party": 793,
+      "control_message_edges": 247806,
+      "degree_one_party_keys": 12246,
+      "dropped_absent_feature_year_edges": 433,
+      "dropped_absent_feature_year_issuers": 74,
+      "eligible_companies": 2551,
+      "eligible_companies_with_e7": 2217,
+      "feature_panel_companies": 2567,
+      "feature_panel_companies_with_e7": 2228,
+      "maximum_party_issuer_degree": 13,
+      "retained_party_keys": 13564,
+      "rpt_only_issuer_component_count": 1613,
+      "rpt_only_largest_issuer_component": 88,
+      "shared_party_keys": 1318,
+      "treatment_message_edges": 278388,
+      "year": 2014
+    },
+    {
+      "aligned_forward_edges": 17023,
+      "base_forward_edges": 165173,
+      "candidate_edges_before_alignment": 17461,
+      "companies_with_shared_party": 877,
+      "control_message_edges": 330346,
+      "degree_one_party_keys": 13654,
+      "dropped_absent_feature_year_edges": 438,
+      "dropped_absent_feature_year_issuers": 63,
+      "eligible_companies": 2738,
+      "eligible_companies_with_e7": 2432,
+      "feature_panel_companies": 2777,
+      "feature_panel_companies_with_e7": 2458,
+      "maximum_party_issuer_degree": 16,
+      "retained_party_keys": 15130,
+      "rpt_only_issuer_component_count": 1778,
+      "rpt_only_largest_issuer_component": 166,
+      "shared_party_keys": 1476,
+      "treatment_message_edges": 364392,
+      "year": 2015
+    },
+    {
+      "aligned_forward_edges": 19645,
+      "base_forward_edges": 197718,
+      "candidate_edges_before_alignment": 20367,
+      "companies_with_shared_party": 920,
+      "control_message_edges": 395436,
+      "degree_one_party_keys": 15795,
+      "dropped_absent_feature_year_edges": 722,
+      "dropped_absent_feature_year_issuers": 108,
+      "eligible_companies": 2956,
+      "eligible_companies_with_e7": 2592,
+      "feature_panel_companies": 2987,
+      "feature_panel_companies_with_e7": 2616,
+      "maximum_party_issuer_degree": 13,
+      "retained_party_keys": 17463,
+      "rpt_only_issuer_component_count": 1879,
+      "rpt_only_largest_issuer_component": 278,
+      "shared_party_keys": 1668,
+      "treatment_message_edges": 434726,
+      "year": 2016
+    },
+    {
+      "aligned_forward_edges": 22732,
+      "base_forward_edges": 252720,
+      "candidate_edges_before_alignment": 23412,
+      "companies_with_shared_party": 1052,
+      "control_message_edges": 505440,
+      "degree_one_party_keys": 18131,
+      "dropped_absent_feature_year_edges": 680,
+      "dropped_absent_feature_year_issuers": 92,
+      "eligible_companies": 3282,
+      "eligible_companies_with_e7": 2856,
+      "feature_panel_companies": 3415,
+      "feature_panel_companies_with_e7": 2950,
+      "maximum_party_issuer_degree": 11,
+      "retained_party_keys": 20128,
+      "rpt_only_issuer_component_count": 2091,
+      "rpt_only_largest_issuer_component": 427,
+      "shared_party_keys": 1997,
+      "treatment_message_edges": 550904,
+      "year": 2017
+    },
+    {
+      "aligned_forward_edges": 24566,
+      "base_forward_edges": 287609,
+      "candidate_edges_before_alignment": 25439,
+      "companies_with_shared_party": 1150,
+      "control_message_edges": 575218,
+      "degree_one_party_keys": 19254,
+      "dropped_absent_feature_year_edges": 873,
+      "dropped_absent_feature_year_issuers": 94,
+      "eligible_companies": 3376,
+      "eligible_companies_with_e7": 2988,
+      "feature_panel_companies": 3503,
+      "feature_panel_companies_with_e7": 3088,
+      "maximum_party_issuer_degree": 16,
+      "retained_party_keys": 21535,
+      "rpt_only_issuer_component_count": 2105,
+      "rpt_only_largest_issuer_component": 591,
+      "shared_party_keys": 2281,
+      "treatment_message_edges": 624350,
+      "year": 2018
+    },
+    {
+      "aligned_forward_edges": 26759,
+      "base_forward_edges": 335522,
+      "candidate_edges_before_alignment": 27699,
+      "companies_with_shared_party": 1290,
+      "control_message_edges": 671044,
+      "degree_one_party_keys": 20482,
+      "dropped_absent_feature_year_edges": 940,
+      "dropped_absent_feature_year_issuers": 114,
+      "eligible_companies": 3530,
+      "eligible_companies_with_e7": 3109,
+      "feature_panel_companies": 3685,
+      "feature_panel_companies_with_e7": 3222,
+      "maximum_party_issuer_degree": 16,
+      "retained_party_keys": 23112,
+      "rpt_only_issuer_component_count": 2098,
+      "rpt_only_largest_issuer_component": 799,
+      "shared_party_keys": 2630,
+      "treatment_message_edges": 724562,
+      "year": 2019
+    },
+    {
+      "aligned_forward_edges": 29976,
+      "base_forward_edges": 459493,
+      "candidate_edges_before_alignment": 30821,
+      "companies_with_shared_party": 1466,
+      "control_message_edges": 918986,
+      "degree_one_party_keys": 22157,
+      "dropped_absent_feature_year_edges": 845,
+      "dropped_absent_feature_year_issuers": 147,
+      "eligible_companies": 3779,
+      "eligible_companies_with_e7": 3296,
+      "feature_panel_companies": 4079,
+      "feature_panel_companies_with_e7": 3512,
+      "maximum_party_issuer_degree": 17,
+      "retained_party_keys": 25368,
+      "rpt_only_issuer_component_count": 2214,
+      "rpt_only_largest_issuer_component": 1006,
+      "shared_party_keys": 3211,
+      "treatment_message_edges": 978938,
+      "year": 2020
+    },
+    {
+      "aligned_forward_edges": 32404,
+      "base_forward_edges": 537530,
+      "candidate_edges_before_alignment": 33422,
+      "companies_with_shared_party": 1595,
+      "control_message_edges": 1075060,
+      "degree_one_party_keys": 23487,
+      "dropped_absent_feature_year_edges": 1018,
+      "dropped_absent_feature_year_issuers": 177,
+      "eligible_companies": 4121,
+      "eligible_companies_with_e7": 3557,
+      "feature_panel_companies": 4540,
+      "feature_panel_companies_with_e7": 3870,
+      "maximum_party_issuer_degree": 16,
+      "retained_party_keys": 27138,
+      "rpt_only_issuer_component_count": 2445,
+      "rpt_only_largest_issuer_component": 1160,
+      "shared_party_keys": 3651,
+      "treatment_message_edges": 1139868,
+      "year": 2021
+    },
+    {
+      "aligned_forward_edges": 32923,
+      "base_forward_edges": 555039,
+      "candidate_edges_before_alignment": 34644,
+      "companies_with_shared_party": 1697,
+      "control_message_edges": 1110078,
+      "degree_one_party_keys": 23310,
+      "dropped_absent_feature_year_edges": 1721,
+      "dropped_absent_feature_year_issuers": 249,
+      "eligible_companies": 4314,
+      "eligible_companies_with_e7": 3665,
+      "feature_panel_companies": 4817,
+      "feature_panel_companies_with_e7": 4031,
+      "maximum_party_issuer_degree": 13,
+      "retained_party_keys": 27238,
+      "rpt_only_issuer_component_count": 2524,
+      "rpt_only_largest_issuer_component": 1184,
+      "shared_party_keys": 3928,
+      "treatment_message_edges": 1175924,
+      "year": 2022
+    }
+  ],
+  "baseline_hashes_rechecked": true,
+  "baseline_schema": {
+    "fraud_labels_v1_0.parquet": [
+      {
+        "name": "company_code",
+        "type": "string"
+      },
+      {
+        "name": "fiscal_year",
+        "type": "int64"
+      },
+      {
+        "name": "split_v1",
+        "type": "string"
+      },
+      {
+        "name": "annual_report_public_anchor",
+        "type": "string"
+      },
+      {
+        "name": "followup_days_to_2026_05_08",
+        "type": "int64"
+      },
+      {
+        "name": "mature_ge_1095d",
+        "type": "bool"
+      },
+      {
+        "name": "label_v1_strict_ab_primary",
+        "type": "int64"
+      },
+      {
+        "name": "eligible_v1_strict_ab_primary",
+        "type": "bool"
+      },
+      {
+        "name": "evidence_state_strict_ab",
+        "type": "string"
+      },
+      {
+        "name": "label_v1_strict_aonly_sensitivity",
+        "type": "int64"
+      },
+      {
+        "name": "eligible_v1_strict_aonly_sensitivity",
+        "type": "bool"
+      },
+      {
+        "name": "evidence_state_strict_aonly",
+        "type": "string"
+      },
+      {
+        "name": "label_v1_loose_ab_sensitivity",
+        "type": "int64"
+      },
+      {
+        "name": "eligible_v1_loose_ab_sensitivity",
+        "type": "bool"
+      },
+      {
+        "name": "evidence_state_loose_ab",
+        "type": "string"
+      },
+      {
+        "name": "legacy_strict_label",
+        "type": "int64"
+      },
+      {
+        "name": "freeze_status",
+        "type": "string"
+      },
+      {
+        "name": "cutoff_date",
+        "type": "string"
+      },
+      {
+        "name": "maturity_threshold_days",
+        "type": "int64"
+      },
+      {
+        "name": "label_version",
+        "type": "string"
+      }
+    ],
+    "global_edge_index.parquet": [
+      {
+        "name": "src_idx",
+        "type": "int64"
+      },
+      {
+        "name": "dst_idx",
+        "type": "int64"
+      },
+      {
+        "name": "edge_type",
+        "type": "large_string"
+      },
+      {
+        "name": "year",
+        "type": "int64"
+      }
+    ],
+    "node_features_v1_1.parquet": [
+      {
+        "name": "node_id",
+        "type": "large_string"
+      },
+      {
+        "name": "ts_code",
+        "type": "large_string"
+      },
+      {
+        "name": "firm_id",
+        "type": "large_string"
+      },
+      {
+        "name": "year",
+        "type": "int16"
+      },
+      {
+        "name": "list_date",
+        "type": "large_string"
+      },
+      {
+        "name": "delist_date",
+        "type": "large_string"
+      },
+      {
+        "name": "industry",
+        "type": "large_string"
+      },
+      {
+        "name": "market",
+        "type": "large_string"
+      },
+      {
+        "name": "name",
+        "type": "large_string"
+      },
+      {
+        "name": "fraud_v07",
+        "type": "int8"
+      },
+      {
+        "name": "fraud_v08_strict",
+        "type": "int8"
+      },
+      {
+        "name": "fraud_v08_loose",
+        "type": "int8"
+      },
+      {
+        "name": "feat_t0_agreement_notices",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_controller_notices",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_dj_notices",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_dj_ratio",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_increase_notices",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_large_holder_notices",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_mean_quarter_offset",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_monthly_hhi",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_n_reduces",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_pct5_notices",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_q4_offset_share",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_q4_share",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_reduce_notices",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_reduce_plan_notices",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_reduce_progress_notices",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_std_quarter_offset",
+        "type": "float"
+      },
+      {
+        "name": "feat_t0_total_notices",
+        "type": "float"
+      },
+      {
+        "name": "fin_dsri_t0",
+        "type": "float"
+      },
+      {
+        "name": "fin_dsri_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fin_dsri_t1",
+        "type": "float"
+      },
+      {
+        "name": "fin_dsri_t1_zind",
+        "type": "float"
+      },
+      {
+        "name": "fin_mscore_t0",
+        "type": "float"
+      },
+      {
+        "name": "fin_mscore_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fin_mscore_t1",
+        "type": "float"
+      },
+      {
+        "name": "fin_mscore_t1_zind",
+        "type": "float"
+      },
+      {
+        "name": "fin_ocf_to_ni_t0",
+        "type": "float"
+      },
+      {
+        "name": "fin_ocf_to_ni_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fin_ocf_to_ni_t1",
+        "type": "float"
+      },
+      {
+        "name": "fin_ocf_to_ni_t1_zind",
+        "type": "float"
+      },
+      {
+        "name": "fin_oth_recv_to_ta_t0",
+        "type": "float"
+      },
+      {
+        "name": "fin_oth_recv_to_ta_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fin_oth_recv_to_ta_t1",
+        "type": "float"
+      },
+      {
+        "name": "fin_oth_recv_to_ta_t1_zind",
+        "type": "float"
+      },
+      {
+        "name": "fin_zscore_t0",
+        "type": "float"
+      },
+      {
+        "name": "fin_zscore_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_adminexp_of_gr_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_assets_to_eqt_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_assets_to_eqt_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_assets_to_eqt_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_assets_turn_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_assets_turn_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_assets_turn_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_assets_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_bps_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_ca_to_assets_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_ca_turn_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_cash_ratio_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_current_ratio_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_current_ratio_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_current_ratio_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_currentdebt_to_debt_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_debt_to_eqt_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_debt_to_eqt_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_debt_to_eqt_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_dt_eps_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_ebit_of_gr_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_ebit_of_gr_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_ebt_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_eqt_to_debt_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_eqt_to_interestdebt_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_eqt_to_talcapital_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_equity_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_expense_of_sales_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_fa_turn_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_fa_turn_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_finaexp_of_gr_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_gc_of_gr_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_netprofit_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_npta_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_npta_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_npta_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_ocf_to_debt_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_ocf_to_debt_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_ocf_to_debt_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_ocf_to_shortdebt_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_ocf_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_ocfps_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_op_of_gr_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_op_of_gr_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_op_of_gr_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_op_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_profit_to_gr_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_profit_to_gr_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_profit_to_gr_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_profit_to_op_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_q_ocf_to_sales_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_q_ocf_to_sales_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_q_ocf_to_sales_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_quick_ratio_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_quick_ratio_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_quick_ratio_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_roa_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_roa_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_roa_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_roe_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_roe_t0_zind",
+        "type": "float"
+      },
+      {
+        "name": "fini_roe_t1",
+        "type": "float"
+      },
+      {
+        "name": "fini_roe_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_roic_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_saleexp_to_gr_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_tangibleasset_to_debt_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_tbassets_to_totalassets_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_tr_yoy_t0",
+        "type": "float"
+      },
+      {
+        "name": "fini_turn_days_t0",
+        "type": "float"
+      },
+      {
+        "name": "audit_fee_log",
+        "type": "float"
+      },
+      {
+        "name": "audit_fee_to_assets",
+        "type": "float"
+      },
+      {
+        "name": "audit_firm_change_flag",
+        "type": "float"
+      },
+      {
+        "name": "audit_is_modified",
+        "type": "float"
+      },
+      {
+        "name": "audit_type_code",
+        "type": "float"
+      },
+      {
+        "name": "pld_controller_max_ratio1",
+        "type": "float"
+      },
+      {
+        "name": "pld_high_pledge_flag",
+        "type": "float"
+      },
+      {
+        "name": "pld_max_ratio2",
+        "type": "float"
+      },
+      {
+        "name": "pld_n_change_events",
+        "type": "float"
+      },
+      {
+        "name": "pld_n_events",
+        "type": "float"
+      },
+      {
+        "name": "pld_n_securities_pledgee",
+        "type": "float"
+      },
+      {
+        "name": "ctrl_data_missing_flag",
+        "type": "float"
+      },
+      {
+        "name": "ctrl_no_controller_flag",
+        "type": "float"
+      },
+      {
+        "name": "ctrl_ownership",
+        "type": "float"
+      },
+      {
+        "name": "ctrl_separation",
+        "type": "float"
+      },
+      {
+        "name": "ctrl_separation_p90_flag",
+        "type": "float"
+      },
+      {
+        "name": "ctrl_state_owned_flag",
+        "type": "float"
+      },
+      {
+        "name": "ctrl_voting",
+        "type": "float"
+      },
+      {
+        "name": "rpt_affect_profit_ratio",
+        "type": "float"
+      },
+      {
+        "name": "rpt_max_pannrsm",
+        "type": "float"
+      },
+      {
+        "name": "rpt_n_guarantee",
+        "type": "float"
+      },
+      {
+        "name": "rpt_n_high_pannrsm",
+        "type": "float"
+      },
+      {
+        "name": "rpt_n_loan",
+        "type": "float"
+      },
+      {
+        "name": "rpt_total_amount",
+        "type": "float"
+      },
+      {
+        "name": "rpt_total_isgplo",
+        "type": "float"
+      }
+    ],
+    "node_id_index_label_v1_0_fiverel_derived.parquet": [
+      {
+        "name": "node_idx",
+        "type": "int64"
+      },
+      {
+        "name": "node_id",
+        "type": "large_string"
+      },
+      {
+        "name": "node_type",
+        "type": "large_string"
+      },
+      {
+        "name": "ts_code",
+        "type": "large_string"
+      }
+    ]
+  },
+  "blockers": [],
+  "candidate_edges_before_alignment": 274175,
+  "common_extended_node_count": 366695,
+  "dropped_absent_frozen_feature_year_edges": 8792,
+  "elapsed_seconds": 9.608512923121452,
+  "global_legal_party_id_semantics_verified": false,
+  "graph_rule_id": "E7_RPT_RECORD_COMPOUND_DROP_ANNUAL_NAME_CONFLICT_FEATURE_YEAR_v1",
+  "message_order": "base forward; base reverse; E7 forward; E7 reverse",
+  "new_model_fits": 0,
+  "original_core_unchanged": true,
+  "original_node_count": 303775,
+  "preserve_base_edge_order_and_multiplicity": true,
+  "private_bridge_sha256": "54b3b679ee7b891be3cf6424177ac92b2cef87c83be61cc3f968d98407289d2f",
+  "private_derived_artifacts": {
+    "PRIVATE_e7_forward_edges.parquet": {
+      "sha256": "a464045c4bb3b163431d7c4c975c55abf792a970d7af17f046463b756bbb6602",
+      "size_bytes": 985106
+    },
+    "PRIVATE_e7_support_index.parquet": {
+      "sha256": "6f57b553a65c38db38cb8790883b8bb3db8c0910557f39dde08fc1dcf05598cb",
+      "size_bytes": 4264744
+    }
+  },
+  "private_derived_artifacts_in_return": false,
+  "protocol_sha256": "e4e85c0577afb3190a4a33b907ed5b6e87379479c6fa217c8625f0ad6f45ac39",
+  "scaler_mean_float32_sha256": "e0f10b14e388f0989cd6f45f1c8573c3827160488a210d3f2d5017b80bb95ebe",
+  "scaler_std_float32_sha256": "e74801fbce9e90140ef3660280b739a8152743769067c6bb0edaae3614c253b7",
+  "semantic_scope": "conservative ID/name record-incidence; not a validated legal-entity graph",
+  "status": "GRAPH_PREP_COMPLETE_TRAINING_PROTOCOL_PENDING",
+  "supervision": {
+    "test": {
+      "n": 8435,
+      "positive": 20
+    },
+    "train": {
+      "n": 24106,
+      "positive": 254
+    },
+    "validation": {
+      "n": 7309,
+      "positive": 40
+    }
+  },
+  "support_feature_policy": "zero for all E7 support nodes in both conditions",
+  "test_performance_evaluated": false,
+  "training_ready": false,
+  "training_started": false
+}

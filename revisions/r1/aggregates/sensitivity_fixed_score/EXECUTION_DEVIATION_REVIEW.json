@@ -1,0 +1,110 @@
+{
+  "action": "Disclose the enforcement gap; any checkpoint replay needs separate explicit authorization and isolated provenance.",
+  "checkpoint_replay_performed": false,
+  "component": "STATIC_EXECUTION_DEVIATION_REVIEW",
+  "consequence": "Absence of the Stage-E enforcement call is not proof that saved scores are wrong or changed.",
+  "fixed_score_results_not_replaced": true,
+  "inspected_top_level_entrypoints": [
+    "run_stage_t",
+    "run_stage_e",
+    "main"
+  ],
+  "logs_summary": [
+    {
+      "bytes": 18439,
+      "completion_tokens": 105,
+      "determinism_word_occurrences": 0,
+      "log_sha256": "ba0f4820b6558865366350e8078e60c9d2ad41f59a907065bcdaa72f418cb949",
+      "nonwritable_warning_tokens": 10,
+      "phase": "stage_t",
+      "traceback_tokens": 0
+    },
+    {
+      "bytes": 18439,
+      "completion_tokens": 105,
+      "determinism_word_occurrences": 0,
+      "log_sha256": "afdbc5a44a05ccc73d7cfff5f88b3c38f5410fbf7195148df9934811f016696d",
+      "nonwritable_warning_tokens": 10,
+      "phase": "stage_e",
+      "traceback_tokens": 0
+    }
+  ],
+  "model_inference_performed": false,
+  "model_training_performed": false,
+  "orchestrator_sha256": "35d8171606726e3f9386f66b61370cb7e5810f206fba7f057cf81444007f1395",
+  "retrospective_runtime_determinism_established": false,
+  "runner_sha256": "9e8efa8caf9145b748c01cb6fe86868136afd9f4cd33907fb886668eb854c5b2",
+  "source_function_line_ranges": {
+    "infer_test": [
+      489,
+      535
+    ],
+    "main": [
+      610,
+      621
+    ],
+    "run_stage_e": [
+      537,
+      579
+    ],
+    "strict_seed": [
+      55,
+      69
+    ]
+  },
+  "stage_e_explicit_strict_algorithms_call_reachable": false,
+  "stage_e_reachable_helpers": [
+    "append_reverse",
+    "eval_graph",
+    "feature_columns",
+    "feature_source",
+    "get_run",
+    "graph_static",
+    "graph_year_cache",
+    "infer_test",
+    "load_binding",
+    "load_matrix",
+    "load_stage_t_artifacts",
+    "make_model",
+    "normalize_code",
+    "read_features_for_run",
+    "read_test_labels",
+    "run_stage_e",
+    "sha256",
+    "stable_metrics",
+    "stable_order",
+    "transform",
+    "write_json_atomic"
+  ],
+  "stage_t_reachable_helpers": [
+    "append_reverse",
+    "build_stage_t_df",
+    "eval_graph",
+    "f1_val_threshold",
+    "feature_columns",
+    "feature_source",
+    "fit_gnn_stage_t",
+    "fit_mlp_stage_t",
+    "fit_rf_stage_t",
+    "fit_scaler",
+    "get_run",
+    "graph_static",
+    "graph_year_cache",
+    "load_binding",
+    "load_matrix",
+    "make_model",
+    "normalize_code",
+    "pos_weight",
+    "read_features_for_run",
+    "read_stage_t_labels",
+    "run_stage_t",
+    "save_npz_atomic",
+    "sha256",
+    "stage_t_identity",
+    "strict_seed",
+    "transform",
+    "write_json_atomic"
+  ],
+  "stage_t_strict_seed_reachable": true,
+  "status": "UNRESOLVED_EXECUTION_ENFORCEMENT_DEVIATION"
+}

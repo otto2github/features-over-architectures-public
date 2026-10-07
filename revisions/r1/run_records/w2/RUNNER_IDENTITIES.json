@@ -1,0 +1,74 @@
+{
+  "ENVIRONMENT_REFERENCE.json": {
+    "sha256": "3fc0efb9185b036541c6af36e998d346f2e965a15964cf197ce42d97d5da9e5f",
+    "size_bytes": 851
+  },
+  "INPUT_BINDINGS.json": {
+    "sha256": "c0d57ff203f018bdf0e1b28a094fdfd4242e29b78cea43544df5fcb28afc74f1",
+    "size_bytes": 3242
+  },
+  "M11_COLUMN_ORDER.json": {
+    "sha256": "9d28219a5b447694aaa4fba4096d2448cba45e9a08dbe0c59dbcb323640a7715",
+    "size_bytes": 3554
+  },
+  "OPERATOR_CHECKS_REFERENCE.json": {
+    "sha256": "e982d26d78ea6b906a53411207c838fc189db98cb4738b3558581d122ab3ae7b",
+    "size_bytes": 7450
+  },
+  "PACKAGE_SHA256.json": {
+    "sha256": "06dc2b3cc73401b22b937985bda33187c395c140daeafa35ad4168139e5fd6a2",
+    "size_bytes": 1636
+  },
+  "README_RUN_CN.md": {
+    "sha256": "f4c52c70959e4274ee03b2b44578ee1f544088ee043c9bbb105c48ace91fdade",
+    "size_bytes": 2918
+  },
+  "RUN_MATRIX.json": {
+    "sha256": "724c635c794a484f631b2ad2be51a9ef30031c201cc121402d4a42cc5fe33025",
+    "size_bytes": 2083
+  },
+  "W2_PROTOCOL.md": {
+    "sha256": "2d19e1eb5de801c77a0f6bf8f412410a2fe4fa9b188453ca0796410c433b4462",
+    "size_bytes": 4696
+  },
+  "formal_rerun_core_REFERENCE.py": {
+    "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+    "size_bytes": 16439
+  },
+  "launch_job.py": {
+    "sha256": "5f0bae17afa7e5d9f97c7beb41d9399e83c1d89fafe5363564ec074e70ca8dba",
+    "size_bytes": 3766
+  },
+  "mac_download_results.sh": {
+    "sha256": "71162ffe8d9cffa9b486eb9c43b15218e7bf5655ff42018cfb104125225216d0",
+    "size_bytes": 2183
+  },
+  "mac_start_20_fits.sh": {
+    "sha256": "3bb75fa1333be97a85d4dc17bff4b63b7bbe8fffdaad7a6b0613132a622016f8",
+    "size_bytes": 3404
+  },
+  "start_20_fits.sh": {
+    "sha256": "af29a9f3228b18eb262f6557358b6e6aace15dc3f7999ce7e8695ce85f6371e1",
+    "size_bytes": 188
+  },
+  "test_w2_synthetic.py": {
+    "sha256": "b2a3df508d62f2e5461aac7a34f773d167dc6a747414748857b85b375e1b0565",
+    "size_bytes": 4395
+  },
+  "w2_metrics.py": {
+    "sha256": "97bd488625f98bf3605de4d2088e89a8eef2e9fdb8b181d27cc231413174e817",
+    "size_bytes": 3481
+  },
+  "w2_runtime_common.py": {
+    "sha256": "252545ec8c2c95bc7f7304d4c76435f1f085254a4680be756bfb4effafbd8c1b",
+    "size_bytes": 3367
+  },
+  "w2_statistics.py": {
+    "sha256": "194cb278c3ae0b8ace5885e190c799ceb10e1fc71c62471fda3fba6278c767da",
+    "size_bytes": 5580
+  },
+  "w2_worker.py": {
+    "sha256": "f11f1b41673cd0df58ea3e8abd70a54196c2c60433192b5d3d0445a859994a53",
+    "size_bytes": 33536
+  }
+}

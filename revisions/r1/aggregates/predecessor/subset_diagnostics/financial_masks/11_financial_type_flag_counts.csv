@@ -1,0 +1,13 @@
+﻿table,field,recorded_value,rows,applied_filter
+balancesheet,comp_type,1,140679,comp_type=1 for fin; no report_type filter
+balancesheet,report_type,1,140679,comp_type=1 for fin; no report_type filter
+balancesheet,update_flag,0,74887,comp_type=1 for fin; no report_type filter
+balancesheet,update_flag,1,65792,comp_type=1 for fin; no report_type filter
+income,comp_type,1,126172,comp_type=1 for fin; no report_type filter
+income,report_type,1,126172,comp_type=1 for fin; no report_type filter
+income,update_flag,0,80325,comp_type=1 for fin; no report_type filter
+income,update_flag,1,45847,comp_type=1 for fin; no report_type filter
+cashflow,comp_type,1,115364,comp_type=1 for fin; no report_type filter
+cashflow,report_type,1,115364,comp_type=1 for fin; no report_type filter
+cashflow,update_flag,0,68291,comp_type=1 for fin; no report_type filter
+cashflow,update_flag,1,47073,comp_type=1 for fin; no report_type filter

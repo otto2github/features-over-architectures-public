@@ -1,0 +1,122 @@
+[
+  {
+    "run_id": "GCN__M11__control__seed42",
+    "model": "GCN",
+    "condition": "control",
+    "seed": 42
+  },
+  {
+    "run_id": "GCN__M11__E7__seed42",
+    "model": "GCN",
+    "condition": "E7",
+    "seed": 42
+  },
+  {
+    "run_id": "GCN__M11__control__seed123",
+    "model": "GCN",
+    "condition": "control",
+    "seed": 123
+  },
+  {
+    "run_id": "GCN__M11__E7__seed123",
+    "model": "GCN",
+    "condition": "E7",
+    "seed": 123
+  },
+  {
+    "run_id": "GCN__M11__control__seed456",
+    "model": "GCN",
+    "condition": "control",
+    "seed": 456
+  },
+  {
+    "run_id": "GCN__M11__E7__seed456",
+    "model": "GCN",
+    "condition": "E7",
+    "seed": 456
+  },
+  {
+    "run_id": "GCN__M11__control__seed789",
+    "model": "GCN",
+    "condition": "control",
+    "seed": 789
+  },
+  {
+    "run_id": "GCN__M11__E7__seed789",
+    "model": "GCN",
+    "condition": "E7",
+    "seed": 789
+  },
+  {
+    "run_id": "GCN__M11__control__seed1024",
+    "model": "GCN",
+    "condition": "control",
+    "seed": 1024
+  },
+  {
+    "run_id": "GCN__M11__E7__seed1024",
+    "model": "GCN",
+    "condition": "E7",
+    "seed": 1024
+  },
+  {
+    "run_id": "SAGE__M11__control__seed42",
+    "model": "SAGE",
+    "condition": "control",
+    "seed": 42
+  },
+  {
+    "run_id": "SAGE__M11__E7__seed42",
+    "model": "SAGE",
+    "condition": "E7",
+    "seed": 42
+  },
+  {
+    "run_id": "SAGE__M11__control__seed123",
+    "model": "SAGE",
+    "condition": "control",
+    "seed": 123
+  },
+  {
+    "run_id": "SAGE__M11__E7__seed123",
+    "model": "SAGE",
+    "condition": "E7",
+    "seed": 123
+  },
+  {
+    "run_id": "SAGE__M11__control__seed456",
+    "model": "SAGE",
+    "condition": "control",
+    "seed": 456
+  },
+  {
+    "run_id": "SAGE__M11__E7__seed456",
+    "model": "SAGE",
+    "condition": "E7",
+    "seed": 456
+  },
+  {
+    "run_id": "SAGE__M11__control__seed789",
+    "model": "SAGE",
+    "condition": "control",
+    "seed": 789
+  },
+  {
+    "run_id": "SAGE__M11__E7__seed789",
+    "model": "SAGE",
+    "condition": "E7",
+    "seed": 789
+  },
+  {
+    "run_id": "SAGE__M11__control__seed1024",
+    "model": "SAGE",
+    "condition": "control",
+    "seed": 1024
+  },
+  {
+    "run_id": "SAGE__M11__E7__seed1024",
+    "model": "SAGE",
+    "condition": "E7",
+    "seed": 1024
+  }
+]

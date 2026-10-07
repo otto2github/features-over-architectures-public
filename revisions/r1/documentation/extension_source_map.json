@@ -1,0 +1,14 @@
+{
+  "V27_fixed_score": "aggregates/sensitivity_fixed_score/",
+  "V27_stage_e": "run_records/sensitivity/",
+  "V27_replay": "aggregates/strict_replay/",
+  "V28_stage_e": "run_records/extension/",
+  "V28_fixed_score": "aggregates/extension_fixed_score/",
+  "current_tables": "tables/current/",
+  "earlier_V27_tables": "tables/sensitivity_display/",
+  "frozen_matrices": "protocol/matrices/",
+  "reader_protocols": "protocol/reader/",
+  "input_return_sha256": "d2331c5895f504c707e05edcea482898842fe2f6f17828585988317401d5b6c3",
+  "release_status_source": "provenance/release.json",
+  "E7_record_incidence": "documentation/e7_source_map.json"
+}

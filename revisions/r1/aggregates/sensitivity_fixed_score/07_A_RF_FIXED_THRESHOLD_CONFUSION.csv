@@ -1,0 +1,6 @@
+run_id,model_seed,tp,fp,fn,tn,predicted_positive,threshold,threshold_rule,f1_at_frozen_validation_threshold
+A_docpurged__RandomForest_unweighted__M11__seed42,42,0,15,20,8400,15,0.258,score_ge_frozen_validation_threshold,0.0
+A_docpurged__RandomForest_unweighted__M11__seed123,123,0,18,20,8397,18,0.254,score_ge_frozen_validation_threshold,0.0
+A_docpurged__RandomForest_unweighted__M11__seed456,456,0,13,20,8402,13,0.268,score_ge_frozen_validation_threshold,0.0
+A_docpurged__RandomForest_unweighted__M11__seed789,789,0,13,20,8402,13,0.284,score_ge_frozen_validation_threshold,0.0
+A_docpurged__RandomForest_unweighted__M11__seed1024,1024,0,1,20,8414,1,0.566,score_ge_frozen_validation_threshold,0.0

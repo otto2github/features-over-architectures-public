@@ -1,0 +1,11 @@
+condition,seed,full_budget,full_retrieved,full_retrieved_no_detected_overlap,full_retrieved_overlap,derivation
+primary__MLP__M11,42,422,7,0,7,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.
+primary__MLP__M11,123,422,4,0,4,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.
+primary__MLP__M11,456,422,7,0,7,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.
+primary__MLP__M11,789,422,6,0,6,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.
+primary__MLP__M11,1024,422,7,0,7,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.
+primary__RandomForest__M11,42,422,7,0,7,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.
+primary__RandomForest__M11,123,422,7,0,7,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.
+primary__RandomForest__M11,456,422,7,0,7,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.
+primary__RandomForest__M11,789,422,7,0,7,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.
+primary__RandomForest__M11,1024,422,7,0,7,All negatives and fixed scores retained in D; zero retrieval and zero tie bounds in D imply zero in full top-k.

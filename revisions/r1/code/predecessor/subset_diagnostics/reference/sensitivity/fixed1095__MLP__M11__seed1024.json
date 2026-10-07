@@ -1,0 +1,39 @@
+{
+  "best_epoch": 51,
+  "best_val_auc": 0.8544151565074134,
+  "label_counts": {
+    "test": {
+      "n": 8435,
+      "positive": 20
+    },
+    "train": {
+      "n": 24106,
+      "positive": 119
+    },
+    "validation": {
+      "n": 7309,
+      "positive": 25
+    }
+  },
+  "metrics": {
+    "ap": 0.0092247833876115,
+    "f1_val_threshold": 0.0,
+    "n": 8435,
+    "n_neg": 8415,
+    "n_pos": 20,
+    "p_at_5pct": 0.011848341232227487,
+    "r_at_10fpr": 0.45,
+    "roc_auc": 0.8159150326797385
+  },
+  "modal": "M11",
+  "model": "MLP",
+  "model_display": "MLP",
+  "pos_weight": 201.57142857142858,
+  "runtime_seconds": 0.24095416069030762,
+  "scenario": "fixed1095",
+  "seed": 1024,
+  "test_evaluated": true,
+  "train_neg": 23987,
+  "train_pos": 119,
+  "val_threshold": 0.8473897576332092
+}

@@ -1,0 +1,26 @@
+{
+  "final_binding": {
+    "path": "/path/to/private_workspace/peerj_141707_v27/bindings/RUN_BINDINGS_v2.json",
+    "sha256": "cebbfada1bf30ace4f2c95d8fc3b2e60fe9f084294026ea0071213b88a7f4325"
+  },
+  "production_runner": {
+    "path": "/path/to/private_workspace/peerj_141707_v27/code/sensitivity_runner.py",
+    "sha256": "9e8efa8caf9145b748c01cb6fe86868136afd9f4cd33907fb886668eb854c5b2"
+  },
+  "run_matrix": {
+    "path": "/path/to/private_workspace/peerj_141707_v27/bindings/sensitivity_run_matrix.json",
+    "sha256": "4d78371987154fa5aee660479c447e30f56608d28616359f04d8c472759f8923"
+  },
+  "stage_e_artifact_manifest": {
+    "path": "/path/to/private_workspace/peerj_141707_v27/stage_e_freeze_v1/SENSITIVITY_ARTIFACT_IDENTITIES.json",
+    "sha256": "4a0086b676a5df8c7a7c085f44dcfd3722ae4d5f8b3a081bae841d907de95c06"
+  },
+  "stage_e_freeze_complete": {
+    "path": "/path/to/private_workspace/peerj_141707_v27/stage_e_freeze_v1/FREEZE_COMPLETE.json",
+    "sha256": "ec826d73b0a14da41f80b9c1fa2321a3977759350cc8650bc022d9040efa3540"
+  },
+  "stage_t_global_lock": {
+    "path": "/path/to/private_workspace/peerj_141707_v27/stage_t/ALL_105_LOCKED.json",
+    "sha256": "72dbfdeeadad9742a3c80a15e1bb96abebe88be67461b53539932c195dcf805b"
+  }
+}

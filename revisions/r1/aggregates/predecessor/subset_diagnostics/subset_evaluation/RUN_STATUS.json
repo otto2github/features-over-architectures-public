@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "baseline": "Frozen label/feature protocol; fixed-prediction diagnostic analysis used in v19 and retained in v20",
+  "role": "subset_evaluation",
+  "state": "COMPLETE",
+  "started": "2026-09-25T10:33:21.429164+08:00",
+  "finished": "2026-09-25T10:33:31.254309+08:00",
+  "training_executed": false,
+  "paper_files_modified": false,
+  "network_requests": false,
+  "source_writes_requested": false,
+  "checks": [
+    {
+      "module": "subset_evaluation",
+      "state": "PASS",
+      "scope": "conditional evaluation only; no retraining or verified clean/new-case claim"
+    },
+    {
+      "module": "sensitivity_intervals",
+      "state": "PASS",
+      "scope": "evaluation only; no model fits"
+    },
+    {
+      "module": "input_stability",
+      "state": "PASS",
+      "method": "size_and_mtime_after_full_sha256_at_first_read",
+      "scope": "no concurrent writer proven only to recorded checks"
+    }
+  ],
+  "publication_version": "v20",
+  "execution_metadata_preserved_except_publication_labels": true
+}

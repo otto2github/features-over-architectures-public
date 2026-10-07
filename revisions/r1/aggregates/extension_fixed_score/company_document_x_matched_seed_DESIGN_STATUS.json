@@ -1,0 +1,11 @@
+{
+  "company_or_component_count": 4530,
+  "group_seed": 2707141,
+  "membership_sha256": "c8b6c4ec082d41e6264ae5667b4c3982fac43f02a6c8d53f267f824edebb102c",
+  "planned_replicates": 2000,
+  "rejected_draws": 0,
+  "replicate_rule": "base+10*b",
+  "scope": "conditional_exploratory_marginal_not_new_training_or_new_test_cohort",
+  "seed_label_seed": 2707142,
+  "valid_replicates": 2000
+}

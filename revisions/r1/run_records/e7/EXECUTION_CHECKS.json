@@ -1,0 +1,65 @@
+{
+  "M11_dimensions": 129,
+  "all_fits": 20,
+  "context": {
+    "binding_file_sha256": "5f36a7bdb6fa0429bf2930bbffeb5110d24bb3714e73b4407cad1428b3f8341d",
+    "matrix_sha256": "9b818649041fb670112c26a412631f28d404a87ab982b1a8563e4c80c93fdf91",
+    "package_manifest_sha256": "ed66c1ff36e9902ff5fe527b79087e892e121be211cb6a3ab85134882d3115e2",
+    "protocol_sha256": "d9d7248cb5acfac5b30f0b3a86ebcbfecb42d765ad05ce0000d397b7fb9489f2",
+    "scaler_mean_sha256": "e0f10b14e388f0989cd6f45f1c8573c3827160488a210d3f2d5017b80bb95ebe",
+    "scaler_std_sha256": "e74801fbce9e90140ef3660280b739a8152743769067c6bb0edaae3614c253b7",
+    "source_ledger": [
+      {
+        "path": "private_inputs/node_features_v1_1.parquet",
+        "sha256": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+        "size_bytes": 23261997
+      },
+      {
+        "path": "private_inputs/fraud_labels_v1_0.parquet",
+        "sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+        "size_bytes": 226750
+      },
+      {
+        "path": "private_inputs/global_edge_index.parquet",
+        "sha256": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09",
+        "size_bytes": 9520370
+      },
+      {
+        "path": "private_inputs/node_id_index_label_v1_0_fiverel_derived.parquet",
+        "sha256": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770",
+        "size_bytes": 2585531
+      },
+      {
+        "path": "private_inputs/formal_rerun_core.py",
+        "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+        "size_bytes": 16439
+      },
+      {
+        "path": "private_inputs/evaluation_masks_v27.parquet",
+        "sha256": "f53fa5b7f0ee845f6075bc2329d5ef6ee9d9429d38a942a71aa228f550009810",
+        "size_bytes": 105354
+      },
+      {
+        "path": "private_inputs/PRIVATE_e7_forward_edges.parquet",
+        "sha256": "a464045c4bb3b163431d7c4c975c55abf792a970d7af17f046463b756bbb6602",
+        "size_bytes": 985106
+      },
+      {
+        "path": "private_inputs/PRIVATE_e7_support_index.parquet",
+        "sha256": "6f57b553a65c38db38cb8790883b8bb3db8c0910557f39dde08fc1dcf05598cb",
+        "size_bytes": 4264744
+      }
+    ]
+  },
+  "full_D_O_auc_identity_all_20": true,
+  "full_budget_D_O_attribution_identity_all_20": true,
+  "global_checkpoint_lock_before_any_test_performance": true,
+  "raw_names_ids_labels_scores_checkpoints_in_return": false,
+  "same_extended_node_universe_both_conditions": 366695,
+  "source_rechecked_after_runs": true,
+  "status": "PASS",
+  "strict_determinism": true,
+  "test_population_hash": "f53fa5b7f0ee845f6075bc2329d5ef6ee9d9429d38a942a71aa228f550009810",
+  "validation_only_checkpoint_and_threshold_selection": true,
+  "warn_only": false
+}

@@ -1,0 +1,5 @@
+Source-status model / fixed score,Full AUC,D AUC,Full tie bounds; fixed hits / 422,D tie bounds; fixed hits / 422
+Three-flag RF,0.8447,0.7849,12–16; 13,3–5; 4
+Selected source absent,0.7687,0.6830,0–12; 10,0–3; 1
+Final FIN87 nonfinite,0.7855,0.7426,0–16; 5,0–5; 1
+No prior candidate,0.7842,0.6985,12–20; 12,3–7; 3

@@ -1,0 +1,41 @@
+{
+  "source": "V27 frozen protocol / retained supervision checks; V28 original B0 supervision contract",
+  "values_are_contract_counts_not_model_estimates": true,
+  "rows": [
+    {
+      "label": "Original / B / B0 / extension train",
+      "years": "2010–2018",
+      "n": 24106,
+      "positive": 254,
+      "negative": 23852
+    },
+    {
+      "label": "Original / B / B0 / extension validation",
+      "years": "2019–2020",
+      "n": 7309,
+      "positive": 40,
+      "negative": 7269
+    },
+    {
+      "label": "All reported full tests",
+      "years": "2021–2022",
+      "n": 8435,
+      "positive": 20,
+      "negative": 8415
+    },
+    {
+      "label": "A: retained train supervision",
+      "years": "2010–2018",
+      "n": 24066,
+      "positive": 214,
+      "negative": 23852
+    },
+    {
+      "label": "A: retained validation supervision",
+      "years": "2019–2020",
+      "n": 7293,
+      "positive": 24,
+      "negative": 7269
+    }
+  ]
+}

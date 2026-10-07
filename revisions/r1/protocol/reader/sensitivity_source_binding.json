@@ -1,0 +1,52 @@
+{
+  "inputs": {
+    "v1_md": {
+      "path": "author_only_source_records/PeerJ_141707_V27_PROTOCOL_FREEZE_v1.md",
+      "sha256": "a7f0e7c22e22e97fe2b77686d0dc8c2cf4c47fccca8712c140ae4be463c8a435"
+    },
+    "v1_json": {
+      "path": "author_only_source_records/PeerJ_141707_V27_PROTOCOL_FREEZE_v1.json",
+      "sha256": "9df7f6a34f6e70b0e0a5de21290bdbb2f17b7c8459189f4fe6f0ff88507afbb5"
+    },
+    "v1_zip": {
+      "path": "author_only_source_records/PeerJ_141707_V27_PRE_RESULTS_PROTOCOL_20260927.zip",
+      "sha256": "6062b2eebda8b21ddb0db774988c114e3ae8f59129ff180bf5790196b3b4bde6"
+    },
+    "v26_zip": {
+      "path": "author_only_source_records/PeerJ_141707_v26_FINAL_20260926.zip",
+      "sha256": "20f3fc72fab3d75643eeac9b488bbb1a1effcf598148ab6d8839f8695cf833b2"
+    },
+    "independent_internal_review": {
+      "path": "author_only_source_records/independent_internal_review.pdf",
+      "sha256": "5709c3ad66a198500f0724d140b1393a99d5c590511e392af5ca33ddc6c559a7"
+    },
+    "nested_reproducibility_zip": {
+      "path": "author_only_source_records/PeerJ_141707_v24_Reproducibility.zip",
+      "sha256": "61d05e6b39103bb23f417241be0131cc74181fdb9737c9805a2ecb284519b9c7"
+    }
+  },
+  "clean_docx_sha256": "5a330c0c64fc4974c2557b3cb76d6fc96657fef1a05209174b49e22aa9751114",
+  "archive_members": {
+    "code/formal_rerun_core.py": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+    "code/sensitivity_experiment/code/run_sensitivities.py": "8131f73e3b2307ea9fb78b18e26ae8e26a2e298bc53d8b46db64b2d7b183a5ed",
+    "code/sensitivity_experiment/code/build_asof_features.py": "18ef435f9b8a55911cacbc179cd33059d347210f419a2016520f0b48e7bd3409",
+    "code/sensitivity_experiment/config/protocol.json": "8e403129c47deb7a95dec6ec2312c5ac807f5aac616378f08fc33104bdb83359",
+    "code/subset_diagnostics/postprocess.py": "5a2ff99165813d023c6487483e8c7acd3cdc810298229abe0580df35ca29cced",
+    "code/subset_diagnostics/baseline_audit/auditlib/endpoints.py": "02c29e8ae1bd22abb018152f47a4baf09a7d8aef8c55d34b1ab3a4b20a16a0be",
+    "code/subset_diagnostics/baseline_audit/auditlib/metrics.py": "b1a6ed3e1212debe39f97222dd3284acd1a6a69a29d492e1f1e7046168b78ed3",
+    "code/subset_diagnostics/baseline_audit/auditlib/predictions.py": "2694235d6bb0009f21d7693b56230c5446dd4d8856f5cc21cbacd5c64b24cb1c",
+    "code/subset_diagnostics/baseline_audit/reference/PREDICTION_IDENTITY.json": "e923b21ffe934de0e7bbe028b14d9f2499bd57cad736365def041fa6b5aaa6bd",
+    "code/subset_diagnostics/baseline_audit/config/protocol.json": "1d28cdc662632c15bb0d0976dadd1cc19ef403bed648c455dbc8a9cf54ef6110",
+    "config/feature_columns_129_v5.csv": "a297284d188392141a60bc94b177ba58054aa19659a115bc1730cebd54a38248",
+    "config/requirements.freeze.txt": "fe8483218298b5f31a07b551318555faba75d1e047dc02dae96907821944e8e7",
+    "config/requirements.freeze.posttabular.txt": "1dde7484a98441238bec283878cf8a36e0eac878a0476ec3b1795331ae7c43d4",
+    "aggregates/subset_diagnostics/financial_masks/source_mask_counts.csv": "6fefd3992312a9b56bbb5f2392bd0dfde166e8d228cda13386d26bd796f7ec68",
+    "aggregates/subset_diagnostics/document_masks/document_mask_counts.csv": "60fbbe443a10d7a64a935dc30f9bc2997e052fd94f1ebe432dd63eaac03a10e7"
+  },
+  "line_numbered_pdf": {
+    "member": "PeerJ_141707_v26_FINAL_20260926/private_administrative_reference/08_Manuscript_LINE_NUMBERED_v26.pdf",
+    "size_bytes": 178751,
+    "sha256": "db7493992cb916f7f8b101e117ea62cd9ce739958ca8f0ed3fee2246584ed9cf"
+  },
+  "private_data_hashes_verified_here": false
+}

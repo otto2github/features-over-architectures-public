@@ -1,0 +1,27 @@
+{
+  "bootstrap_replicates": 2000,
+  "company_rng_seed": 141707,
+  "fit_rng_seed": 1707141,
+  "replicate_rng_rule": "seed + replicate_index * 10",
+  "single_class_rejected_draws": 0,
+  "replicates_requiring_redraw": 0,
+  "max_redraws_for_one_replicate": 0,
+  "no_failed_draws_silently_counted": true,
+  "same_company_draw_for_every_condition_and_seed": true,
+  "same_seed_label_draw_for_every_condition": true,
+  "resampling_design": "crossed company x seed-label; companies are not nested independently inside seeds",
+  "estimand": "difference in arithmetic means of per-fit metrics, not metric of an ensemble-mean prediction",
+  "interval": "percentile 2.5 and 97.5; marginal, exploratory",
+  "captures": "variation across the five retained fitted seeds and sampled test companies",
+  "does_not_capture": [
+    "new training samples",
+    "hyperparameter search",
+    "new test windows",
+    "unseen seed population guarantees",
+    "graph/case dependence beyond companies",
+    "full repeated-study uncertainty"
+  ],
+  "bootstrap_tail_fraction_not_reported_as_hypothesis_test_p_value": true,
+  "new_training": false,
+  "all_saved_input_files_preserved": true
+}

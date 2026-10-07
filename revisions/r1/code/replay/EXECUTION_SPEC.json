@@ -1,0 +1,16 @@
+{
+  "package": "V27_STAGE_E_REPLAY_AUDIT_v1_20260927",
+  "expected_neural_fits": 55,
+  "models": {"MLP": 45, "GCN_reverse": 5, "GraphSAGE_reverse": 5},
+  "rf_replay": false,
+  "training": false,
+  "new_inference": "technical checkpoint replay only",
+  "original_outputs_overwritten": false,
+  "expected_hashes": {
+    "RUN_BINDINGS_v2": "cebbfada1bf30ace4f2c95d8fc3b2e60fe9f084294026ea0071213b88a7f4325",
+    "V27_RUN_MATRIX_v2": "4d78371987154fa5aee660479c447e30f56608d28616359f04d8c472759f8923",
+    "sensitivity_runner.py": "9e8efa8caf9145b748c01cb6fe86868136afd9f4cd33907fb886668eb854c5b2",
+    "ALL_105_LOCKED.json": "72dbfdeeadad9742a3c80a15e1bb96abebe88be67461b53539932c195dcf805b",
+    "SENSITIVITY_ARTIFACT_IDENTITIES.json": "4a0086b676a5df8c7a7c085f44dcfd3722ae4d5f8b3a081bae841d907de95c06"
+  }
+}

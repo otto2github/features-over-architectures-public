@@ -1,0 +1,27 @@
+[
+  {
+    "path": "private_inputs/node_features_v1_1.parquet",
+    "sha256": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+    "size_bytes": 23261997
+  },
+  {
+    "path": "private_inputs/fraud_labels_v1_0.parquet",
+    "sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+    "size_bytes": 226750
+  },
+  {
+    "path": "private_inputs/global_edge_index.parquet",
+    "sha256": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09",
+    "size_bytes": 9520370
+  },
+  {
+    "path": "private_inputs/node_id_index_label_v1_0_fiverel_derived.parquet",
+    "sha256": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770",
+    "size_bytes": 2585531
+  },
+  {
+    "path": "private_inputs/formal_rerun_core.py",
+    "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+    "size_bytes": 16439
+  }
+]

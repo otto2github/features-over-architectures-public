@@ -1,0 +1,213 @@
+{
+  "ancillary_fixed_score_check": {
+    "cannot_change_extension_matrix": true,
+    "name": "A_GCN_common_D_hit_source_status",
+    "no_training": true,
+    "output": "three source-status booleans for the one common A-GCN D-positive hit, aggregated without company/document identifiers",
+    "timing": "only after the extension design is frozen; preferably after extension Stage-E lock"
+  },
+  "data_and_supervision": {
+    "cohort": "same reconstructed common-cutoff cohort as V27",
+    "feature_definition": "M11_no_FIN87 must equal M11 with exact FIN87 whitelist removed, preserving M11 order",
+    "feature_source": "approved V27 as-of feature matrix; select exact M11_no_FIN87 list only",
+    "graph": "same annual stored graph with one appended reverse record per stored edge, same relation label and multiplicity; supporting nodes retained",
+    "supervision": "original V27 B0 supervision; DO NOT use Family-A purge masks",
+    "test_counts": {
+      "negative": 8415,
+      "positive": 20,
+      "rows": 8435
+    },
+    "test_years": [
+      2021,
+      2022
+    ],
+    "train_supervised_counts": {
+      "negative": 23852,
+      "positive": 254,
+      "rows": 24106
+    },
+    "train_years": [
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018
+    ],
+    "validation_supervised_counts": {
+      "negative": 7269,
+      "positive": 40,
+      "rows": 7309
+    },
+    "validation_years": [
+      2019,
+      2020
+    ]
+  },
+  "date": "2026-09-27",
+  "evaluation": {
+    "auc_DO_identity_required": true,
+    "budget_rule": "ceil(0.05*N); 422 for full/D/O and 388 for S/J on the fixed populations",
+    "full_budget_attribution_required": true,
+    "metrics": [
+      "roc_auc",
+      "average_precision",
+      "f1_at_validation_threshold",
+      "p_at_5pct",
+      "r_at_10fpr",
+      "hits_at_budget"
+    ],
+    "population_counts": {
+      "D_frozen": [
+        8422,
+        7
+      ],
+      "J_frozen": [
+        7753,
+        2
+      ],
+      "O_frozen": [
+        8428,
+        13
+      ],
+      "S_frozen": [
+        7757,
+        6
+      ],
+      "full_test": [
+        8435,
+        20
+      ]
+    },
+    "populations": [
+      "full_test",
+      "D_frozen",
+      "O_frozen",
+      "S_frozen",
+      "J_frozen"
+    ],
+    "tie_order": [
+      "score descending",
+      "company_code ascending",
+      "fiscal_year ascending"
+    ],
+    "top_tie_bounds_required": true
+  },
+  "extension_id": "V28_B0GNN_EXTENSION_PROTOCOL_v1",
+  "fits": {
+    "dimensions": 42,
+    "modality": "M11_no_FIN87",
+    "model_seeds": [
+      42,
+      123,
+      456,
+      789,
+      1024
+    ],
+    "models": [
+      "GCN_reverse",
+      "GraphSAGE_reverse"
+    ],
+    "no_additional_fits": true,
+    "total": 10
+  },
+  "forbidden_extensions": [
+    "17-column GNN fits",
+    "GAT/RGCN fits",
+    "A x B0 crossing",
+    "new seeds",
+    "hyperparameter tuning",
+    "new donor worlds",
+    "multi-window",
+    "E7/RPT graph",
+    "test-selected thresholds",
+    "post-result key changes"
+  ],
+  "frozen_references": {
+    "family": "V27 B0",
+    "modality": "M11_no_FIN87",
+    "models": [
+      "MLP",
+      "RandomForest_unweighted"
+    ],
+    "reference_predictions": "must match V27 Stage-E frozen artifact manifest by SHA-256 before any extension fit",
+    "same_five_seeds": true
+  },
+  "interpretation_limits": [
+    "FIN87-deleted is not historically clean",
+    "remaining 42 columns may retain source/vintage limitations",
+    "10 new fits create no new independent positives",
+    "this extension does not retroactively become part of the V27 105-fit freeze",
+    "architecture claims remain conditional on this holder-manager graph and single-window retrospective cohort"
+  ],
+  "planned_comparisons": {
+    "D_LOPO": "remove each of seven D positives from fixed-score evaluation with no retraining; report influence ranges for new GNNs and matched contrasts",
+    "D_O_S_J": "descriptive means, per-seed values, tie bounds; no superiority claim from tiny positive counts",
+    "also_report_same_four_for_all_six_metrics": true,
+    "full_primary_AUC": [
+      "MLP-GCN_reverse",
+      "MLP-GraphSAGE_reverse",
+      "RandomForest_unweighted-GCN_reverse",
+      "RandomForest_unweighted-GraphSAGE_reverse"
+    ],
+    "no_test_selected_model_or_threshold": true
+  },
+  "project": "PeerJ CS-2026:06:141707",
+  "prospective_preregistration_claim": false,
+  "purpose": "Add the missing matched reverse-GCN/GraphSAGE comparison on the 42-column FIN87-deleted representation; do not reinterpret the original 105-fit program as including these runs.",
+  "read_write_boundary": "All new files must be written only under write_root. V27 inputs/results are read-only. Nothing outside /path/to/private_workspace/ may be written.",
+  "result_awareness": "All V27 predecessor and A/B/B0/C results were already known. This is a result-aware, pre-extension-fit methodological amendment triggered by an independent internal pre-submission assessment.",
+  "source_v27": {
+    "final_binding_sha256": "cebbfada1bf30ace4f2c95d8fc3b2e60fe9f084294026ea0071213b88a7f4325",
+    "production_runner_sha256": "9e8efa8caf9145b748c01cb6fe86868136afd9f4cd33907fb886668eb854c5b2",
+    "root_read_only": "/path/to/private_workspace/peerj_141707_v27",
+    "run_matrix_sha256": "4d78371987154fa5aee660479c447e30f56608d28616359f04d8c472759f8923",
+    "stage_e_artifact_manifest_sha256": "4a0086b676a5df8c7a7c085f44dcfd3722ae4d5f8b3a081bae841d907de95c06",
+    "stage_t_global_lock_sha256": "72dbfdeeadad9742a3c80a15e1bb96abebe88be67461b53539932c195dcf805b"
+  },
+  "stage_separation": {
+    "stage_E": "only after a global ALL_10_LOCKED audit; inference and evaluation on unchanged test; strict_seed must be explicitly called inside each Stage-E process before inference",
+    "stage_T": "training/validation only; no test labels, test scores or test metrics; save checkpoint/scaler/validation predictions/threshold; lock all 10 before Stage E"
+  },
+  "status": "FROZEN_AFTER_V27_RESULTS_BEFORE_EXTENSION_FITS",
+  "training_contract": {
+    "checkpoint": "earliest accepted best validation AUC; restore",
+    "epochs_max": 100,
+    "hidden_dim": 64,
+    "interlayer_dropout": 0.3,
+    "layers": 2,
+    "lr": 0.0005,
+    "min_improvement": 1e-08,
+    "optimizer": "Adam",
+    "positive_weight": "23852/254",
+    "reverse_edges": "append every reversed record exactly once; preserve relation label and multiplicity",
+    "same_as_v27_gnn": true,
+    "scaler": "fit on original eligible supervised training rows only",
+    "strict_determinism": "CUBLAS_WORKSPACE_CONFIG=:4096:8; torch deterministic algorithms warn_only=False; cudnn benchmark=False; cudnn deterministic=True; enforce in BOTH Stage T and Stage E after every seed reset",
+    "threshold": "validation-maximizing F1; first maximizing threshold; score >= threshold",
+    "validation_auc_patience": 10
+  },
+  "uncertainty": {
+    "interval": "linear percentile 2.5/97.5, exploratory marginal; no p-values or equivalence claims",
+    "primary": {
+      "company_seed": 1807141,
+      "matched_seed_seed": 1807142,
+      "replicate_rule": "base + 10*b",
+      "same_draws_across_four_models": true,
+      "unit": "test company; all eligible years travel together",
+      "valid_replicates": 2000
+    },
+    "secondary": {
+      "expected_membership_sha256": "c8b6c4ec082d41e6264ae5667b4c3982fac43f02a6c8d53f267f824edebb102c",
+      "group_seed": 2707141,
+      "matched_seed_seed": 2707142,
+      "required_prefit_binding_for_extension": true,
+      "unit": "existing V27 test company/document components",
+      "valid_replicates": 2000
+    }
+  },
+  "write_root": "/path/to/private_workspace/peerj_141707_v28_b0gnn_extension"
+}

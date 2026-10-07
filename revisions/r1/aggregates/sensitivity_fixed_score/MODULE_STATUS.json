@@ -1,0 +1,154 @@
+[
+  {
+    "detail": {
+      "file_count": 19,
+      "manifest_sha256": "5f3154989a3efe68e028d18c5927ed3e44712e2b41acec35989d4f0a92b658af"
+    },
+    "module": "package_integrity",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "actual_parquet_io_tested": true,
+      "checks": 20
+    },
+    "module": "synthetic_tests",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "V26_reference_fits": 40,
+      "bound_files": 1041,
+      "fits": 145,
+      "new_fits": 105
+    },
+    "module": "input_and_artifact_identity",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "secondary_allowed": true,
+      "status": "POSTFIT_MATERIALIZATION_OF_PRESPECIFIED_RULE"
+    },
+    "module": "group_rule_and_provenance",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "replay_performed": false,
+      "status": "UNRESOLVED_EXECUTION_ENFORCEMENT_DEVIATION"
+    },
+    "module": "execution_deviation_static_review",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "conditions": 29,
+      "contrasts": 46,
+      "populations": 5
+    },
+    "module": "fixed_score_points_and_contrasts",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "models_trained": 0,
+      "single_flags": 3
+    },
+    "module": "single_flags_fixed_threshold_and_D_hit_overlap",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "D_leave_one_positive_component_out": 6,
+      "D_leave_one_positive_out": 7,
+      "full_leave_one_positive_component_out": 16
+    },
+    "module": "fixed_score_positive_deletion_influence",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "cluster_seed": 1807141,
+      "conditions": 29,
+      "contrasts": 46,
+      "ensemble_mean_score_used": false,
+      "failed_replicates": 0,
+      "intervals": "linear percentile 2.5/97.5; marginal exploratory",
+      "matched_seed_rng_seed": 1807142,
+      "max_attempts_per_replicate": 1000,
+      "max_rejected_draws": 0,
+      "metrics": [
+        "roc_auc",
+        "ap",
+        "f1_val_threshold",
+        "p_at_5pct",
+        "r_at_10fpr",
+        "hits_at_budget"
+      ],
+      "n_clusters": 4531,
+      "rejected_draws": 0,
+      "replicate_index_start": 0,
+      "replicate_rng_rule": "base_seed+10*b",
+      "replicates_with_redraw": 0,
+      "required_replicates": 2000,
+      "resampled_budget": "ceil(0.05*resampled_rows)",
+      "result": "PASS_FIXED_SCORE_BOOTSTRAP",
+      "retraining_performed": false,
+      "same_cluster_draw_across_all_fits_and_worlds": true,
+      "same_five_seed_draw_across_all_conditions": true,
+      "scheme": "company_x_matched_seed",
+      "seconds": 31.059754686430097,
+      "valid_replicates": 2000,
+      "workers": 2
+    },
+    "module": "primary_company_bootstrap",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "cluster_seed": 2707141,
+      "conditions": 29,
+      "contrasts": 46,
+      "ensemble_mean_score_used": false,
+      "failed_replicates": 0,
+      "intervals": "linear percentile 2.5/97.5; marginal exploratory",
+      "matched_seed_rng_seed": 2707142,
+      "max_attempts_per_replicate": 1000,
+      "max_rejected_draws": 0,
+      "metrics": [
+        "roc_auc",
+        "ap",
+        "f1_val_threshold",
+        "p_at_5pct",
+        "r_at_10fpr",
+        "hits_at_budget"
+      ],
+      "n_clusters": 4530,
+      "rejected_draws": 0,
+      "replicate_index_start": 0,
+      "replicate_rng_rule": "base_seed+10*b",
+      "replicates_with_redraw": 0,
+      "required_replicates": 2000,
+      "resampled_budget": "ceil(0.05*resampled_rows)",
+      "result": "PASS_FIXED_SCORE_BOOTSTRAP",
+      "retraining_performed": false,
+      "same_cluster_draw_across_all_fits_and_worlds": true,
+      "same_five_seed_draw_across_all_conditions": true,
+      "scheme": "company_document_x_matched_seed",
+      "seconds": 30.95250095706433,
+      "valid_replicates": 2000,
+      "workers": 2
+    },
+    "module": "secondary_component_bootstrap",
+    "status": "COMPLETE"
+  },
+  {
+    "detail": {
+      "all_unchanged": true,
+      "files_rehashed": 1041
+    },
+    "module": "end_to_start_source_hash_parity",
+    "status": "COMPLETE"
+  }
+]

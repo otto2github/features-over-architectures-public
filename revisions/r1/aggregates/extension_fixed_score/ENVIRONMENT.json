@@ -1,0 +1,9 @@
+{
+  "GPU_used": false,
+  "numpy": "2.5.3",
+  "pandas": "3.0.5",
+  "pyarrow": "25.0.1",
+  "python": "3.12.3",
+  "sklearn": "1.9.1",
+  "workers": 2
+}

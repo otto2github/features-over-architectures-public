@@ -1,0 +1,122 @@
+[
+  {
+    "run_id": "RF__M11__W2__seed42",
+    "model": "RF",
+    "seed": 42,
+    "window": "W2"
+  },
+  {
+    "run_id": "RF__M11__W2__seed123",
+    "model": "RF",
+    "seed": 123,
+    "window": "W2"
+  },
+  {
+    "run_id": "RF__M11__W2__seed456",
+    "model": "RF",
+    "seed": 456,
+    "window": "W2"
+  },
+  {
+    "run_id": "RF__M11__W2__seed789",
+    "model": "RF",
+    "seed": 789,
+    "window": "W2"
+  },
+  {
+    "run_id": "RF__M11__W2__seed1024",
+    "model": "RF",
+    "seed": 1024,
+    "window": "W2"
+  },
+  {
+    "run_id": "MLP__M11__W2__seed42",
+    "model": "MLP",
+    "seed": 42,
+    "window": "W2"
+  },
+  {
+    "run_id": "MLP__M11__W2__seed123",
+    "model": "MLP",
+    "seed": 123,
+    "window": "W2"
+  },
+  {
+    "run_id": "MLP__M11__W2__seed456",
+    "model": "MLP",
+    "seed": 456,
+    "window": "W2"
+  },
+  {
+    "run_id": "MLP__M11__W2__seed789",
+    "model": "MLP",
+    "seed": 789,
+    "window": "W2"
+  },
+  {
+    "run_id": "MLP__M11__W2__seed1024",
+    "model": "MLP",
+    "seed": 1024,
+    "window": "W2"
+  },
+  {
+    "run_id": "GCN__M11__W2__seed42",
+    "model": "GCN",
+    "seed": 42,
+    "window": "W2"
+  },
+  {
+    "run_id": "GCN__M11__W2__seed123",
+    "model": "GCN",
+    "seed": 123,
+    "window": "W2"
+  },
+  {
+    "run_id": "GCN__M11__W2__seed456",
+    "model": "GCN",
+    "seed": 456,
+    "window": "W2"
+  },
+  {
+    "run_id": "GCN__M11__W2__seed789",
+    "model": "GCN",
+    "seed": 789,
+    "window": "W2"
+  },
+  {
+    "run_id": "GCN__M11__W2__seed1024",
+    "model": "GCN",
+    "seed": 1024,
+    "window": "W2"
+  },
+  {
+    "run_id": "SAGE__M11__W2__seed42",
+    "model": "SAGE",
+    "seed": 42,
+    "window": "W2"
+  },
+  {
+    "run_id": "SAGE__M11__W2__seed123",
+    "model": "SAGE",
+    "seed": 123,
+    "window": "W2"
+  },
+  {
+    "run_id": "SAGE__M11__W2__seed456",
+    "model": "SAGE",
+    "seed": 456,
+    "window": "W2"
+  },
+  {
+    "run_id": "SAGE__M11__W2__seed789",
+    "model": "SAGE",
+    "seed": 789,
+    "window": "W2"
+  },
+  {
+    "run_id": "SAGE__M11__W2__seed1024",
+    "model": "SAGE",
+    "seed": 1024,
+    "window": "W2"
+  }
+]

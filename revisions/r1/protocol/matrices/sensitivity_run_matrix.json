@@ -1,0 +1,1052 @@
+[
+  {
+    "run_id": "A_docpurged__MLP__M11__seed42",
+    "family": "A",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__MLP__M11__seed123",
+    "family": "A",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__MLP__M11__seed456",
+    "family": "A",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__MLP__M11__seed789",
+    "family": "A",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__MLP__M11__seed1024",
+    "family": "A",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__RandomForest_unweighted__M11__seed42",
+    "family": "A",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__RandomForest_unweighted__M11__seed123",
+    "family": "A",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__RandomForest_unweighted__M11__seed456",
+    "family": "A",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__RandomForest_unweighted__M11__seed789",
+    "family": "A",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__RandomForest_unweighted__M11__seed1024",
+    "family": "A",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GCN_reverse__M11__seed42",
+    "family": "A",
+    "model": "GCN_reverse",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GCN_reverse__M11__seed123",
+    "family": "A",
+    "model": "GCN_reverse",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GCN_reverse__M11__seed456",
+    "family": "A",
+    "model": "GCN_reverse",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GCN_reverse__M11__seed789",
+    "family": "A",
+    "model": "GCN_reverse",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GCN_reverse__M11__seed1024",
+    "family": "A",
+    "model": "GCN_reverse",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GraphSAGE_reverse__M11__seed42",
+    "family": "A",
+    "model": "GraphSAGE_reverse",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GraphSAGE_reverse__M11__seed123",
+    "family": "A",
+    "model": "GraphSAGE_reverse",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GraphSAGE_reverse__M11__seed456",
+    "family": "A",
+    "model": "GraphSAGE_reverse",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GraphSAGE_reverse__M11__seed789",
+    "family": "A",
+    "model": "GraphSAGE_reverse",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "A_docpurged__GraphSAGE_reverse__M11__seed1024",
+    "family": "A",
+    "model": "GraphSAGE_reverse",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": null,
+    "input_features": "frozen_original",
+    "supervision": "document_purged"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271707__seed42",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 42,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271707__seed123",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 123,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271707__seed456",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 456,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271707__seed789",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 789,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271707__seed1024",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 1024,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271707__seed42",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271707__seed123",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271707__seed456",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271707__seed789",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271707__seed1024",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271707__seed42",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 42,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271707__seed123",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 123,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271707__seed456",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 456,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271707__seed789",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 789,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271707__seed1024",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 1024,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271707__seed42",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271707__seed123",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271707__seed456",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271707__seed789",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271707__seed1024",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": 271707,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271708__seed42",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 42,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271708__seed123",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 123,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271708__seed456",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 456,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271708__seed789",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 789,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271708__seed1024",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 1024,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271708__seed42",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271708__seed123",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271708__seed456",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271708__seed789",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271708__seed1024",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271708__seed42",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 42,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271708__seed123",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 123,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271708__seed456",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 456,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271708__seed789",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 789,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271708__seed1024",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 1024,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271708__seed42",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271708__seed123",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271708__seed456",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271708__seed789",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271708__seed1024",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": 271708,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271709__seed42",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 42,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271709__seed123",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 123,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271709__seed456",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 456,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271709__seed789",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 789,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M5__imp271709__seed1024",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M5",
+    "model_seed": 1024,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271709__seed42",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271709__seed123",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271709__seed456",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271709__seed789",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__MLP__M11__imp271709__seed1024",
+    "family": "B",
+    "model": "MLP",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271709__seed42",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 42,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271709__seed123",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 123,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271709__seed456",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 456,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271709__seed789",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 789,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M5__imp271709__seed1024",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M5",
+    "model_seed": 1024,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271709__seed42",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 42,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271709__seed123",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 123,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271709__seed456",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 456,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271709__seed789",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 789,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B_donor__RandomForest_unweighted__M11__imp271709__seed1024",
+    "family": "B",
+    "model": "RandomForest_unweighted",
+    "modality": "M11",
+    "model_seed": 1024,
+    "imputation_seed": 271709,
+    "input_features": "approved_asof_FIN87_donor",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M5_no_FIN87__seed42",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M5_no_FIN87",
+    "model_seed": 42,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M5_no_FIN87__seed123",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M5_no_FIN87",
+    "model_seed": 123,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M5_no_FIN87__seed456",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M5_no_FIN87",
+    "model_seed": 456,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M5_no_FIN87__seed789",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M5_no_FIN87",
+    "model_seed": 789,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M5_no_FIN87__seed1024",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M5_no_FIN87",
+    "model_seed": 1024,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M11_no_FIN87__seed42",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M11_no_FIN87",
+    "model_seed": 42,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M11_no_FIN87__seed123",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M11_no_FIN87",
+    "model_seed": 123,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M11_no_FIN87__seed456",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M11_no_FIN87",
+    "model_seed": 456,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M11_no_FIN87__seed789",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M11_no_FIN87",
+    "model_seed": 789,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__MLP__M11_no_FIN87__seed1024",
+    "family": "B0",
+    "model": "MLP",
+    "modality": "M11_no_FIN87",
+    "model_seed": 1024,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M5_no_FIN87__seed42",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M5_no_FIN87",
+    "model_seed": 42,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M5_no_FIN87__seed123",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M5_no_FIN87",
+    "model_seed": 123,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M5_no_FIN87__seed456",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M5_no_FIN87",
+    "model_seed": 456,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M5_no_FIN87__seed789",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M5_no_FIN87",
+    "model_seed": 789,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M5_no_FIN87__seed1024",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M5_no_FIN87",
+    "model_seed": 1024,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M11_no_FIN87__seed42",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M11_no_FIN87",
+    "model_seed": 42,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M11_no_FIN87__seed123",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M11_no_FIN87",
+    "model_seed": 123,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M11_no_FIN87__seed456",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M11_no_FIN87",
+    "model_seed": 456,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M11_no_FIN87__seed789",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M11_no_FIN87",
+    "model_seed": 789,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "B0_dropFIN87__RandomForest_unweighted__M11_no_FIN87__seed1024",
+    "family": "B0",
+    "model": "RandomForest_unweighted",
+    "modality": "M11_no_FIN87",
+    "model_seed": 1024,
+    "imputation_seed": null,
+    "input_features": "approved_asof_minus_FIN87",
+    "supervision": "original"
+  },
+  {
+    "run_id": "C_flags__RandomForest_unweighted__flags3__seed42",
+    "family": "C",
+    "model": "RandomForest_unweighted",
+    "modality": "flags3",
+    "model_seed": 42,
+    "imputation_seed": null,
+    "input_features": "private_preimputation_source_flags",
+    "supervision": "original"
+  },
+  {
+    "run_id": "C_flags__RandomForest_unweighted__flags3__seed123",
+    "family": "C",
+    "model": "RandomForest_unweighted",
+    "modality": "flags3",
+    "model_seed": 123,
+    "imputation_seed": null,
+    "input_features": "private_preimputation_source_flags",
+    "supervision": "original"
+  },
+  {
+    "run_id": "C_flags__RandomForest_unweighted__flags3__seed456",
+    "family": "C",
+    "model": "RandomForest_unweighted",
+    "modality": "flags3",
+    "model_seed": 456,
+    "imputation_seed": null,
+    "input_features": "private_preimputation_source_flags",
+    "supervision": "original"
+  },
+  {
+    "run_id": "C_flags__RandomForest_unweighted__flags3__seed789",
+    "family": "C",
+    "model": "RandomForest_unweighted",
+    "modality": "flags3",
+    "model_seed": 789,
+    "imputation_seed": null,
+    "input_features": "private_preimputation_source_flags",
+    "supervision": "original"
+  },
+  {
+    "run_id": "C_flags__RandomForest_unweighted__flags3__seed1024",
+    "family": "C",
+    "model": "RandomForest_unweighted",
+    "modality": "flags3",
+    "model_seed": 1024,
+    "imputation_seed": null,
+    "input_features": "private_preimputation_source_flags",
+    "supervision": "original"
+  }
+]

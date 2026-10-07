@@ -1,0 +1,42 @@
+{
+  "10_financial_schema_and_selection.csv": {
+    "sha256": "d2c8bf65b609ad736b69b834c4a13a0f3331855b9e05b4bf7692b49acbd7d704",
+    "bytes": 560
+  },
+  "11_financial_type_flag_counts.csv": {
+    "sha256": "2876922c718d1add169679dcd9b114051b61b3dcf8038fef60f881ea30b0eb80",
+    "bytes": 922
+  },
+  "12_selected_financial_record_dates.csv": {
+    "sha256": "658b9b7ac123e6ec53a501a07e4e6da75854414a4a4c440d9f31c96064aa7600",
+    "bytes": 18920
+  },
+  "13_financial_value_binding.csv": {
+    "sha256": "42f9ceb76ea840d58500d89d5150750911d81b19485fb0a1354d98cecaea3eba",
+    "bytes": 52773
+  },
+  "14_financial_exposure_by_block.csv": {
+    "sha256": "e30d287218d71d1adcb7e3e6fc313d4b57432ba821bdb7c4a3e3dca4ce146027",
+    "bytes": 873
+  },
+  "15_financial_interpretation_limits.json": {
+    "sha256": "c51891b6324c496d71d0cd33587d330112ef87f2fbc7cde35f0708bce7e5f76f",
+    "bytes": 1518
+  },
+  "INPUT_FINGERPRINTS.json": {
+    "sha256": "e9941b9753089b39320ac232932d11bd99ee5f039142b1d086d9db7dbdf7f159",
+    "bytes": 1068
+  },
+  "RUN_STATUS.json": {
+    "sha256": "b05d77d08e0225b69653535cde64e105411097c109f180ee5fdc03f4ea7dfc81",
+    "bytes": 1685
+  },
+  "source_mask_counts.csv": {
+    "sha256": "6fefd3992312a9b56bbb5f2392bd0dfde166e8d228cda13386d26bd796f7ec68",
+    "bytes": 596
+  },
+  "summary.md": {
+    "sha256": "dfc844328dd666baf6a8fe3c4b0abc3d9a16c1758582054b9a779dbfe80a299b",
+    "bytes": 573
+  }
+}

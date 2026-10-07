@@ -1,0 +1,9 @@
+Paired comparison,Learner / input,Absolute AUC means,ΔAUC,95% interval
+Donor − as-of zero-fill,MLP M5,0.7673 → 0.7696,+0.0023,"[−0.0196, +0.0251]"
+Donor − as-of zero-fill,MLP M11,0.8316 → 0.8286,−0.0030,"[−0.0167, +0.0107]"
+Donor − as-of zero-fill,RF M5,0.8488 → 0.7687,−0.0800,"[−0.1385, −0.0243]"
+Donor − as-of zero-fill,RF M11,0.9049 → 0.8523,−0.0526,"[−0.1205, +0.0063]"
+Donor M11 − M5,"MLP, mean3",0.7696 → 0.8286,+0.0590,"[−0.0139, +0.1408]"
+Donor M11 − M5,"RF, mean3",0.7687 → 0.8523,+0.0836,"[+0.0038, +0.1739]"
+B0 42 − 17 columns,MLP,0.5264 → 0.7390,+0.2127,"[+0.0492, +0.3672]"
+B0 42 − 17 columns,RF,0.4737 → 0.7479,+0.2742,"[+0.0494, +0.4875]"

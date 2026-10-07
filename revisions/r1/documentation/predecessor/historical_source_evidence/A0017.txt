@@ -1,0 +1,391 @@
+SOURCE_ID: A0017
+SOURCE: <MOUNT>/Downloads/ch7_prep_v1.tar.gz :: ch7_prep/scripts/build_kg_nodes.py
+ORIGINAL_SHA256: eefb45a2124383b86d36b4299752bc17024ae34da2bb775579fe26a4e5f16fe4
+ORIGINAL_BYTES: 14219
+REPRESENTATION: TEXT_SOURCE
+CANDIDATE_NOT_EXECUTION_PROOF: true
+PROJECT_CODE_EXECUTED: false
+
+L00001 | """
+L00002 | build_kg_nodes.py
+L00003 | =================
+L00004 | 
+L00005 | 构建知识图谱节点表 (Chapter 7 GNN).
+L00006 | 
+L00007 | 节点类型:
+L00008 |   C:<ts_code>           上市公司 (来自 stk_basic.parquet 或 ts_code 集合)
+L00009 |   P:<sha1[:12]>         自然人 (来自 stk_managers + top10_holders 中判定为 person 的 holder)
+L00010 |   I:<sha1[:12]>         机构 (来自 top10_holders + top10_floatholders 中判定为 institution 的 holder)
+L00011 | 
+L00012 | 输出:
+L00013 |   data/processed/kg/nodes.parquet              全部节点 (id, type, canonical_name, raw_name_first, source, n_records)
+L00014 |   data/processed/kg/companies.parquet          公司节点子集 (id, ts_code)
+L00015 |   data/processed/kg/persons.parquet            自然人节点子集
+L00016 |   data/processed/kg/institutions.parquet       机构节点子集
+L00017 |   data/interim/kg_stats/build_kg_nodes.json    统计 (各类型节点数 / 来源分布 / 边界情形)
+L00018 | 
+L00019 | 用法:
+L00020 |   uv run --project ~/code python scripts/data_collect/kg/build_kg_nodes.py
+L00021 | 
+L00022 | 设计:
+L00023 |   - source 字段记录来自哪个 raw 数据源 (top10_holders / top10_floatholders / stk_managers / 多源合并)
+L00024 |   - n_records 字段记录该节点在 raw 中出现总次数, 用于剔除"一次性"低质量节点
+L00025 |   - 边界情形 (canonical 长度异常 / 有疑义) 写入 review_queue.csv 供人工核对
+L00026 | """
+L00027 | from __future__ import annotations
+L00028 | 
+L00029 | import argparse
+L00030 | import sys
+L00031 | from pathlib import Path
+L00032 | 
+L00033 | import pandas as pd
+L00034 | 
+L00035 | sys.path.insert(0, str(Path(__file__).parent))
+L00036 | from _kg_common import (  # noqa: E402
+L00037 |     KG_DIR,
+L00038 |     STATS_DIR,
+L00039 |     canonicalize_holder,
+L00040 |     classify_entity,
+L00041 |     get_paths,
+L00042 |     make_company_id,
+L00043 |     make_institution_id,
+L00044 |     make_person_id,
+L00045 |     setup_logger,
+L00046 |     write_stats_json,
+L00047 | )
+L00048 | 
+L00049 | TASK = "build_kg_nodes"
+L00050 | 
+L00051 | 
+L00052 | # ============================================================================
+L00053 | # 加载原始 parquet 集合
+L00054 | # ============================================================================
+L00055 | 
+L00056 | def load_partitions(d: Path, logger) -> pd.DataFrame:
+L00057 |     """读 d 目录下所有 *.parquet (跳过 _all/_*.parquet 前缀)."""
+L00058 |     if not d.exists():
+L00059 |         logger.error("目录不存在: %s", d)
+L00060 |         return pd.DataFrame()
+L00061 |     parts = sorted(p for p in d.glob("*.parquet")
+L00062 |                    if not p.name.startswith("_") and ".tmp" not in p.name)
+L00063 |     if not parts:
+L00064 |         logger.error("无 parquet 文件: %s", d)
+L00065 |         return pd.DataFrame()
+L00066 |     dfs = []
+L00067 |     for p in parts:
+L00068 |         try:
+L00069 |             dfs.append(pd.read_parquet(p))
+L00070 |         except Exception as e:
+L00071 |             logger.warning("读取失败 %s: %s", p, e)
+L00072 |     if not dfs:
+L00073 |         return pd.DataFrame()
+L00074 |     df = pd.concat(dfs, ignore_index=True)
+L00075 |     logger.info("[%s] 合并 %d 个分片, 共 %d 行 × %d 列",
+L00076 |                 d.name, len(parts), len(df), len(df.columns))
+L00077 |     return df
+L00078 | 
+L00079 | 
+L00080 | # ============================================================================
+L00081 | # 公司节点
+L00082 | # ============================================================================
+L00083 | 
+L00084 | def build_company_nodes(holders_df, float_df, mgr_df, logger) -> pd.DataFrame:
+L00085 |     """
+L00086 |     公司节点 = 三个数据源里出现过的全部 ts_code.
+L00087 |     """
+L00088 |     ts_codes = set()
+L00089 |     for src_name, df in [("top10_holders", holders_df),
+L00090 |                          ("top10_floatholders", float_df),
+L00091 |                          ("stk_managers", mgr_df)]:
+L00092 |         if df is None or df.empty or "ts_code" not in df.columns:
+L00093 |             continue
+L00094 |         ts_codes |= set(df["ts_code"].dropna().unique())
+L00095 |     ts_codes = sorted(ts_codes)
+L00096 |     rows = []
+L00097 |     for tc in ts_codes:
+L00098 |         rows.append({
+L00099 |             "id": make_company_id(tc),
+L00100 |             "type": "company",
+L00101 |             "ts_code": tc,
+L00102 |             "canonical_name": tc,
+L00103 |             "raw_name_first": tc,
+L00104 |             "source": "ts_code_set",
+L00105 |             "n_records": 1,
+L00106 |         })
+L00107 |     df = pd.DataFrame(rows)
+L00108 |     logger.info("公司节点: %d", len(df))
+L00109 |     return df
+L00110 | 
+L00111 | 
+L00112 | # ============================================================================
+L00113 | # 持有人节点 (top10_holders + top10_floatholders)
+L00114 | # ============================================================================
+L00115 | 
+L00116 | def build_holder_nodes(holders_df, float_df, logger) -> pd.DataFrame:
+L00117 |     """
+L00118 |     从两张 holders 表抽 holder_name → 规范化 + 分类.
+L00119 |     返回 (id, type=person/institution, canonical_name, raw_name_first, source, n_records).
+L00120 |     """
+L00121 |     parts = []
+L00122 |     for src_name, df in [("top10_holders", holders_df),
+L00123 |                          ("top10_floatholders", float_df)]:
+L00124 |         if df is None or df.empty:
+L00125 |             continue
+L00126 |         if "holder_name" not in df.columns:
+L00127 |             logger.warning("[%s] 无 holder_name 列, 跳过", src_name)
+L00128 |             continue
+L00129 |         sub = df[["holder_name"]].copy()
+L00130 |         sub["src"] = src_name
+L00131 |         parts.append(sub)
+L00132 |     if not parts:
+L00133 |         return pd.DataFrame()
+L00134 |     cat = pd.concat(parts, ignore_index=True)
+L00135 |     cat["holder_name"] = cat["holder_name"].astype(str)
+L00136 | 
+L00137 |     # 规范化
+L00138 |     logger.info("规范化 %d 条 holder_name ...", len(cat))
+L00139 |     cat["canonical"] = cat["holder_name"].map(canonicalize_holder)
+L00140 |     cat = cat[cat["canonical"].astype(bool)].reset_index(drop=True)
+L00141 | 
+L00142 |     # 分类
+L00143 |     cat["entity_type"] = cat.apply(
+L00144 |         lambda r: classify_entity(r["canonical"], raw_name=r["holder_name"]),
+L00145 |         axis=1,
+L00146 |     )
+L00147 | 
+L00148 |     # 聚合: 每个 canonical 一个节点, 记录首次出现的 raw_name + 出现总次数
+L00149 |     grp = (cat.groupby(["canonical", "entity_type"])
+L00150 |               .agg(raw_name_first=("holder_name", "first"),
+L00151 |                    n_records=("holder_name", "count"),
+L00152 |                    sources=("src", lambda s: ",".join(sorted(set(s)))))
+L00153 |               .reset_index())
+L00154 | 
+L00155 |     # ID
+L00156 |     def _make_id(row):
+L00157 |         if row["entity_type"] == "person":
+L00158 |             return make_person_id(row["canonical"])
+L00159 |         return make_institution_id(row["canonical"])
+L00160 | 
+L00161 |     grp["id"] = grp.apply(_make_id, axis=1)
+L00162 |     grp = grp.rename(columns={
+L00163 |         "canonical": "canonical_name",
+L00164 |         "entity_type": "type",
+L00165 |         "sources": "source",
+L00166 |     })
+L00167 |     grp = grp[["id", "type", "canonical_name", "raw_name_first",
+L00168 |                "source", "n_records"]]
+L00169 | 
+L00170 |     persons = (grp["type"] == "person").sum()
+L00171 |     insts = (grp["type"] == "institution").sum()
+L00172 |     logger.info("持有人节点: 自然人 %d, 机构 %d (合计 %d)",
+L00173 |                 persons, insts, len(grp))
+L00174 |     return grp
+L00175 | 
+L00176 | 
+L00177 | # ============================================================================
+L00178 | # 高管节点 (stk_managers)
+L00179 | # ============================================================================
+L00180 | 
+L00181 | def build_manager_nodes(mgr_df, logger) -> pd.DataFrame:
+L00182 |     """
+L00183 |     高管几乎全部为自然人 (name 列). 用 classify_entity 兜底, 但绝大多数应为 person.
+L00184 |     """
+L00185 |     if mgr_df is None or mgr_df.empty:
+L00186 |         return pd.DataFrame()
+L00187 |     if "name" not in mgr_df.columns:
+L00188 |         logger.warning("stk_managers 无 name 列, 跳过")
+L00189 |         return pd.DataFrame()
+L00190 | 
+L00191 |     sub = mgr_df[["name"]].copy()
+L00192 |     sub["name"] = sub["name"].astype(str)
+L00193 |     sub["canonical"] = sub["name"].map(canonicalize_holder)
+L00194 |     sub = sub[sub["canonical"].astype(bool)].reset_index(drop=True)
+L00195 |     sub["entity_type"] = sub.apply(
+L00196 |         lambda r: classify_entity(r["canonical"], raw_name=r["name"]),
+L00197 |         axis=1,
+L00198 |     )
+L00199 | 
+L00200 |     grp = (sub.groupby(["canonical", "entity_type"])
+L00201 |               .agg(raw_name_first=("name", "first"),
+L00202 |                    n_records=("name", "count"))
+L00203 |               .reset_index())
+L00204 | 
+L00205 |     def _make_id(row):
+L00206 |         if row["entity_type"] == "person":
+L00207 |             return make_person_id(row["canonical"])
+L00208 |         return make_institution_id(row["canonical"])
+L00209 | 
+L00210 |     grp["id"] = grp.apply(_make_id, axis=1)
+L00211 |     grp = grp.rename(columns={
+L00212 |         "canonical": "canonical_name",
+L00213 |         "entity_type": "type",
+L00214 |     })
+L00215 |     grp["source"] = "stk_managers"
+L00216 |     grp = grp[["id", "type", "canonical_name", "raw_name_first",
+L00217 |                "source", "n_records"]]
+L00218 | 
+L00219 |     persons = (grp["type"] == "person").sum()
+L00220 |     insts = (grp["type"] == "institution").sum()
+L00221 |     logger.info("高管节点: 自然人 %d, 机构 %d (合计 %d)",
+L00222 |                 persons, insts, len(grp))
+L00223 |     return grp
+L00224 | 
+L00225 | 
+L00226 | # ============================================================================
+L00227 | # 合并 + 去重 (跨数据源同 id 应合并)
+L00228 | # ============================================================================
+L00229 | 
+L00230 | def merge_node_tables(*tables, logger) -> pd.DataFrame:
+L00231 |     valid = [t for t in tables if t is not None and not t.empty]
+L00232 |     if not valid:
+L00233 |         return pd.DataFrame()
+L00234 |     cat = pd.concat(valid, ignore_index=True)
+L00235 | 
+L00236 |     # 同 id 合并 (跨数据源)
+L00237 |     grp = (cat.groupby("id")
+L00238 |               .agg(type=("type", "first"),
+L00239 |                    canonical_name=("canonical_name", "first"),
+L00240 |                    raw_name_first=("raw_name_first", "first"),
+L00241 |                    source=("source", lambda s: ",".join(sorted(set(",".join(s).split(","))))),
+L00242 |                    n_records=("n_records", "sum"))
+L00243 |               .reset_index())
+L00244 |     logger.info("合并后节点总数: %d", len(grp))
+L00245 |     logger.info("  按 type 分布: %s",
+L00246 |                 dict(grp["type"].value_counts()))
+L00247 |     return grp
+L00248 | 
+L00249 | 
+L00250 | # ============================================================================
+L00251 | # 边界情形审核队列
+L00252 | # ============================================================================
+L00253 | 
+L00254 | def export_review_queue(nodes_df: pd.DataFrame, logger) -> int:
+L00255 |     """
+L00256 |     导出可疑节点供人工复核:
+L00257 |       - canonical_name 长度 ≤ 1 (异常短)
+L00258 |       - canonical_name 长度 > 30 (异常长)
+L00259 |       - n_records == 1 且类型为 institution (一次性出现, 可能是数据错误)
+L00260 |       - 自然人但 raw_name_first 含数字 / ASCII (可能误判)
+L00261 |     """
+L00262 |     issues = []
+L00263 |     for _, r in nodes_df.iterrows():
+L00264 |         if r["type"] == "company":
+L00265 |             continue
+L00266 |         cn = r["canonical_name"]
+L00267 |         rn = r["raw_name_first"]
+L00268 |         n = r["n_records"]
+L00269 |         flags = []
+L00270 |         if len(cn) <= 1:
+L00271 |             flags.append("too_short")
+L00272 |         if len(cn) > 30:
+L00273 |             flags.append("too_long")
+L00274 |         if r["type"] == "institution" and n == 1:
+L00275 |             flags.append("singleton_inst")
+L00276 |         if r["type"] == "person":
+L00277 |             import re as _re
+L00278 |             if _re.search(r"[A-Za-z0-9]", rn or ""):
+L00279 |                 flags.append("person_has_ascii")
+L00280 |             if len(cn) > 6:
+L00281 |                 flags.append("person_too_long")
+L00282 |         if flags:
+L00283 |             issues.append({
+L00284 |                 "id": r["id"],
+L00285 |                 "type": r["type"],
+L00286 |                 "canonical_name": cn,
+L00287 |                 "raw_name_first": rn,
+L00288 |                 "n_records": n,
+L00289 |                 "flags": ",".join(flags),
+L00290 |             })
+L00291 |     if not issues:
+L00292 |         logger.info("审核队列: 无可疑节点")
+L00293 |         return 0
+L00294 |     df = pd.DataFrame(issues)
+L00295 |     out = STATS_DIR / "build_kg_nodes_review_queue.csv"
+L00296 |     df.to_csv(out, index=False, encoding="utf-8-sig")
+L00297 |     logger.info("审核队列: %d 条, 写入 %s", len(df), out)
+L00298 |     return len(df)
+L00299 | 
+L00300 | 
+L00301 | # ============================================================================
+L00302 | # 主流程
+L00303 | # ============================================================================
+L00304 | 
+L00305 | def main() -> int:
+L00306 |     p = argparse.ArgumentParser()
+L00307 |     p.add_argument("--no-export", action="store_true",
+L00308 |                    help="跳过 parquet 输出 (仅做统计验证)")
+L00309 |     args = p.parse_args()
+L00310 | 
+L00311 |     logger = setup_logger(TASK)
+L00312 |     paths = get_paths()
+L00313 | 
+L00314 |     # ---- 1. 读三个原始数据源 ----
+L00315 |     holders = load_partitions(paths["TOP10_HOLDERS_DIR"], logger)
+L00316 |     floaters = load_partitions(paths["TOP10_FLOAT_DIR"], logger)
+L00317 |     mgrs = load_partitions(paths["STK_MANAGERS_DIR"], logger)
+L00318 | 
+L00319 |     if holders.empty and floaters.empty and mgrs.empty:
+L00320 |         logger.error("三个数据源都为空, 退出")
+L00321 |         return 1
+L00322 | 
+L00323 |     # ---- 2. 构造各类节点 ----
+L00324 |     company_nodes = build_company_nodes(holders, floaters, mgrs, logger)
+L00325 |     holder_nodes = build_holder_nodes(holders, floaters, logger)
+L00326 |     mgr_nodes = build_manager_nodes(mgrs, logger)
+L00327 | 
+L00328 |     # ---- 3. 合并 ----
+L00329 |     all_nodes = merge_node_tables(company_nodes, holder_nodes, mgr_nodes,
+L00330 |                                   logger=logger)
+L00331 | 
+L00332 |     # ---- 4. 审核队列 ----
+L00333 |     n_review = export_review_queue(all_nodes, logger)
+L00334 | 
+L00335 |     # ---- 5. 统计 ----
+L00336 |     stats = {
+L00337 |         "raw": {
+L00338 |             "top10_holders_rows": int(len(holders)),
+L00339 |             "top10_float_rows": int(len(floaters)),
+L00340 |             "stk_managers_rows": int(len(mgrs)),
+L00341 |         },
+L00342 |         "nodes": {
+L00343 |             "total": int(len(all_nodes)),
+L00344 |             "by_type": {k: int(v) for k, v in
+L00345 |                         all_nodes["type"].value_counts().to_dict().items()},
+L00346 |             "n_records_distribution": {
+L00347 |                 "p50": int(all_nodes["n_records"].quantile(0.5)),
+L00348 |                 "p90": int(all_nodes["n_records"].quantile(0.9)),
+L00349 |                 "p99": int(all_nodes["n_records"].quantile(0.99)),
+L00350 |                 "max": int(all_nodes["n_records"].max()),
+L00351 |             },
+L00352 |             "review_queue_size": n_review,
+L00353 |         },
+L00354 |         "company_count_check": {
+L00355 |             "expected_5341_or_so": True,
+L00356 |             "actual": int((all_nodes["type"] == "company").sum()),
+L00357 |         },
+L00358 |     }
+L00359 |     write_stats_json(TASK, stats)
+L00360 |     logger.info("统计已写入 %s/%s.json", STATS_DIR, TASK)
+L00361 | 
+L00362 |     # ---- 6. 输出 parquet ----
+L00363 |     if not args.no_export:
+L00364 |         all_nodes.to_parquet(KG_DIR / "nodes.parquet", index=False, compression="snappy")
+L00365 |         company_nodes.to_parquet(KG_DIR / "companies.parquet", index=False, compression="snappy")
+L00366 |         persons = all_nodes[all_nodes["type"] == "person"]
+L00367 |         insts = all_nodes[all_nodes["type"] == "institution"]
+L00368 |         persons.to_parquet(KG_DIR / "persons.parquet", index=False, compression="snappy")
+L00369 |         insts.to_parquet(KG_DIR / "institutions.parquet", index=False, compression="snappy")
+L00370 |         logger.info("nodes.parquet 等已写入 %s", KG_DIR)
+L00371 | 
+L00372 |     logger.info("=" * 60)
+L00373 |     logger.info("build_kg_nodes 完成")
+L00374 |     logger.info("  公司:   %d", int((all_nodes["type"] == "company").sum()))
+L00375 |     logger.info("  自然人: %d", int((all_nodes["type"] == "person").sum()))
+L00376 |     logger.info("  机构:   %d", int((all_nodes["type"] == "institution").sum()))
+L00377 |     logger.info("  审核队列: %d", n_review)
+L00378 |     logger.info("=" * 60)
+L00379 |     return 0
+L00380 | 
+L00381 | 
+L00382 | if __name__ == "__main__":
+L00383 |     sys.exit(main())

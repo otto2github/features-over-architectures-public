@@ -1,0 +1,400 @@
+{
+  "scope": "Available source code. Parsing is not an empirical execution test. Restricted entries may require original private inputs and environment.",
+  "files": [
+    {
+      "path": "code/extension/fixed_score/extension_fixedscore.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/extension/fixed_score/fs_math.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/extension/fixed_score/launch.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/extension/fixed_score/selftest.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/extension/freeze/freeze_extension.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/extension/runner/extension_lock_training.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/extension/runner/extension_orchestrator.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/extension/runner/extension_runner.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/extension/runner/extension_runner_audit.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/historical_reference/gnn_baseline_v1_1.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/aggregate_core.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/audit_ablation_runner.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/formal_rerun_core.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageA.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageB.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageB1.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageB2.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageB3.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageB3b.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageB3c.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageB3d.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageC.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageD.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageE.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageF.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/label_construction/peerj_label_v1_stageG4.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/peerj_calibration_mlp_m11_v1.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/peerj_posthoc_comprehensive_bootstrap_v3.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/peerj_structural_baselines_v1.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/peerj_tabular_primary_v1.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/peerj_tabular_weighted_v1.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/primary_diagnostics/auditlib/__init__.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/primary_diagnostics/auditlib/common.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/primary_diagnostics/auditlib/endpoints.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/primary_diagnostics/auditlib/financials.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/primary_diagnostics/auditlib/graphs.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/primary_diagnostics/auditlib/metrics.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/primary_diagnostics/auditlib/predictions.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/primary_diagnostics/peerj_final_check.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/recovered_builders/A0004_integrate_audit_features.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/recovered_builders/A0007_integrate_controller_features.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/recovered_builders/A0009_integrate_audit_features.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/recovered_builders/A0017_build_kg_nodes.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/recovered_builders/A0020_build_kg_edges.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/recovered_builders/A0032_integrate_controller_features.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/recovered_builders/A0033_merge_features_v1_1.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/recovered_builders/A0034_integrate_audit_features.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/recovered_builders/A0036_merge_features_v1_0.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/run_matrix.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/sensitivity_experiment/code/build_asof_features.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/sensitivity_experiment/code/build_fixed1095_labels.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/sensitivity_experiment/code/formal_rerun_core.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/sensitivity_experiment/code/run_sensitivities.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/asof_rules.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/baseline_audit/auditlib/__init__.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/baseline_audit/auditlib/common.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/baseline_audit/auditlib/endpoints.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/baseline_audit/auditlib/financials.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/baseline_audit/auditlib/graphs.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/baseline_audit/auditlib/metrics.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/baseline_audit/auditlib/predictions.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/baseline_audit/peerj_final_check.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/predecessor/subset_diagnostics/postprocess.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/replay/replay_worker.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/replay/run_replay_audit.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/fixed_score/fs_compute.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/fixed_score/fs_io.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/fixed_score/fs_math.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/fixed_score/launch.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/fixed_score/reference/predecessor_metrics_reference.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/fixed_score/reference/predecessor_resampling_reference.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/fixed_score/run_fixedscore.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/fixed_score/selftest.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/production/formal_rerun_core_REFERENCE.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/production/p2b_audit.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/production/sensitivity_lock_training.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/production/sensitivity_orchestrator.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/production/sensitivity_runner.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    },
+    {
+      "path": "code/sensitivity/production/stable_metrics.py",
+      "python_syntax_parses": true,
+      "full_empirical_execution_validated_in_this_release": false
+    }
+  ]
+}

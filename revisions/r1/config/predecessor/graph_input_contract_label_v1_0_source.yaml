@@ -1,0 +1,65 @@
+# Executed consumer-input contract, not a recovered upstream graph builder.
+version: label_v1_0_input_contract_v8
+document_role: executed_loader_and_artifact_inventory
+public_release: false
+upstream_construction_verified: false
+historical_asof_availability_verified: false
+basis:
+  core_source_sha256: 6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7
+  feature_artifact_sha256: adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2
+  label_artifact_sha256: 1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836
+  edge_artifact_sha256: dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09
+  derived_mapping_sha256: 5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770
+observation_unit: company_fiscal_year
+full_feature_panel_rows: 51675
+entity_mapping:
+  original_nodes: 303771
+  appended_isolated_company_nodes: 4
+  executed_total_nodes: 303775
+  firm_year_rows_are_distinct_persistent_node_ids: false
+primary_label:
+  column: label_v1_strict_ab_primary
+  observed_cutoff: '2026-05-08'
+  minimum_followup_days: 1095
+  fixed_1095_day_event_horizon: false
+  train_years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
+  validation_years: [2019, 2020]
+  test_years: [2021, 2022]
+  eligible_counts: {train: 24106, validation: 7309, test: 8435}
+  positive_counts: {train: 254, validation: 40, test: 20}
+feature_selection:
+  rule: alphabetical_column_name_sort_after_prefix_selection
+  M5_prefixes: [feat_, fin_, fini_]
+  M10_prefixes: [feat_, fin_, fini_, audit_, pld_, ctrl_]
+  M11_prefixes: [feat_, fin_, fini_, audit_, pld_, ctrl_, rpt_]
+  dimensions: {M5: 104, M10: 122, M11: 129, M11_without_audit: 124, G6: 1}
+  current_column_inventory: display_tables/feature_input_inventory_v8.csv
+  formulas_invented_from_identifiers: false
+annual_graph_consumer:
+  stored_columns: [src_idx, dst_idx, edge_type, year]
+  year_rule: 'edge.year == target_fiscal_year'
+  general_reverse_edge_expansion: false
+  layer_specific_self_or_root_contributions: part_of_estimator_not_removed
+  current_year_company_inputs: substantive_features_or_G6_one
+  other_node_inputs: zero_vector
+  full_artifact_edge_records_2010_2024: 4469735
+  consumed_edge_records_2010_2022: 3278898
+  transaction_level_RPT_edges: not_in_this_artifact
+relations:
+  # Labels below come from the extension-source documentation, not row-level verification.
+  - {id: E1_HOLDS_BY, full_edge_records: 509140, documented_label: company_to_large_shareholder}
+  - {id: E2_FLOAT_HELD_BY, full_edge_records: 976276, documented_label: company_to_tradable_share_shareholder}
+  - {id: E3_HAS_MANAGER, full_edge_records: 2008674, documented_label: company_to_manager}
+  - {id: E4_CO_HELD, full_edge_records: 427679, documented_label: common_shareholding, original_projection_rule: unresolved}
+  - {id: E5_CO_MGR, full_edge_records: 547966, documented_label: shared_manager, original_projection_rule: unresolved}
+legacy_documents:
+  knowledge_graph_schema_yaml: historical_manuscript_derived_not_authoritative_for_this_loader
+  data_dictionary_csv: identity_inventory_with_generic_descriptions_not_formula_provenance
+historical_extension_statistics:
+  status: saved_build_summaries_not_new_graph_reconstruction
+  base_only_v12_records: 4469735
+  separate_v12_full_records: 5593999
+  recorded_e7_input: 1142297
+  recorded_e7_kept: 1124264
+  recorded_e7_skipped: 18033
+  current_label_v1_RPT_experiment: false

@@ -1,0 +1,8 @@
+{
+  "audit_action": "Post-results technical replay only: load the frozen Stage-T checkpoint and original inputs, explicitly establish the frozen strict deterministic settings, run the exact frozen infer_test path once, and compare against immutable frozen Stage-E predictions.",
+  "finding_id": "EXEC-01-REPLAY",
+  "interpretation_rule": "Exact replay supports empirical reproducibility of the frozen predictions in the pinned environment but does not retroactively make the original Stage-E process explicitly strict. Any non-exact replay is preserved and reviewed; replay never replaces the frozen result.",
+  "original_fact": "The frozen Stage-E code did not explicitly call strict_seed/use_deterministic_algorithms in each inference process.",
+  "original_files_overwritten": false,
+  "scientific_retraining": false
+}

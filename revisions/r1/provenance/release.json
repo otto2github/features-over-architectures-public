@@ -1,0 +1,31 @@
+{
+  "edition": "R1",
+  "status": "identifiers_reserved_source_commit_and_publication_pending",
+  "manuscript_id": "CS-2026:06:141707",
+  "version_doi": "10.5281/zenodo.23181609",
+  "git_tag": "cs141707-r1",
+  "git_commit_sha": null,
+  "historical_public_predecessor": {
+    "version_doi": "10.5281/zenodo.22958631",
+    "concept_doi": "10.5281/zenodo.20558032",
+    "git_tag": "v24-cs141707-20260925",
+    "archive_sha256": "61d05e6b39103bb23f417241be0131cc74181fdb9737c9805a2ecb284519b9c7",
+    "identity_evidence": "SHA-256 of the exact nested predecessor bytes supplied with the author baseline; not independent online authentication"
+  },
+  "science_changed": true,
+  "new_fits": 40,
+  "new_predictions": 40,
+  "new_empirical_resampling_draws": 4000,
+  "additional_programme": "separate conservative RPT record-incidence extension (E7) and separate earlier evaluation window (W2)",
+  "original_V35_scientific_record_preserved": true,
+  "prediction_count_unit": "forty newly inferred model probability vectors (20 E7, 20 W2); no private scores distributed",
+  "new_empirical_resampling_draws_scope": "2000 fixed-score company-and-paired-seed draws for E7 and 2000 for W2, not new fits",
+  "edition_meaning": "first revision (R1) of PeerJ CS-2026:06:141707; internal draft numbers are not used as public identifiers",
+  "added_reader_evidence": [
+    "aggregates/e7/FULL_BOOTSTRAP_DIFFERENCES.npy (exported unchanged from the original E7 run)",
+    "run_records/label_construction/label_v1_stageD_report.txt (historical label-source audit)",
+    "run_records/metric_checks/R10_ALL_THRESHOLDS_CHECK.json (read-only metric-definition check)",
+    "aggregates/w2/ and run_records/w2/ (separately specified 20-fit earlier evaluation window, test years 2019-2020)",
+    "aggregates/precision/PRECISION_OF_CONTRASTS.json (bootstrap SE and approximate minimum detectable differences; no new resampling)"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "baseline": "Frozen label/feature protocol; fixed-prediction diagnostic analysis used in v19 and retained in v20",
+  "role": "financial_masks",
+  "state": "PARTIAL",
+  "started": "2026-09-25T10:32:27.225180+08:00",
+  "finished": "2026-09-25T10:32:49.996336+08:00",
+  "training_executed": false,
+  "paper_files_modified": false,
+  "network_requests": false,
+  "source_writes_requested": false,
+  "checks": [
+    {
+      "module": "financial_vintage",
+      "state": "PARTIAL",
+      "note": "Current-snapshot selection replay and numeric compatibility completed; historical as-of correctness is not certified.",
+      "problems": [
+        "FROZEN_COLUMN_NOT_FOUND:fini_bps_t0",
+        "FROZEN_COLUMN_NOT_FOUND:fini_cfps_t0",
+        "FROZEN_COLUMN_NOT_FOUND:fini_ebit_ps_t0",
+        "FROZEN_COLUMN_NOT_FOUND:fini_eps_t0",
+        "FROZEN_COLUMN_NOT_FOUND:fini_fcfe_ps_t0",
+        "FROZEN_COLUMN_NOT_FOUND:fini_fcff_ps_t0",
+        "FROZEN_COLUMN_NOT_FOUND:fini_ocfps_t0",
+        "FROZEN_COLUMN_NOT_FOUND:fini_total_revenue_ps_t0",
+        "FROZEN_COLUMN_NOT_FOUND:fini_undist_profit_ps_t0"
+      ],
+      "n_unchecked_standardized_columns": 24
+    },
+    {
+      "module": "financial_mask_export",
+      "state": "PASS",
+      "scope": "old fin exposure and as-of missing-source marginals exactly reconciled; no clean-input certification"
+    },
+    {
+      "module": "input_stability",
+      "state": "PASS",
+      "method": "size_and_mtime_after_full_sha256_at_first_read",
+      "scope": "no concurrent writer proven only to recorded checks"
+    }
+  ],
+  "publication_version": "v20",
+  "execution_metadata_preserved_except_publication_labels": true
+}

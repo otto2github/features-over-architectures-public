@@ -1,0 +1,350 @@
+"""
+P4.5.1 Step 2: compute_fina_indicator_v0.py  (v2: ts_code fallback fix)
+=======================================================================
+
+修复 (2026-05-06 12:55):
+  derived_financials_v0.parquet 不含 ts_code 列 (实际: firm_id, year,
+  industry + 9 派生指标). 改从 insider_features_v0_full.parquet 反查 ts_code.
+
+目标:
+  从 fina_indicator 表抽取 51 t0 + 12 t1 + 15 zind, align 到 51,675 firm-years,
+  输出 fina_indicator_v0.parquet.
+
+决策依据 (I 系列):
+  I7   : end_date LIKE '%1231'
+  I9.1 : 同 (ts_code, end_date) 取 ann_date 最大者
+  I10  : pd.to_numeric(errors='coerce')
+  I11  : firm_id ↔ ts_code 映射从 insider_features_v0_full 反查
+  I12  : zind (year, industry), min_samples=10
+  I13  : 51 t0 / 12 t1 / 15 zind
+  I13.3.1-8 : 子规则全部落实
+
+作者: Otto (CYQ)
+日期: 2026-05-06
+"""
+
+import sqlite3
+import logging
+import time
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+# ---------------- 配置 ----------------
+PROJECT_ROOT = Path.home() / "code" / "thesis_project"
+DB_FIN = PROJECT_ROOT / "data" / "raw" / "financials" / "financials.db"
+DB_BASIC = PROJECT_ROOT / "data" / "raw" / "stock_basic.db"
+
+BASE_PARQUET = PROJECT_ROOT / "data" / "processed" / "features" / "derived_financials_v0.parquet"
+TS_MAP_PARQUET = PROJECT_ROOT / "data" / "processed" / "features" / "insider_features_v0_full.parquet"
+
+OUTPUT_DIR = PROJECT_ROOT / "data" / "processed" / "features"
+OUTPUT_PARQUET = OUTPUT_DIR / "fina_indicator_v0.parquet"
+
+LOG_DIR = PROJECT_ROOT / "data" / "interim" / "p4_5_1_compute"
+LOG_PATH = LOG_DIR / "compute_fina_indicator.log"
+
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+# ---------------- 字段清单 (I13) ----------------
+
+T0_FIELDS = [
+    "current_ratio", "quick_ratio", "cash_ratio",
+    "assets_turn", "fa_turn", "ca_turn", "turn_days",
+    "assets_yoy", "equity_yoy", "bps_yoy", "tr_yoy", "op_yoy",
+    "ebt_yoy", "netprofit_yoy", "dt_eps_yoy", "ocf_yoy", "roe_yoy",
+    "ocfps", "cfps", "ocf_to_debt", "ocf_to_shortdebt",
+    "q_ocf_to_sales", "fcfe_ps", "fcff_ps",
+    "profit_to_gr", "profit_to_op", "op_of_gr", "gc_of_gr",
+    "ebit_of_gr", "roic", "ebit_ps",
+    "adminexp_of_gr", "finaexp_of_gr", "expense_of_sales", "saleexp_to_gr",
+    "roa", "roe", "npta",
+    "eqt_to_debt", "assets_to_eqt", "debt_to_eqt",
+    "eqt_to_talcapital", "eqt_to_interestdebt",
+    "currentdebt_to_debt", "tangibleasset_to_debt",
+    "ca_to_assets", "tbassets_to_totalassets",
+    "bps", "eps", "undist_profit_ps", "total_revenue_ps",
+]
+assert len(T0_FIELDS) == 51
+
+T1_FIELDS = [
+    "current_ratio", "quick_ratio",
+    "assets_turn",
+    "roa", "roe", "npta",
+    "profit_to_gr", "op_of_gr",
+    "ocf_to_debt", "q_ocf_to_sales",
+    "debt_to_eqt", "assets_to_eqt",
+]
+assert len(T1_FIELDS) == 12
+
+ZIND_FIELDS = [
+    "current_ratio", "quick_ratio",
+    "assets_turn", "fa_turn",
+    "roa", "roe", "npta",
+    "profit_to_gr", "op_of_gr", "ebit_of_gr",
+    "ocf_to_debt", "q_ocf_to_sales", "ocfps",
+    "debt_to_eqt", "assets_to_eqt",
+]
+assert len(ZIND_FIELDS) == 15
+
+ZIND_MIN_SAMPLES = 10
+PREFIX = "fini_"
+
+
+# ---------------- 工具 ----------------
+
+def setup_logging():
+    for h in list(logging.getLogger().handlers):
+        logging.getLogger().removeHandler(h)
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[
+            logging.FileHandler(LOG_PATH, encoding="utf-8"),
+            logging.StreamHandler(),
+        ],
+    )
+
+
+def load_base():
+    """构造 base = (firm_id, year, ts_code).
+
+    行集来自 derived_financials_v0.parquet,
+    ts_code 反查自 insider_features_v0_full.parquet.
+    """
+    log = logging.getLogger()
+
+    log.info(f"读行集: {BASE_PARQUET}")
+    if not BASE_PARQUET.exists():
+        raise FileNotFoundError(f"行集 parquet 不存在: {BASE_PARQUET}")
+    base_df = pd.read_parquet(BASE_PARQUET)
+    log.info(f"  shape: {base_df.shape}")
+
+    for k in ["firm_id", "year"]:
+        if k not in base_df.columns:
+            raise ValueError(f"行集缺少 {k}; 实际列: {list(base_df.columns)[:30]}")
+
+    if "ts_code" in base_df.columns:
+        log.info("  base 自带 ts_code")
+        base = base_df[["firm_id", "year", "ts_code"]].copy()
+    else:
+        log.info(f"  base 缺 ts_code, 从 {TS_MAP_PARQUET.name} 反查...")
+        if not TS_MAP_PARQUET.exists():
+            raise FileNotFoundError(
+                f"ts_code 反查源不存在: {TS_MAP_PARQUET}\n"
+                f"请确认 P5.2 共用清洁全集 insider_features_v0_full.parquet 是否在该路径"
+            )
+        ts_df = pd.read_parquet(TS_MAP_PARQUET)
+        log.info(f"  ts_map shape: {ts_df.shape}")
+
+        ts_col = next(
+            (c for c in ["ts_code", "stock_code", "code", "symbol"] if c in ts_df.columns),
+            None,
+        )
+        if ts_col is None:
+            raise ValueError(
+                f"insider_features_v0_full 也找不到 ts_code 列\n"
+                f"  实际列前 30: {list(ts_df.columns)[:30]}\n"
+                f"  请人工确认 ts_code 真值表存放位置"
+            )
+        if ts_col != "ts_code":
+            ts_df = ts_df.rename(columns={ts_col: "ts_code"})
+            log.info(f"  ts_code 列别名: {ts_col} → ts_code")
+
+        ts_subset = ts_df[["firm_id", "year", "ts_code"]].copy()
+        n_before = len(ts_subset)
+        n_unique = ts_subset.drop_duplicates(["firm_id", "year"]).shape[0]
+        if n_before != n_unique:
+            log.warning(
+                f"  ts_map 有 {n_before - n_unique} 个 (firm_id, year) 含多 ts_code, 取 first"
+            )
+            ts_subset = ts_subset.drop_duplicates(["firm_id", "year"], keep="first")
+        log.info(f"  ts_map 唯一 (firm_id, year) → ts_code: {len(ts_subset):,}")
+
+        base = base_df[["firm_id", "year"]].merge(
+            ts_subset, on=["firm_id", "year"], how="left"
+        )
+        n_no_ts = base["ts_code"].isna().sum()
+        log.info(f"  merge 后 ts_code NaN: {n_no_ts:,} / {len(base):,} ({n_no_ts/len(base):.1%})")
+        if n_no_ts == len(base):
+            raise ValueError("merge 后 ts_code 全 NaN, firm_id 主键不匹配")
+
+    base["year"] = base["year"].astype(int)
+    base = base.drop_duplicates()
+    log.info(f"  最终 base 行数: {len(base):,}")
+    log.info(f"  最终 base 唯一 ts_code: {base['ts_code'].nunique():,}")
+    log.info(f"  最终 base 年份: {base['year'].min()}-{base['year'].max()}")
+    return base
+
+
+def load_industry():
+    log = logging.getLogger()
+    log.info(f"读 stock_basic: {DB_BASIC}")
+    if not DB_BASIC.exists():
+        raise FileNotFoundError(f"stock_basic.db 不存在: {DB_BASIC}")
+    conn = sqlite3.connect(str(DB_BASIC))
+    df = pd.read_sql("SELECT ts_code, industry FROM stock_basic", conn)
+    conn.close()
+    n_no = df["industry"].isna().sum()
+    log.info(f"  shape: {df.shape}, industry NaN: {n_no:,}")
+    return df.drop_duplicates(subset=["ts_code"])
+
+
+def load_fina_indicator(base_ts_codes):
+    log = logging.getLogger()
+    log.info(f"读 fina_indicator: {DB_FIN}")
+    needed_cols = ["ts_code", "ann_date", "end_date"] + T0_FIELDS
+
+    placeholders = ",".join("?" * len(base_ts_codes))
+    cols_str = ", ".join(needed_cols)
+    sql = f"""
+        SELECT {cols_str}
+        FROM fina_indicator
+        WHERE end_date LIKE '%1231'
+          AND ts_code IN ({placeholders})
+    """
+
+    conn = sqlite3.connect(str(DB_FIN))
+    t = time.time()
+    df = pd.read_sql(sql, conn, params=list(base_ts_codes))
+    conn.close()
+    log.info(f"  I7 + ts_code 白名单后: {len(df):,} 行 ({time.time()-t:.1f}s)")
+
+    df["ann_date"] = pd.to_numeric(df["ann_date"], errors="coerce")
+    df = df.sort_values("ann_date", ascending=False)
+    n_before = len(df)
+    df = df.drop_duplicates(subset=["ts_code", "end_date"], keep="first")
+    log.info(f"  I9.1 ann_date 最大者去重后: {len(df):,} (减少 {n_before - len(df):,})")
+
+    coerce_cnt = 0
+    for f in T0_FIELDS:
+        if f in df.columns:
+            before_na = df[f].isna().sum()
+            df[f] = pd.to_numeric(df[f], errors="coerce")
+            if df[f].isna().sum() > before_na:
+                coerce_cnt += 1
+    log.info(f"  I10 to_numeric: {coerce_cnt}/{len(T0_FIELDS)} 字段产生新 NaN")
+
+    df["year"] = df["end_date"].str[:4].astype(int)
+    yc = df.groupby("year").size()
+    log.info(f"  年份覆盖: {yc.min()} (year={yc.idxmin()}) - {yc.max()} (year={yc.idxmax()})")
+    return df
+
+
+def make_t0(fina_df, base):
+    log = logging.getLogger()
+    rename = {f: f"{PREFIX}{f}_t0" for f in T0_FIELDS}
+    fina_t0 = fina_df[["ts_code", "year"] + T0_FIELDS].rename(columns=rename)
+
+    out = base.merge(fina_t0, on=["ts_code", "year"], how="left")
+    log.info(f"  t0 align 后 shape: {out.shape}")
+
+    nans = []
+    for f in T0_FIELDS:
+        col = f"{PREFIX}{f}_t0"
+        if col in out.columns:
+            nans.append((col, out[col].isna().mean()))
+    nans.sort(key=lambda x: -x[1])
+    log.info("  t0 NaN 率 top 5 高:")
+    for col, r in nans[:5]:
+        log.info(f"    {col}: {r:.1%}")
+    log.info("  t0 NaN 率 top 5 低:")
+    for col, r in nans[-5:]:
+        log.info(f"    {col}: {r:.1%}")
+    return out
+
+
+def add_t1(out, fina_df):
+    log = logging.getLogger()
+    fina_t1 = fina_df[["ts_code", "year"] + T1_FIELDS].copy()
+    fina_t1["year"] = fina_t1["year"] + 1
+    rename = {f: f"{PREFIX}{f}_t1" for f in T1_FIELDS}
+    fina_t1 = fina_t1.rename(columns=rename)
+
+    out = out.merge(fina_t1, on=["ts_code", "year"], how="left")
+    log.info(f"  +t1 shape: {out.shape}")
+
+    log.info("  t1 NaN 率 (高 → 低):")
+    nans = []
+    for f in T1_FIELDS:
+        col = f"{PREFIX}{f}_t1"
+        if col in out.columns:
+            nans.append((col, out[col].isna().mean()))
+    nans.sort(key=lambda x: -x[1])
+    for col, r in nans:
+        log.info(f"    {col}: {r:.1%}")
+    return out
+
+
+def add_zind(out, industry_df):
+    log = logging.getLogger()
+    out = out.merge(industry_df, on="ts_code", how="left")
+    n_no_ind = out["industry"].isna().sum()
+    log.info(f"  industry NaN: {n_no_ind:,} / {len(out):,} ({n_no_ind/len(out):.1%})")
+
+    for f in ZIND_FIELDS:
+        t0_col = f"{PREFIX}{f}_t0"
+        z_col = f"{PREFIX}{f}_t0_zind"
+        if t0_col not in out.columns:
+            log.warning(f"  跳过 {f}: t0 列缺失")
+            out[z_col] = np.nan
+            continue
+
+        grp = out.groupby(["year", "industry"], dropna=False)[t0_col]
+        gmean = grp.transform("mean")
+        gstd = grp.transform("std")
+        gcnt = grp.transform("count")
+
+        z = (out[t0_col] - gmean) / gstd
+        z = z.where((gcnt >= ZIND_MIN_SAMPLES) & (gstd > 0))
+        z = z.where(out["industry"].notna())
+        out[z_col] = z
+
+        valid = z.notna().sum()
+        log.info(f"    {z_col}: valid {valid:,} ({valid/len(out):.1%})")
+    return out
+
+
+def main():
+    setup_logging()
+    log = logging.getLogger()
+    log.info("=" * 70)
+    log.info("P4.5.1 Step 2: compute_fina_indicator_v0 (v2 ts_code fix)")
+    log.info("=" * 70)
+    log.info(f"决策: I7 / I9.1 / I10 / I11 / I12 / I13 / I13.3.1-8")
+    log.info(f"字段: {len(T0_FIELDS)} t0 + {len(T1_FIELDS)} t1 + {len(ZIND_FIELDS)} zind")
+    log.info("")
+
+    base = load_base()
+    industry_df = load_industry()
+    fina_df = load_fina_indicator(base["ts_code"].dropna().unique().tolist())
+
+    out = make_t0(fina_df, base)
+    out = add_t1(out, fina_df)
+    out = add_zind(out, industry_df)
+
+    log.info("")
+    log.info(f"最终输出 shape: {out.shape}")
+    fini_cols = [c for c in out.columns if c.startswith(PREFIX)]
+    log.info(f"  fini_ 列总数: {len(fini_cols)}")
+    log.info(f"  含 t0: {sum(1 for c in fini_cols if c.endswith('_t0'))}")
+    log.info(f"  含 t1: {sum(1 for c in fini_cols if c.endswith('_t1'))}")
+    log.info(f"  含 zind: {sum(1 for c in fini_cols if c.endswith('_zind'))}")
+
+    out.to_parquet(OUTPUT_PARQUET, index=False)
+    log.info(f"[OK] 已写入: {OUTPUT_PARQUET}")
+    log.info(f"     {len(out):,} 行 × {len(out.columns)} 列")
+
+    log.info("")
+    log.info("[Sanity] 至少 1 个 fini_ 非 NaN 的行:")
+    has_any = out[fini_cols].notna().any(axis=1).sum()
+    log.info(f"  {has_any:,} / {len(out):,} ({has_any/len(out):.1%})")
+    if has_any < len(out) * 0.85:
+        log.warning(f"  覆盖率偏低！需排查 ts_code 映射或年份对齐")
+    log.info("=" * 70)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,12 @@
+{
+  "company_seed": 1807141,
+  "fit_seed": 1807142,
+  "replicates": 2000,
+  "single_class_redraws": 0,
+  "scheme": "shared company draw crossed with matched seed-label draw",
+  "n_fit_records": 70,
+  "new_fits": 0,
+  "scope": "conditional on fixed datasets, target policies and five observed fits; no case/network bootstrap or training-data uncertainty",
+  "top5": "company/year ascending then stable score descending; archived values and tie bounds retained",
+  "source_masks": "absence/exposure diagnostics, not certification of clean inputs or new cases"
+}

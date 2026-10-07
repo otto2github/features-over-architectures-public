@@ -1,0 +1,464 @@
+[
+  {
+    "coefficients": {
+      "A|MLP|M11": 1.0,
+      "V26|MLP|M11": -1.0
+    },
+    "contrast_id": "A_minus_V26__MLP",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|RandomForest_unweighted|M11": 1.0,
+      "V26|RandomForest_unweighted|M11": -1.0
+    },
+    "contrast_id": "A_minus_V26__RandomForest_unweighted",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GCN_reverse|M11": 1.0,
+      "V26|GCN_reverse|M11": -1.0
+    },
+    "contrast_id": "A_minus_V26__GCN_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GraphSAGE_reverse|M11": 1.0,
+      "V26|GraphSAGE_reverse|M11": -1.0
+    },
+    "contrast_id": "A_minus_V26__GraphSAGE_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GCN_reverse|M11": -1.0,
+      "A|MLP|M11": 1.0
+    },
+    "contrast_id": "A_gap__MLP_minus_GCN_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GCN_reverse|M11": -1.0,
+      "A|MLP|M11": 1.0,
+      "V26|GCN_reverse|M11": 1.0,
+      "V26|MLP|M11": -1.0
+    },
+    "contrast_id": "A_gap_change__MLP_minus_GCN_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GraphSAGE_reverse|M11": -1.0,
+      "A|MLP|M11": 1.0
+    },
+    "contrast_id": "A_gap__MLP_minus_GraphSAGE_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GraphSAGE_reverse|M11": -1.0,
+      "A|MLP|M11": 1.0,
+      "V26|GraphSAGE_reverse|M11": 1.0,
+      "V26|MLP|M11": -1.0
+    },
+    "contrast_id": "A_gap_change__MLP_minus_GraphSAGE_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GCN_reverse|M11": -1.0,
+      "A|RandomForest_unweighted|M11": 1.0
+    },
+    "contrast_id": "A_gap__RandomForest_unweighted_minus_GCN_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GCN_reverse|M11": -1.0,
+      "A|RandomForest_unweighted|M11": 1.0,
+      "V26|GCN_reverse|M11": 1.0,
+      "V26|RandomForest_unweighted|M11": -1.0
+    },
+    "contrast_id": "A_gap_change__RandomForest_unweighted_minus_GCN_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GraphSAGE_reverse|M11": -1.0,
+      "A|RandomForest_unweighted|M11": 1.0
+    },
+    "contrast_id": "A_gap__RandomForest_unweighted_minus_GraphSAGE_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "A|GraphSAGE_reverse|M11": -1.0,
+      "A|RandomForest_unweighted|M11": 1.0,
+      "V26|GraphSAGE_reverse|M11": 1.0,
+      "V26|RandomForest_unweighted|M11": -1.0
+    },
+    "contrast_id": "A_gap_change__RandomForest_unweighted_minus_GraphSAGE_reverse",
+    "family": "A",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "B|MLP|M11|271707": 1.0,
+      "B|MLP|M5|271707": -1.0
+    },
+    "contrast_id": "B_increment__MLP__271707",
+    "family": "B",
+    "world": 271707
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M5": -1.0,
+      "B|MLP|M5|271707": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__MLP__M5__271707",
+    "family": "B",
+    "world": 271707
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M11": -1.0,
+      "B|MLP|M11|271707": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__MLP__M11__271707",
+    "family": "B",
+    "world": 271707
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M11": -1.0,
+      "ASOF|MLP|M5": 1.0,
+      "B|MLP|M11|271707": 1.0,
+      "B|MLP|M5|271707": -1.0
+    },
+    "contrast_id": "B_increment_change__MLP__271707",
+    "family": "B",
+    "world": 271707
+  },
+  {
+    "coefficients": {
+      "B|MLP|M11|271708": 1.0,
+      "B|MLP|M5|271708": -1.0
+    },
+    "contrast_id": "B_increment__MLP__271708",
+    "family": "B",
+    "world": 271708
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M5": -1.0,
+      "B|MLP|M5|271708": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__MLP__M5__271708",
+    "family": "B",
+    "world": 271708
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M11": -1.0,
+      "B|MLP|M11|271708": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__MLP__M11__271708",
+    "family": "B",
+    "world": 271708
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M11": -1.0,
+      "ASOF|MLP|M5": 1.0,
+      "B|MLP|M11|271708": 1.0,
+      "B|MLP|M5|271708": -1.0
+    },
+    "contrast_id": "B_increment_change__MLP__271708",
+    "family": "B",
+    "world": 271708
+  },
+  {
+    "coefficients": {
+      "B|MLP|M11|271709": 1.0,
+      "B|MLP|M5|271709": -1.0
+    },
+    "contrast_id": "B_increment__MLP__271709",
+    "family": "B",
+    "world": 271709
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M5": -1.0,
+      "B|MLP|M5|271709": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__MLP__M5__271709",
+    "family": "B",
+    "world": 271709
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M11": -1.0,
+      "B|MLP|M11|271709": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__MLP__M11__271709",
+    "family": "B",
+    "world": 271709
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M11": -1.0,
+      "ASOF|MLP|M5": 1.0,
+      "B|MLP|M11|271709": 1.0,
+      "B|MLP|M5|271709": -1.0
+    },
+    "contrast_id": "B_increment_change__MLP__271709",
+    "family": "B",
+    "world": 271709
+  },
+  {
+    "coefficients": {
+      "B|MLP|M11|271707": 0.3333333333333333,
+      "B|MLP|M11|271708": 0.3333333333333333,
+      "B|MLP|M11|271709": 0.3333333333333333,
+      "B|MLP|M5|271707": -0.3333333333333333,
+      "B|MLP|M5|271708": -0.3333333333333333,
+      "B|MLP|M5|271709": -0.3333333333333333
+    },
+    "contrast_id": "B_increment__MLP__mean3",
+    "family": "B",
+    "world": "mean3"
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M5": -1.0,
+      "B|MLP|M5|271707": 0.3333333333333333,
+      "B|MLP|M5|271708": 0.3333333333333333,
+      "B|MLP|M5|271709": 0.3333333333333333
+    },
+    "contrast_id": "B_minus_ASOF__MLP__M5__mean3",
+    "family": "B",
+    "world": "mean3"
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M11": -1.0,
+      "B|MLP|M11|271707": 0.3333333333333333,
+      "B|MLP|M11|271708": 0.3333333333333333,
+      "B|MLP|M11|271709": 0.3333333333333333
+    },
+    "contrast_id": "B_minus_ASOF__MLP__M11__mean3",
+    "family": "B",
+    "world": "mean3"
+  },
+  {
+    "coefficients": {
+      "ASOF|MLP|M11": -1.0,
+      "ASOF|MLP|M5": 1.0,
+      "B|MLP|M11|271707": 0.3333333333333333,
+      "B|MLP|M11|271708": 0.3333333333333333,
+      "B|MLP|M11|271709": 0.3333333333333333,
+      "B|MLP|M5|271707": -0.3333333333333333,
+      "B|MLP|M5|271708": -0.3333333333333333,
+      "B|MLP|M5|271709": -0.3333333333333333
+    },
+    "contrast_id": "B_increment_change__MLP__mean3",
+    "family": "B",
+    "world": "mean3"
+  },
+  {
+    "coefficients": {
+      "B0|MLP|M11_no_FIN87": 1.0,
+      "B0|MLP|M5_no_FIN87": -1.0
+    },
+    "contrast_id": "B0_42_minus_17__MLP",
+    "family": "B0",
+    "world": null
+  },
+  {
+    "coefficients": {
+      "B|RandomForest_unweighted|M11|271707": 1.0,
+      "B|RandomForest_unweighted|M5|271707": -1.0
+    },
+    "contrast_id": "B_increment__RandomForest_unweighted__271707",
+    "family": "B",
+    "world": 271707
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M5": -1.0,
+      "B|RandomForest_unweighted|M5|271707": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__RandomForest_unweighted__M5__271707",
+    "family": "B",
+    "world": 271707
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M11": -1.0,
+      "B|RandomForest_unweighted|M11|271707": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__RandomForest_unweighted__M11__271707",
+    "family": "B",
+    "world": 271707
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M11": -1.0,
+      "ASOF|RandomForest_unweighted|M5": 1.0,
+      "B|RandomForest_unweighted|M11|271707": 1.0,
+      "B|RandomForest_unweighted|M5|271707": -1.0
+    },
+    "contrast_id": "B_increment_change__RandomForest_unweighted__271707",
+    "family": "B",
+    "world": 271707
+  },
+  {
+    "coefficients": {
+      "B|RandomForest_unweighted|M11|271708": 1.0,
+      "B|RandomForest_unweighted|M5|271708": -1.0
+    },
+    "contrast_id": "B_increment__RandomForest_unweighted__271708",
+    "family": "B",
+    "world": 271708
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M5": -1.0,
+      "B|RandomForest_unweighted|M5|271708": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__RandomForest_unweighted__M5__271708",
+    "family": "B",
+    "world": 271708
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M11": -1.0,
+      "B|RandomForest_unweighted|M11|271708": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__RandomForest_unweighted__M11__271708",
+    "family": "B",
+    "world": 271708
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M11": -1.0,
+      "ASOF|RandomForest_unweighted|M5": 1.0,
+      "B|RandomForest_unweighted|M11|271708": 1.0,
+      "B|RandomForest_unweighted|M5|271708": -1.0
+    },
+    "contrast_id": "B_increment_change__RandomForest_unweighted__271708",
+    "family": "B",
+    "world": 271708
+  },
+  {
+    "coefficients": {
+      "B|RandomForest_unweighted|M11|271709": 1.0,
+      "B|RandomForest_unweighted|M5|271709": -1.0
+    },
+    "contrast_id": "B_increment__RandomForest_unweighted__271709",
+    "family": "B",
+    "world": 271709
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M5": -1.0,
+      "B|RandomForest_unweighted|M5|271709": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__RandomForest_unweighted__M5__271709",
+    "family": "B",
+    "world": 271709
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M11": -1.0,
+      "B|RandomForest_unweighted|M11|271709": 1.0
+    },
+    "contrast_id": "B_minus_ASOF__RandomForest_unweighted__M11__271709",
+    "family": "B",
+    "world": 271709
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M11": -1.0,
+      "ASOF|RandomForest_unweighted|M5": 1.0,
+      "B|RandomForest_unweighted|M11|271709": 1.0,
+      "B|RandomForest_unweighted|M5|271709": -1.0
+    },
+    "contrast_id": "B_increment_change__RandomForest_unweighted__271709",
+    "family": "B",
+    "world": 271709
+  },
+  {
+    "coefficients": {
+      "B|RandomForest_unweighted|M11|271707": 0.3333333333333333,
+      "B|RandomForest_unweighted|M11|271708": 0.3333333333333333,
+      "B|RandomForest_unweighted|M11|271709": 0.3333333333333333,
+      "B|RandomForest_unweighted|M5|271707": -0.3333333333333333,
+      "B|RandomForest_unweighted|M5|271708": -0.3333333333333333,
+      "B|RandomForest_unweighted|M5|271709": -0.3333333333333333
+    },
+    "contrast_id": "B_increment__RandomForest_unweighted__mean3",
+    "family": "B",
+    "world": "mean3"
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M5": -1.0,
+      "B|RandomForest_unweighted|M5|271707": 0.3333333333333333,
+      "B|RandomForest_unweighted|M5|271708": 0.3333333333333333,
+      "B|RandomForest_unweighted|M5|271709": 0.3333333333333333
+    },
+    "contrast_id": "B_minus_ASOF__RandomForest_unweighted__M5__mean3",
+    "family": "B",
+    "world": "mean3"
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M11": -1.0,
+      "B|RandomForest_unweighted|M11|271707": 0.3333333333333333,
+      "B|RandomForest_unweighted|M11|271708": 0.3333333333333333,
+      "B|RandomForest_unweighted|M11|271709": 0.3333333333333333
+    },
+    "contrast_id": "B_minus_ASOF__RandomForest_unweighted__M11__mean3",
+    "family": "B",
+    "world": "mean3"
+  },
+  {
+    "coefficients": {
+      "ASOF|RandomForest_unweighted|M11": -1.0,
+      "ASOF|RandomForest_unweighted|M5": 1.0,
+      "B|RandomForest_unweighted|M11|271707": 0.3333333333333333,
+      "B|RandomForest_unweighted|M11|271708": 0.3333333333333333,
+      "B|RandomForest_unweighted|M11|271709": 0.3333333333333333,
+      "B|RandomForest_unweighted|M5|271707": -0.3333333333333333,
+      "B|RandomForest_unweighted|M5|271708": -0.3333333333333333,
+      "B|RandomForest_unweighted|M5|271709": -0.3333333333333333
+    },
+    "contrast_id": "B_increment_change__RandomForest_unweighted__mean3",
+    "family": "B",
+    "world": "mean3"
+  },
+  {
+    "coefficients": {
+      "B0|RandomForest_unweighted|M11_no_FIN87": 1.0,
+      "B0|RandomForest_unweighted|M5_no_FIN87": -1.0
+    },
+    "contrast_id": "B0_42_minus_17__RandomForest_unweighted",
+    "family": "B0",
+    "world": null
+  }
+]

@@ -1,0 +1,316 @@
+{
+ "status": "PRECISION_OF_CONTRASTS_COMPUTED",
+ "mdd_multiplier": 2.801585218112968,
+ "definition": "MDD80 = (z_0.975 + z_0.80) x bootstrap SE; normal approximation; interval = linear 2.5/97.5 percentiles",
+ "rows": [
+  {
+   "group": "primary window, 129 inputs",
+   "comparison": "MLP − GCN",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.044969523832945224,
+    0.0688147553876157
+   ],
+   "se": 0.028413448275619778,
+   "mdd80": 0.07960269668459377
+  },
+  {
+   "group": "primary window, 129 inputs",
+   "comparison": "MLP − GraphSAGE",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.023635255020808855,
+    0.06025362991652611
+   ],
+   "se": 0.021633588187603744,
+   "mdd80": 0.06060834088113396
+  },
+  {
+   "group": "primary window, 129 inputs",
+   "comparison": "RF − GCN",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.029447769985839624,
+    0.1265527235685033
+   ],
+   "se": 0.03914198719715527,
+   "mdd80": 0.10965961273911724
+  },
+  {
+   "group": "primary window, 129 inputs",
+   "comparison": "RF − GraphSAGE",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.00949322425582459,
+    0.10494517476566038
+   ],
+   "se": 0.029455591051451496,
+   "mdd80": 0.08252234848052713
+  },
+  {
+   "group": "primary window, 129 inputs",
+   "comparison": "MLP − GCN",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -1.0,
+    9.2
+   ],
+   "se": 2.5253203779928106,
+   "mdd80": 7.0749002419841105
+  },
+  {
+   "group": "primary window, 129 inputs",
+   "comparison": "MLP − GraphSAGE",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -0.7999999999999998,
+    5.6
+   ],
+   "se": 1.5892258553804444,
+   "mdd80": 4.45235166467679
+  },
+  {
+   "group": "primary window, 129 inputs",
+   "comparison": "RF − GCN",
+   "metric": "hits_at_budget",
+   "ci95": [
+    0.0,
+    10.2
+   ],
+   "se": 2.6598707198138527,
+   "mdd80": 7.451854490721989
+  },
+  {
+   "group": "primary window, 129 inputs",
+   "comparison": "RF − GraphSAGE",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -0.8049999999999997,
+    7.2
+   ],
+   "se": 2.0764139537803454,
+   "mdd80": 5.817250639594519
+  },
+  {
+   "group": "primary window, 42 inputs",
+   "comparison": "MLP − GCN",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.07307093101153764,
+    0.10161022138853737
+   ],
+   "se": 0.0424139088780775,
+   "mdd80": 0.11882618015521229
+  },
+  {
+   "group": "primary window, 42 inputs",
+   "comparison": "MLP − GraphSAGE",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.05871894275739433,
+    0.11323504369897294
+   ],
+   "se": 0.04158079191829185,
+   "mdd80": 0.1164921319957176
+  },
+  {
+   "group": "primary window, 42 inputs",
+   "comparison": "RF − GCN",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.08057109802819526,
+    0.12214186225045848
+   ],
+   "se": 0.050732554137527454,
+   "mdd80": 0.1421315737488128
+  },
+  {
+   "group": "primary window, 42 inputs",
+   "comparison": "RF − GraphSAGE",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.0801817039032889,
+    0.14846256717019313
+   ],
+   "se": 0.05816807817296934,
+   "mdd80": 0.16296282797543046
+  },
+  {
+   "group": "primary window, 42 inputs",
+   "comparison": "MLP − GCN",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -3.2,
+    2.5999999999999996
+   ],
+   "se": 1.4732281019992324,
+   "mdd80": 4.1273740734696736
+  },
+  {
+   "group": "primary window, 42 inputs",
+   "comparison": "MLP − GraphSAGE",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -3.0,
+    2.5999999999999996
+   ],
+   "se": 1.3773315763226979,
+   "mdd80": 3.8587117846659034
+  },
+  {
+   "group": "primary window, 42 inputs",
+   "comparison": "RF − GCN",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -4.199999999999999,
+    1.6
+   ],
+   "se": 1.5159589129369095,
+   "mdd80": 4.24708808175065
+  },
+  {
+   "group": "primary window, 42 inputs",
+   "comparison": "RF − GraphSAGE",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -4.199999999999999,
+    1.8
+   ],
+   "se": 1.5491663139037288,
+   "mdd80": 4.34012144543124
+  },
+  {
+   "group": "primary window, 129 inputs, E7 links added",
+   "comparison": "GCN: E7 − control",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.0016253013472518562,
+    0.006248754789692376
+   ],
+   "se": 0.0019949109507551447,
+   "mdd80": 0.0055889130310873
+  },
+  {
+   "group": "primary window, 129 inputs, E7 links added",
+   "comparison": "GCN: E7 − control",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -0.6,
+    0.8
+   ],
+   "se": 0.28764097181092296,
+   "mdd80": 0.8058506947491306
+  },
+  {
+   "group": "primary window, 129 inputs, E7 links added",
+   "comparison": "GraphSAGE: E7 − control",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.00011019616275431132,
+    0.003459292850355061
+   ],
+   "se": 0.0008947024620810681,
+   "mdd80": 0.0025065851923755985
+  },
+  {
+   "group": "primary window, 129 inputs, E7 links added",
+   "comparison": "GraphSAGE: E7 − control",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -0.4,
+    1.2
+   ],
+   "se": 0.3688401029047077,
+   "mdd80": 1.0333369801450951
+  },
+  {
+   "group": "earlier window W2, 129 inputs",
+   "comparison": "MLP − GCN",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.03981916788411159,
+    0.03909931213807736
+   ],
+   "se": 0.019676331281820694,
+   "mdd80": 0.05512491886584264
+  },
+  {
+   "group": "earlier window W2, 129 inputs",
+   "comparison": "MLP − GraphSAGE",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.03516173466713806,
+    0.041892790711152345
+   ],
+   "se": 0.01915739228764143,
+   "mdd80": 0.05367106705064761
+  },
+  {
+   "group": "earlier window W2, 129 inputs",
+   "comparison": "RF − GCN",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.05988867097780593,
+    0.0889817978415566
+   ],
+   "se": 0.03734887243415684,
+   "mdd80": 0.10463604892472071
+  },
+  {
+   "group": "earlier window W2, 129 inputs",
+   "comparison": "RF − GraphSAGE",
+   "metric": "roc_auc",
+   "ci95": [
+    -0.07412550295869208,
+    0.09780626222509542
+   ],
+   "se": 0.042435808243657114,
+   "mdd80": 0.1188875330941062
+  },
+  {
+   "group": "earlier window W2, 129 inputs",
+   "comparison": "MLP − GCN",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -0.8,
+    8.604999999999974
+   ],
+   "se": 2.444354766622995,
+   "mdd80": 6.8480681819949565
+  },
+  {
+   "group": "earlier window W2, 129 inputs",
+   "comparison": "MLP − GraphSAGE",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -4.6,
+    4.2
+   ],
+   "se": 2.2160790832575508,
+   "mdd80": 6.208534401823691
+  },
+  {
+   "group": "earlier window W2, 129 inputs",
+   "comparison": "RF − GCN",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -9.8,
+    2.3999999999999995
+   ],
+   "se": 2.960739221608209,
+   "mdd80": 8.294763237944853
+  },
+  {
+   "group": "earlier window W2, 129 inputs",
+   "comparison": "RF − GraphSAGE",
+   "metric": "hits_at_budget",
+   "ci95": [
+    -15.4,
+    -0.19999999999999965
+   ],
+   "se": 3.8380710043610784,
+   "mdd80": 10.75268299188599
+  }
+ ],
+ "model_training_or_resampling_performed": false
+}

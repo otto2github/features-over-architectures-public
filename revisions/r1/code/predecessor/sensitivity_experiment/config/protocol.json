@@ -1,0 +1,69 @@
+{
+  "package_version": "v17prep-r7-strictdet-20260924",
+  "baseline_manuscript": "v16",
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024
+  ],
+  "fixed_window_days": 1095,
+  "primary_label": "label_v1_strict_ab_primary",
+  "fixed_label_column": "label_v1_strict_ab_fixed1095_sensitivity",
+  "expected_panel_rows": 51675,
+  "expected_common_cutoff_counts": {
+    "train": [
+      24106,
+      254
+    ],
+    "validation": [
+      7309,
+      40
+    ],
+    "test": [
+      8435,
+      20
+    ]
+  },
+  "expected_fixed1095_counts": {
+    "train": [
+      24106,
+      119
+    ],
+    "validation": [
+      7309,
+      25
+    ],
+    "test": [
+      8435,
+      20
+    ]
+  },
+  "frozen_hashes": {
+    "fraud_labels_v1_0.parquet": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836",
+    "node_features_v1_1.parquet": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2",
+    "global_edge_index.parquet": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09",
+    "node_id_index_label_v1_0_fiverel_derived.parquet": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770",
+    "formal_rerun_core.py": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7",
+    "financials.db": "5cc0550b95c7bbd44fb9d819096ec4b4cb5827839a837af2210d7fc69a3d30cb"
+  },
+  "stageF_manifest_sha256": "ece6a36416c6715a0e36eda9e00624ec31cc4aca4eb015b603c4324b5c2d1b9e",
+  "asof_definition": "For each company-fiscal-year score row and each source fiscal lag, retain only source records whose recorded availability date is no later than that row's annual-report public anchor. For fin tables availability is max(ann_date,f_ann_date) over nonmissing recorded dates; select maximum update_flag among available candidates, then latest availability date, then smallest SQLite rowid. For fina_indicator require ann_date<=anchor and select latest ann_date, then smallest rowid. Recompute fin/fini raw fields and the same industry-year z-score transforms. This is a current-snapshot as-of sensitivity, not certification of a historical vendor snapshot.",
+  "training_matrix": {
+    "asof": "MLP + RandomForest x M5/M11 x 5 seeds = 20 fits",
+    "fixed1095": "MLP + RandomForest + reverse-GCN + reverse-GraphSAGE x M11 x 5 seeds = 20 fits"
+  },
+  "approved_sensitivity_input_hashes": {
+    "node_features_asof_financial_v1.parquet": "9f15e48a1427111d6f66d017f49bddf18aa4b9d8bb6a73c1285e1f659575eaf0",
+    "fraud_labels_fixed1095_v1.parquet": "97f0038ad4f97dbf9c31819b7907d291eed5c89f5aea10958db9bcd2ce93f3d1"
+  },
+  "determinism_policy": {
+    "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+    "torch_use_deterministic_algorithms": true,
+    "warn_only": false,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "fresh_output_directory": true
+  }
+}

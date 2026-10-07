@@ -1,0 +1,158 @@
+{
+  "company_codes_exported": false,
+  "document_keys_exported": false,
+  "pairwise_intersection_counts": [
+    {
+      "left_seed": 42,
+      "ranking": "D_subset_reranked",
+      "right_seed": 123,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 42,
+      "ranking": "D_subset_reranked",
+      "right_seed": 456,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 42,
+      "ranking": "D_subset_reranked",
+      "right_seed": 789,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 42,
+      "ranking": "D_subset_reranked",
+      "right_seed": 1024,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 123,
+      "ranking": "D_subset_reranked",
+      "right_seed": 456,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 123,
+      "ranking": "D_subset_reranked",
+      "right_seed": 789,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 123,
+      "ranking": "D_subset_reranked",
+      "right_seed": 1024,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 456,
+      "ranking": "D_subset_reranked",
+      "right_seed": 789,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 456,
+      "ranking": "D_subset_reranked",
+      "right_seed": 1024,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 789,
+      "ranking": "D_subset_reranked",
+      "right_seed": 1024,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 42,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 123,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 42,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 456,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 42,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 789,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 42,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 1024,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 123,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 456,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 123,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 789,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 123,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 1024,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 456,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 789,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 456,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 1024,
+      "shared_positive_row_hits": 1
+    },
+    {
+      "left_seed": 789,
+      "ranking": "membership_in_full_top422",
+      "right_seed": 1024,
+      "shared_positive_row_hits": 1
+    }
+  ],
+  "summaries": [
+    {
+      "D_positive_rows_hit_in_all_seeds": 1,
+      "distinct_D_positive_rows_hit": 1,
+      "distinct_companies_hit": 1,
+      "distinct_usable_document_keys_hit": 1,
+      "hits_per_seed": {
+        "1024": 1,
+        "123": 1,
+        "42": 1,
+        "456": 1,
+        "789": 1
+      },
+      "n_seeds": 5,
+      "ranking": "D_subset_reranked"
+    },
+    {
+      "D_positive_rows_hit_in_all_seeds": 1,
+      "distinct_D_positive_rows_hit": 1,
+      "distinct_companies_hit": 1,
+      "distinct_usable_document_keys_hit": 1,
+      "hits_per_seed": {
+        "1024": 1,
+        "123": 1,
+        "42": 1,
+        "456": 1,
+        "789": 1
+      },
+      "n_seeds": 5,
+      "ranking": "membership_in_full_top422"
+    }
+  ]
+}

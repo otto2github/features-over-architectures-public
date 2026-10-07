@@ -1,0 +1,125 @@
+{
+  "training_authorized": true,
+  "authorization_basis": "User approved RPT supplementary experiment; no new scope beyond the prescribed 20 fits",
+  "training_protocol_id": "E7_M11_20_FITS_ORIGINAL_SUPERVISION_RECORD_GRAPH_v1",
+  "graph_prep_return_sha256": "349fb6051653d3d95c2808042cee3eda1b7b6b471cae2d5cc83290344f2ae9b9",
+  "graph_prep_kit": "private_inputs/PeerJ_141707_V36_E7_GRAPH_PREP_20261006",
+  "baseline_root": "private_inputs/peerj_141707_rerun_v1",
+  "baseline_inputs": [
+    {
+      "path": "private_inputs/node_features_v1_1.parquet",
+      "size_bytes": 23261997,
+      "sha256": "adc00129f06ffb0995691c6d1ba98f740c53561c1e0cc4e91d927b84eb36beb2"
+    },
+    {
+      "path": "private_inputs/fraud_labels_v1_0.parquet",
+      "size_bytes": 226750,
+      "sha256": "1d50378138dfc65def76555c0a48aa9cea2656af4d456fe5178d9cf7eae31836"
+    },
+    {
+      "path": "private_inputs/global_edge_index.parquet",
+      "size_bytes": 9520370,
+      "sha256": "dacdb3420917804bcbb9634ea83006d37f0b96a715cd990d241f706d7f066a09"
+    },
+    {
+      "path": "private_inputs/node_id_index_label_v1_0_fiverel_derived.parquet",
+      "size_bytes": 2585531,
+      "sha256": "5602cf61f17d4b62598c3a13d98c72de728054c091cf01e31f2c3d6a067a2770"
+    },
+    {
+      "path": "private_inputs/formal_rerun_core.py",
+      "size_bytes": 16439,
+      "sha256": "6b7d1188097a6e9a287b865a20ed4d5824a5e35de2d926c4da43b2ceb1c523d7"
+    }
+  ],
+  "evaluation_masks": {
+    "path": "private_inputs/evaluation_masks_v27.parquet",
+    "sha256": "f53fa5b7f0ee845f6075bc2329d5ef6ee9d9429d38a942a71aa228f550009810",
+    "size_bytes": 105354
+  },
+  "graph_rule_id": "E7_RPT_RECORD_COMPOUND_DROP_ANNUAL_NAME_CONFLICT_FEATURE_YEAR_v1",
+  "private_e7_artifacts": {
+    "PRIVATE_e7_forward_edges.parquet": {
+      "sha256": "a464045c4bb3b163431d7c4c975c55abf792a970d7af17f046463b756bbb6602",
+      "size_bytes": 985106
+    },
+    "PRIVATE_e7_support_index.parquet": {
+      "sha256": "6f57b553a65c38db38cb8790883b8bb3db8c0910557f39dde08fc1dcf05598cb",
+      "size_bytes": 4264744
+    }
+  },
+  "expected_n_original": 303775,
+  "expected_n_support": 62920,
+  "expected_n_extended": 366695,
+  "expected_forward_e7_edges": 265383,
+  "scaler_mean_float32_sha256": "e0f10b14e388f0989cd6f45f1c8573c3827160488a210d3f2d5017b80bb95ebe",
+  "scaler_std_float32_sha256": "e74801fbce9e90140ef3660280b739a8152743769067c6bb0edaae3614c253b7",
+  "base_annual_edges": {
+    "2010": 80061,
+    "2011": 90080,
+    "2012": 91581,
+    "2013": 102469,
+    "2014": 123903,
+    "2015": 165173,
+    "2016": 197718,
+    "2017": 252720,
+    "2018": 287609,
+    "2019": 335522,
+    "2020": 459493,
+    "2021": 537530,
+    "2022": 555039
+  },
+  "E7_annual_edges": {
+    "2010": 8640,
+    "2011": 10140,
+    "2012": 12054,
+    "2013": 13230,
+    "2014": 15291,
+    "2015": 17023,
+    "2016": 19645,
+    "2017": 22732,
+    "2018": 24566,
+    "2019": 26759,
+    "2020": 29976,
+    "2021": 32404,
+    "2022": 32923
+  },
+  "original_metric_source_sha256": "b1a6ed3e1212debe39f97222dd3284acd1a6a69a29d492e1f1e7046168b78ed3",
+  "population_contract": {
+    "full_test": {
+      "rows": 8435,
+      "positive": 20,
+      "negative": 8415
+    },
+    "D_frozen": {
+      "rows": 8422,
+      "positive": 7,
+      "negative": 8415
+    },
+    "O_frozen": {
+      "rows": 8428,
+      "positive": 13,
+      "negative": 8415
+    },
+    "S_frozen": {
+      "rows": 7757,
+      "positive": 6,
+      "negative": 7751
+    },
+    "J_frozen": {
+      "rows": 7753,
+      "positive": 2,
+      "negative": 7751
+    }
+  },
+  "bootstrap": {
+    "replicates": 2000,
+    "rng_seed": 141707,
+    "workers": 8,
+    "unit": "company and paired seed",
+    "primary_population": "full_test",
+    "same_draw_all_conditions_and_models": true,
+    "ci": "two-sided percentile 95%",
+    "secondary_populations": "descriptive only; no J/S inference or significance claims"
+  }
+}

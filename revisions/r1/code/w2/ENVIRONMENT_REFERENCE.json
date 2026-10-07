@@ -1,0 +1,30 @@
+{
+  "cuda_available": true,
+  "cuda_matmul_allow_tf32": false,
+  "cudnn_allow_tf32": true,
+  "cudnn_version": 91900,
+  "executable": "private_inputs/python",
+  "gpu_name": "NVIDIA GeForce RTX 4090",
+  "gpu_total_memory": 50859933696,
+  "optional_backend_flags": {
+    "WITH_PYG_LIB": true,
+    "WITH_SEGMM": true,
+    "WITH_TORCH_SCATTER": false,
+    "WITH_TORCH_SPARSE": false
+  },
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "segment_matmul_before": null,
+  "segment_matmul_effective": false,
+  "torch_cuda": "12.8",
+  "versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.1",
+    "pyg-lib": "0.7.0+pt211cu128",
+    "scikit-learn": "1.9.1",
+    "torch": "2.11.0+cu128",
+    "torch-geometric": "2.8.0.post1",
+    "torch-scatter": null,
+    "torch-sparse": null
+  }
+}

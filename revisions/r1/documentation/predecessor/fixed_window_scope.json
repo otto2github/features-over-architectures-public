@@ -1,0 +1,8 @@
+{
+  "classification": "descriptive counterfactual on the existing eligible risk set",
+  "time_rule": "0 < earliest_qualified_public_event - anchor <= 1095 days",
+  "frozen_labels_written_or_replaced": false,
+  "null_rows_reclassified_as_negative": false,
+  "models_retrained": false,
+  "followup_differences_causally_explain_performance": false
+}

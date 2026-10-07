@@ -1,0 +1,11 @@
+{
+  "company_or_component_count": 4531,
+  "group_seed": 1807141,
+  "membership_sha256": null,
+  "planned_replicates": 2000,
+  "rejected_draws": 0,
+  "replicate_rule": "base+10*b",
+  "scope": "conditional_exploratory_marginal_not_new_training_or_new_test_cohort",
+  "seed_label_seed": 1807142,
+  "valid_replicates": 2000
+}

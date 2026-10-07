@@ -1,0 +1,27 @@
+{
+  "all_decision_equivalent": false,
+  "all_exact_reproduction_checks": false,
+  "all_scores_exact_elementwise": false,
+  "checkpoint_replay_performed": true,
+  "completed_neural_fits": 55,
+  "component": "V27_STAGE_E_STRICT_REPLAY_AUDIT",
+  "expected_neural_fits": 55,
+  "failed_neural_fits": 0,
+  "failures": [],
+  "finished_at_epoch": 1790497205.3408031,
+  "fits_with_any_score_difference": 10,
+  "max_abs_score_difference_across_fits": 1.4901161193847656e-06,
+  "model_counts": {
+    "GCN_reverse": 5,
+    "GraphSAGE_reverse": 5,
+    "MLP": 45
+  },
+  "new_scientific_fit_performed": false,
+  "original_artifacts_modified": false,
+  "original_stage_e_enforcement_omission_erased": false,
+  "started_at_epoch": 1790496938.1031218,
+  "status": "COMPLETE_STRICT_REPLAY_DIFFERENCES_REVIEW_REQUIRED",
+  "strict_replay_is_post_results_technical_audit": true,
+  "synthetic_strict_selftest_status": "PASS",
+  "training_performed": false
+}

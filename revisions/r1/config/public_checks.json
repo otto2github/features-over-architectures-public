@@ -1,0 +1,17 @@
+{
+  "main_tables": 5,
+  "main_panels": 6,
+  "main_table_cells": 281,
+  "sensitivity_intervals": 948,
+  "extension_intervals": 96,
+  "total_intervals": 1044,
+  "interval_endpoints": 2088,
+  "positive_test_rows": 20,
+  "test_rows": 8435,
+  "scopes": [
+    "predecessor",
+    "sensitivity",
+    "strict_replay",
+    "matched_42_input_extension"
+  ]
+}

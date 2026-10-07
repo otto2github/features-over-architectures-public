@@ -1,0 +1,24 @@
+{
+  "classification": "source-review addendum; not independent raw-graph regeneration",
+  "base_sources": [
+    "A0019",
+    "A0017",
+    "A0020",
+    "A0001",
+    "A0016"
+  ],
+  "E4_projection_inputs": "E1 only in inspected main()",
+  "E5_projection_inputs": "E3 entity_type person",
+  "large_entity_group_skip": "literal >50 in inspected projection",
+  "projection_pair_direction": "one lexicographically sorted ID pair",
+  "frozen_global_columns": [
+    "src_idx",
+    "dst_idx",
+    "edge_type",
+    "year"
+  ],
+  "generic_reverse_expansion_in_current_core": false,
+  "holding_ratios_and_projection_weights_consumed": false,
+  "source_to_retained_raw_artifact_independent_rebuild": false,
+  "supersedes": "old contract assertion that no base generator has been recovered; other recorded consumer/hash data remain unchanged"
+}

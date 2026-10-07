@@ -1,0 +1,4 @@
+flag,partition,positives,negatives,flagged_positives,flagged_negatives,roc_auc,ap
+asof_final_financial_nonfinite,train,254,23852,218,12959,0.6574794896613103,0.015692566475587234
+asof_final_financial_nonfinite,validation,40,7269,33,2563,0.7362033979914706,0.011445011490361314
+asof_final_financial_nonfinite,test,20,8415,16,1927,0.7855020796197267,0.007061965482767469

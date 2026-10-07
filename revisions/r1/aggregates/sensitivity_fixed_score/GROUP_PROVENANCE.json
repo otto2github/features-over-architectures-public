@@ -1,0 +1,42 @@
+{
+  "company_cluster_size_histogram": {
+    "1": 627,
+    "2": 3904
+  },
+  "component_positive_size_histogram": {
+    "0": 4514,
+    "1": 12,
+    "2": 4
+  },
+  "component_row_size_histogram": {
+    "1": 625,
+    "2": 3905
+  },
+  "definition": "test companies connected by usable test-document keys; all eligible years/negatives attached",
+  "file_mtime_not_accepted_as_preregistration_evidence": true,
+  "generated_at_utc": "2026-09-27T07:37:12.362524+00:00",
+  "grouping_uses_prediction_scores": false,
+  "identified_positive_firmyears": 20,
+  "inspected_binding_fields": [
+    "final_binding.input_files",
+    "data_stage.files"
+  ],
+  "materialized_now": true,
+  "max_component_rows": 2,
+  "membership_timing_status": "POSTFIT_MATERIALIZATION_OF_PRESPECIFIED_RULE",
+  "n_document_components": 4530,
+  "n_test_companies": 4531,
+  "n_test_rows": 8435,
+  "no_unregistered_or_unrelated_directory_scan": true,
+  "positive_components": 16,
+  "prefit_bound_maps_verified": [],
+  "prefit_membership_candidates": [],
+  "prior_artifact_absence_claim": "No candidate in the inspected bound-manifest fields; not proof of absence everywhere.",
+  "private_membership_sha256": "c8b6c4ec082d41e6264ae5667b4c3982fac43f02a6c8d53f267f824edebb102c",
+  "secondary_computation_allowed": true,
+  "source_incidence_sha256": "9ce1c6a3881bd11716922e89d39a33d6de9cbada5c59fc83fb3a1a9144e8acae",
+  "test_document_keys": 16,
+  "timing_deviation_requires_reporting": true,
+  "unidentified_positive_firmyears": 0,
+  "unresolved_candidates": []
+}
